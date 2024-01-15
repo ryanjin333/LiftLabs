@@ -11,12 +11,22 @@ export default function Login() {
   return (
     <SafeAreaView className="flex-1 bg-black px-8">
       <Text className="text-white text-5xl">Login</Text>
-      <FormRow
-        name="Email"
-        placeholder="Enter your email"
-        handleChange={handleChange}
-        value="email"
-      />
+      <View className="flex-1 space-y-14 my-14 h-80 bg-slate-500">
+        <FormRow
+          className="mb-14"
+          name="Username"
+          placeholder="Enter your username"
+          handleChange={handleChange}
+          value=""
+        />
+        <FormRow
+          name="Password"
+          placeholder="Enter your Password"
+          handleChange={handleChange}
+          isPassword={true}
+          value=""
+        />
+      </View>
     </SafeAreaView>
   );
 }
