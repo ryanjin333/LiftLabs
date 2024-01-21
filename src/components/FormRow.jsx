@@ -14,7 +14,7 @@ const FormRow = ({ name, placeholder, value, isPassword, handleChange }) => {
     return null;
   }
   return (
-    <View className="w-full rounded-2xl overflow-hidden">
+    <View className=" rounded-2xl overflow-hidden mt-7">
       <BlurView intensity={30}>
         <TextInput
           className="h-16 text-sm bg-transparent text-white px-4"
