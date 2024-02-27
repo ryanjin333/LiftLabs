@@ -28,7 +28,7 @@ const LoginSignupSwitcher = ({ isLogin }) => {
     return null;
   }
   return (
-    <Pressable className="flex-row mt-20" onPress={btnTapped}>
+    <Pressable className="flex-row" onPress={btnTapped}>
       <Text
         className="text-[#D6D6D6] text-sm"
         style={{ fontFamily: "Inter_400Regular" }}

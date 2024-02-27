@@ -10,7 +10,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Signup"
-        screenOptions={{ headerShown: false }}
+        screenOptions={{ headerShown: false, gestureEnabled: false }}
       >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} />

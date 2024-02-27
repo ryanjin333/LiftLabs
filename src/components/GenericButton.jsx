@@ -8,7 +8,7 @@ import {
 
 import { Text, Pressable } from "react-native";
 
-const GenericButton = ({ onPress, title }) => {
+const GenericButton = ({ onPress, title, color }) => {
   const btnTapped = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     onPress();
@@ -26,7 +26,8 @@ const GenericButton = ({ onPress, title }) => {
   }
   return (
     <Pressable
-      className="h-16 w-full rounded-2xl justify-center items-center bg-white"
+      className="h-16 w-full rounded-2xl justify-center items-center"
+      style={{ backgroundColor: color }}
       onPress={btnTapped}
     >
       <Text className="text-base" style={{ fontFamily: "Inter_600SemiBold" }}>

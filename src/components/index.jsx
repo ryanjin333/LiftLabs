@@ -1,6 +1,6 @@
 import FormRow from "./FormRow";
 import GenericButton from "./GenericButton";
-import OrSeparator from "./OrSeparator";
 import LoginSignupSwitcher from "./LoginSignupSwitcher";
+import GoogleAppleAuth from "./GoogleAppleAuth";
 
-export { FormRow, GenericButton, OrSeparator, LoginSignupSwitcher };
+export { FormRow, GenericButton, LoginSignupSwitcher, GoogleAppleAuth };
