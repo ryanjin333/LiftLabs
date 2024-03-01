@@ -8,10 +8,12 @@ import {
   GoogleAppleAuth,
 } from "../components";
 
-// Firebase
 import { useNavigation } from "@react-navigation/native";
+
+// Firebase
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { auth, db } from "../config/firebase";
 
 // Fonts
 import {
@@ -31,16 +33,22 @@ import {
 } from "react-native-reanimated";
 
 const Signup = () => {
-  // logic
-  const [name, setName] = useState("");
+  // auth
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // navigation
+  const navigation = useNavigation();
+
   const onSubmit = async () => {
-    if (name && email && password) {
+    // creates a new user and adds to the firestore collection users
+    if (username && email && password) {
       try {
-        const navigation = useNavigation();
         await createUserWithEmailAndPassword(auth, email, password);
+        await addDoc(collection(db, "users"), {
+          uid: auth.currentUser.uid,
+        });
         navigation.navigate("Home");
       } catch (error) {
         console.log("got error:", error);
@@ -83,10 +91,10 @@ const Signup = () => {
           exiting={FadeOutUp}
         >
           <FormRow
-            name="name"
-            placeholder="Enter your full name"
-            handleChange={(value) => setName(value)}
-            value={name}
+            name="username"
+            placeholder="Create a username"
+            handleChange={(value) => setUsername(value)}
+            value={username}
           />
         </Animated.View>
         <Animated.View

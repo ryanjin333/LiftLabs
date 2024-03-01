@@ -9,8 +9,11 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Signup"
-        screenOptions={{ headerShown: false, gestureEnabled: false }}
+        initialRouteName="Login"
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: false,
+        }}
       >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} />

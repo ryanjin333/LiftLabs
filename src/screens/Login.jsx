@@ -9,6 +9,7 @@ import {
 } from "../components";
 
 // Firebase
+
 import { useNavigation } from "@react-navigation/native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
@@ -31,13 +32,16 @@ import {
 } from "react-native-reanimated";
 
 const Login = () => {
+  // auth
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // navigation
+  const navigation = useNavigation();
 
   const onSubmit = async () => {
     if (email && password) {
       try {
-        const navigation = useNavigation();
         await signInWithEmailAndPassword(auth, email, password);
         navigation.navigate("Home");
       } catch (error) {
