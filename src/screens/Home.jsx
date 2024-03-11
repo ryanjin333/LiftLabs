@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, Image } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -13,21 +13,21 @@ const Home = () => {
     {
       id: "1",
       title: "Chest",
-      image: "etc",
+      image: require("../assets/React_Native_Logo.png"),
       plan: [],
       createdBy: "uid",
     },
     {
       id: "2",
       title: "Arms",
-      image: "etc",
+      image: require("../assets/React_Native_Logo.png"),
       plan: [],
       createdBy: "uid",
     },
     {
       id: "3",
       title: "Shoulders",
-      image: "etc",
+      image: require("../assets/React_Native_Logo.png"),
       plan: [],
       createdBy: "uid",
     },
@@ -45,11 +45,24 @@ const Home = () => {
   }
 
   const Item = ({ title, image, plan, createdBy }) => (
-    <View className="">
-      <Image />
-      <View>
-        <Text>{title}</Text>
-        <Text>{plan.length}</Text>
+    <View className="w-full h-20 bg-[#151515] flex-row rounded-[18px] items-center mb-3.5">
+      <Image
+        className="h-16 w-16 rounded-[18px] overflow-hidden ml-2 mr-6"
+        source={image}
+      />
+      <View className="">
+        <Text
+          className="text-white mb-5 text-base"
+          style={{ fontFamily: "Inter_600SemiBold" }}
+        >
+          {title}
+        </Text>
+        <Text
+          className="text-[#848484] text-xs"
+          style={{ fontFamily: "Inter_600SemiBold" }}
+        >
+          {plan.length} Exercises
+        </Text>
       </View>
     </View>
   );
@@ -65,6 +78,7 @@ const Home = () => {
         </Text>
       </View>
       <FlatList
+        className="w-full mt-20"
         data={WORKOUTS}
         renderItem={({ item }) => (
           <Item
