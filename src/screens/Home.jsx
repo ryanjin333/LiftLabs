@@ -8,6 +8,8 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 
+import { WorkoutRow } from "../components";
+
 const Home = () => {
   WORKOUTS = [
     {
@@ -43,29 +45,6 @@ const Home = () => {
   if (!fontsLoaded) {
     return null;
   }
-
-  const Item = ({ title, image, plan, createdBy }) => (
-    <View className="w-full h-20 bg-[#151515] flex-row rounded-[18px] items-center mb-3.5">
-      <Image
-        className="h-16 w-16 rounded-[18px] overflow-hidden ml-2 mr-6"
-        source={image}
-      />
-      <View className="">
-        <Text
-          className="text-white mb-5 text-base"
-          style={{ fontFamily: "Inter_600SemiBold" }}
-        >
-          {title}
-        </Text>
-        <Text
-          className="text-[#848484] text-xs"
-          style={{ fontFamily: "Inter_600SemiBold" }}
-        >
-          {plan.length} Exercises
-        </Text>
-      </View>
-    </View>
-  );
   return (
     <SafeAreaView className="flex-1 bg-black px-8 items-center">
       <View className="w-full items-start mt-16">
@@ -81,7 +60,7 @@ const Home = () => {
         className="w-full mt-20"
         data={WORKOUTS}
         renderItem={({ item }) => (
-          <Item
+          <WorkoutRow
             title={item.title}
             image={item.image}
             plan={item.plan}
