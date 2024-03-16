@@ -16,21 +16,66 @@ const Home = () => {
       id: "1",
       title: "Chest",
       image: require("../assets/React_Native_Logo.png"),
-      plan: [],
+      plan: [
+        {
+          title: "Dumbbell Chest Press",
+          sets: 3,
+          weight: 55,
+          reps: 8,
+          id: "1",
+        },
+        {
+          title: "Dumbbell Incline Chest Press",
+          sets: 3,
+          weight: 45,
+          reps: 8,
+          id: "2",
+        },
+      ],
       createdBy: "uid",
     },
     {
       id: "2",
       title: "Arms",
       image: require("../assets/React_Native_Logo.png"),
-      plan: [],
+      plan: [
+        {
+          title: "Bicep curls",
+          sets: 3,
+          weight: 30,
+          reps: 8,
+          id: "3",
+        },
+      ],
       createdBy: "uid",
     },
     {
       id: "3",
       title: "Shoulders",
       image: require("../assets/React_Native_Logo.png"),
-      plan: [],
+      plan: [
+        {
+          title: "Shoulder Press",
+          sets: 3,
+          weight: 40,
+          reps: 8,
+          id: "4",
+        },
+        {
+          title: "Overhead Shoulder Press",
+          sets: 3,
+          weight: 45,
+          reps: 8,
+          id: "5",
+        },
+        {
+          title: "Machine Shoulder Press",
+          sets: 3,
+          weight: 120,
+          reps: 8,
+          id: "6",
+        },
+      ],
       createdBy: "uid",
     },
   ];
@@ -46,7 +91,7 @@ const Home = () => {
     return null;
   }
   return (
-    <SafeAreaView className="flex-1 bg-black px-8 items-center">
+    <SafeAreaView className="flex-1 bg-black px-6 items-center">
       <View className="w-full items-start mt-16">
         {/* title */}
         <Text

@@ -3,6 +3,7 @@ import GenericButton from "./GenericButton";
 import LoginSignupSwitcher from "./LoginSignupSwitcher";
 import GoogleAppleAuth from "./GoogleAppleAuth";
 import WorkoutRow from "./WorkoutRow";
+import PlanRow from "./PlanRow";
 
 export {
   FormRow,
@@ -10,4 +11,5 @@ export {
   LoginSignupSwitcher,
   GoogleAppleAuth,
   WorkoutRow,
+  PlanRow,
 };

@@ -43,7 +43,7 @@ const Login = () => {
     if (email && password) {
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        navigation.navigate("Home");
+        navigation.navigate("TabNavigator");
       } catch (error) {
         console.log("got error:", error);
       }
@@ -61,7 +61,7 @@ const Login = () => {
     return null;
   }
   return (
-    <SafeAreaView className="flex-1 bg-black px-8 items-center">
+    <SafeAreaView className="flex-1 bg-black px-6 items-center">
       {/* login text */}
       <View className="items-start w-full">
         <Animated.Text

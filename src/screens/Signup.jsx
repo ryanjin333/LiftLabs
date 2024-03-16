@@ -49,7 +49,7 @@ const Signup = () => {
         await addDoc(collection(db, "users"), {
           uid: auth.currentUser.uid,
         });
-        navigation.navigate("Home");
+        navigation.navigate("TabNavigator");
       } catch (error) {
         console.log("got error:", error);
       }
@@ -67,7 +67,7 @@ const Signup = () => {
     return null;
   }
   return (
-    <SafeAreaView className="flex-1 bg-black px-8 items-center">
+    <SafeAreaView className="flex-1 bg-black px-6 items-center">
       {/* sign up text */}
       <View
         className="items-start w-full"

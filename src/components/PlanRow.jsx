@@ -1,6 +1,5 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
 import {
   Inter_400Regular,
   Inter_600SemiBold,
@@ -8,8 +7,8 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 
-const WorkoutRow = ({ title, image, plan, createdBy }) => {
-  const navigation = useNavigation();
+const PlanRow = ({ plan }) => {
+  const { title, sets, weight, reps } = plan;
   // fonts
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -22,18 +21,14 @@ const WorkoutRow = ({ title, image, plan, createdBy }) => {
   }
   return (
     <Pressable
-      className="w-full h-20 bg-[#151515] flex-row rounded-[18px] items-center mb-3.5"
+      className="w-full h-16 bg-[#151515] flex-row  items-center "
       onPress={() => {
-        navigation.navigate("Workout", { title, plan });
+        console.log("bye");
       }}
     >
-      <Image
-        className="h-16 w-16 rounded-[18px] overflow-hidden ml-2 mr-6"
-        source={image}
-      />
-      <View className="">
+      <View className="  ml-5 ">
         <Text
-          className="text-white mb-5 text-base"
+          className="text-white text-base"
           style={{ fontFamily: "Inter_600SemiBold" }}
         >
           {title}
@@ -42,11 +37,11 @@ const WorkoutRow = ({ title, image, plan, createdBy }) => {
           className="text-[#848484] text-xs"
           style={{ fontFamily: "Inter_600SemiBold" }}
         >
-          {plan.length} Exercises
+          {sets}x{reps} · {weight} lbs
         </Text>
       </View>
     </Pressable>
   );
 };
 
-export default WorkoutRow;
+export default PlanRow;
