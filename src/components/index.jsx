@@ -4,6 +4,8 @@ import LoginSignupSwitcher from "./LoginSignupSwitcher";
 import GoogleAppleAuth from "./GoogleAppleAuth";
 import WorkoutRow from "./WorkoutRow";
 import PlanRow from "./PlanRow";
+import OutlineButton from "./OutlineButton";
+import AddWorkoutModal from "./AddWorkoutModal";
 
 export {
   FormRow,
@@ -12,4 +14,6 @@ export {
   GoogleAppleAuth,
   WorkoutRow,
   PlanRow,
+  OutlineButton,
+  AddWorkoutModal,
 };

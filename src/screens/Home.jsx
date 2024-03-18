@@ -1,5 +1,5 @@
-import { View, Text, FlatList, Image } from "react-native";
-import React from "react";
+import { View, Text, FlatList, Image, Modal, Pressable } from "react-native";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Inter_400Regular,
@@ -8,7 +8,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 
-import { WorkoutRow } from "../components";
+import { WorkoutRow, OutlineButton, AddWorkoutModal } from "../components";
 
 const Home = () => {
   WORKOUTS = [
@@ -80,6 +80,8 @@ const Home = () => {
     },
   ];
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   // fonts
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -101,8 +103,16 @@ const Home = () => {
           Workouts
         </Text>
       </View>
+      <View className="w-full flex-row justify-between mt-6">
+        <OutlineButton title="All"></OutlineButton>
+        <OutlineButton
+          title="+ Add"
+          onPress={() => setModalVisible(true)}
+        ></OutlineButton>
+      </View>
+
       <FlatList
-        className="w-full mt-20"
+        className="w-full mt-7"
         data={WORKOUTS}
         renderItem={({ item }) => (
           <WorkoutRow
@@ -113,6 +123,10 @@ const Home = () => {
           />
         )}
         keyExtractor={(item) => item.id}
+      />
+      <AddWorkoutModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
       />
     </SafeAreaView>
   );
