@@ -19,7 +19,7 @@ const FormRow = ({ name, placeholder, value, isPassword, handleChange }) => {
   }
   return (
     <TextInput
-      className="h-16 w-full text-sm bg-transparent text-white px-4 border border-[#2C2C2C] rounded-2xl font-[Inter_700Bold]"
+      className="h-16 w-full text-sm bg-transparent text-white px-4 border rounded-2xl"
       style={{ fontFamily: "Inter_400Regular" }}
       placeholderTextColor="#7C7C7C"
       placeholder={placeholder}
@@ -28,7 +28,7 @@ const FormRow = ({ name, placeholder, value, isPassword, handleChange }) => {
         handleChange(value, name.charAt(0).toLowerCase() + name.slice(1))
       }
       value={value}
-    ></TextInput>
+    />
   );
 };
 
