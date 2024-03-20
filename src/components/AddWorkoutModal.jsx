@@ -34,7 +34,7 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
             {/* exit button */}
             <View className=" w-full h-6 mt-5 justify-center items-end">
               <Pressable
-                className="w-6 h-6 "
+                className="w-11 h-11 flex justify-start items-end mt-5"
                 onPress={() => setModalVisible(!modalVisible)}
               >
                 <Image
