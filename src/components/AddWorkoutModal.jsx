@@ -2,10 +2,33 @@ import * as Haptics from "expo-haptics";
 import { View, Text, Pressable, Image, Modal, TextInput } from "react-native";
 import React, { useState } from "react";
 import { BlurView } from "expo-blur";
+import uuid from "react-native-uuid";
 
-const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
-  const donePressed = () => {
+// firebase
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { auth, db } from "../config/firebase";
+
+const AddWorkoutModal = ({
+  modalVisible,
+  setModalVisible,
+  workouts,
+  setWorkouts,
+}) => {
+  const [title, setTitle] = useState("");
+
+  const donePressed = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    setModalVisible(!modalVisible);
+    await updateDoc(doc(db, "users", auth.currentUser.uid), {
+      workouts: arrayUnion({
+        id: uuid.v4(),
+        title: title,
+        image: require("../assets/React_Native_Logo.png"),
+        plan: [],
+        createdBy: "uid",
+      }),
+    });
+    setTitle("");
   };
   return (
     <Modal
@@ -14,6 +37,7 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
       visible={modalVisible}
       onRequestClose={() => {
         setModalVisible(!modalVisible);
+        setTitle("");
       }}
     >
       <View className="flex-1 items-center justify-end">
@@ -21,7 +45,10 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
         {modalVisible && (
           <Pressable
             className="absolute top-0 bottom-0 left-0 right-0 bg-black opacity-30"
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              setTitle("");
+            }}
           />
         )}
         {/* modal view */}
@@ -35,7 +62,10 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
             <View className=" w-full h-6 mt-5 justify-center items-end">
               <Pressable
                 className="w-11 h-11 flex justify-start items-end mt-5"
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                  setTitle("");
+                }}
               >
                 <Image
                   className="h-6 w-6"
@@ -63,6 +93,8 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
                 style={{ fontFamily: "Inter_400Regular" }}
                 placeholderTextColor="#7C7C7C"
                 placeholder="Title"
+                onChangeText={(value) => setTitle(value)}
+                value={title}
               />
             </View>
             {/* done button */}

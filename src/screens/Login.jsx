@@ -7,10 +7,9 @@ import {
   LoginSignupSwitcher,
   GoogleAppleAuth,
 } from "../components";
+import { useNavigation } from "@react-navigation/native";
 
 // Firebase
-
-import { useNavigation } from "@react-navigation/native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 

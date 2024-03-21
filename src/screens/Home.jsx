@@ -1,5 +1,5 @@
 import { View, Text, FlatList, Image, Modal, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Inter_400Regular,
@@ -7,78 +7,28 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../config/firebase";
 
 import { WorkoutRow, OutlineButton, AddWorkoutModal } from "../components";
 
 const Home = () => {
-  WORKOUTS = [
-    {
-      id: "1",
-      title: "Chest",
-      image: require("../assets/React_Native_Logo.png"),
-      plan: [
-        {
-          title: "Dumbbell Chest Press",
-          sets: 3,
-          weight: 55,
-          reps: 8,
-          id: "1",
-        },
-        {
-          title: "Dumbbell Incline Chest Press",
-          sets: 3,
-          weight: 45,
-          reps: 8,
-          id: "2",
-        },
-      ],
-      createdBy: "uid",
-    },
-    {
-      id: "2",
-      title: "Arms",
-      image: require("../assets/React_Native_Logo.png"),
-      plan: [
-        {
-          title: "Bicep curls",
-          sets: 3,
-          weight: 30,
-          reps: 8,
-          id: "3",
-        },
-      ],
-      createdBy: "uid",
-    },
-    {
-      id: "3",
-      title: "Shoulders",
-      image: require("../assets/React_Native_Logo.png"),
-      plan: [
-        {
-          title: "Shoulder Press",
-          sets: 3,
-          weight: 40,
-          reps: 8,
-          id: "4",
-        },
-        {
-          title: "Overhead Shoulder Press",
-          sets: 3,
-          weight: 45,
-          reps: 8,
-          id: "5",
-        },
-        {
-          title: "Machine Shoulder Press",
-          sets: 3,
-          weight: 120,
-          reps: 8,
-          id: "6",
-        },
-      ],
-      createdBy: "uid",
-    },
-  ];
+  const [workouts, setWorkouts] = useState([]);
+  const workoutRef = doc(db, "users", auth.currentUser.uid);
+  useEffect(() => {
+    (async function () {
+      try {
+        const workoutsSnap = await getDoc(workoutRef);
+        if (workoutsSnap.exists()) {
+          setWorkouts(workoutsSnap.data().workouts);
+        } else {
+          console.log("Cannot find document for uid:", auth.currentUser.uid);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [workoutRef]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -113,7 +63,7 @@ const Home = () => {
 
       <FlatList
         className="w-full mt-7"
-        data={WORKOUTS}
+        data={workouts}
         renderItem={({ item }) => (
           <WorkoutRow
             title={item.title}
@@ -127,6 +77,8 @@ const Home = () => {
       <AddWorkoutModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        workouts={workouts}
+        setWorkouts={setWorkouts}
       />
     </SafeAreaView>
   );

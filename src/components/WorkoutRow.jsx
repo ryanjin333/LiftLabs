@@ -42,7 +42,7 @@ const WorkoutRow = ({ title, image, plan, createdBy }) => {
           className="text-[#848484] text-xs"
           style={{ fontFamily: "Inter_600SemiBold" }}
         >
-          {plan.length} Exercises
+          {plan.length} Exercise{plan.length == 1 ? "" : "s"}
         </Text>
       </View>
     </Pressable>
