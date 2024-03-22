@@ -10,11 +10,14 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
 
+import { useSelector, useDispatch } from "react-redux";
+
 import { WorkoutRow, OutlineButton, AddWorkoutModal } from "../components";
 
 const Home = () => {
   const [workouts, setWorkouts] = useState([]);
-  const workoutRef = doc(db, "users", auth.currentUser.uid);
+  const user = useSelector((state) => state.user);
+  const workoutRef = doc(db, "users", user.uid);
   useEffect(() => {
     (async function () {
       try {
@@ -22,7 +25,7 @@ const Home = () => {
         if (workoutsSnap.exists()) {
           setWorkouts(workoutsSnap.data().workouts);
         } else {
-          console.log("Cannot find document for uid:", auth.currentUser.uid);
+          console.log("Cannot find document for uid:", user.uid);
         }
       } catch (error) {
         console.error(error);

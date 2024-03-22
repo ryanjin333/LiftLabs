@@ -1,5 +1,5 @@
 import { View, Text, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   GenericButton,
@@ -10,11 +10,8 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 
-// Firebase
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
-import { auth, db } from "../config/firebase";
-import { doc, setDoc } from "firebase/firestore";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
 
 // Fonts
 import {
@@ -32,99 +29,47 @@ import {
   FadeOutUp,
   FadeOutDown,
 } from "react-native-reanimated";
+import { registerUser } from "../context/userSlice";
+
+const initialState = {
+  username: "",
+  email: "",
+  password: "",
+};
 
 const Signup = () => {
-  // auth
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [values, setValues] = useState(initialState);
+  const userId = useSelector((state) => state.user.uid);
+
+  // redux
+  const dispatch = useDispatch();
 
   // navigation
   const navigation = useNavigation();
 
   const onSubmit = async () => {
     // creates a new user and adds to the firestore collection users
-    if (username && email && password) {
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        await setDoc(doc(db, "users", auth.currentUser.uid), {
-          username: username,
-          email: email,
-          workouts: [
-            {
-              id: "4324325",
-              title: "Chest",
-              image: require("../assets/React_Native_Logo.png"),
-              plan: [
-                {
-                  title: "Dumbbell Chest Press",
-                  sets: 3,
-                  weight: 55,
-                  reps: 8,
-                  id: "1",
-                },
-                {
-                  title: "Dumbbell Incline Chest Press",
-                  sets: 3,
-                  weight: 45,
-                  reps: 8,
-                  id: "2",
-                },
-              ],
-              createdBy: "uid",
-            },
-            {
-              id: "42354345245",
-              title: "Arms",
-              image: require("../assets/React_Native_Logo.png"),
-              plan: [
-                {
-                  title: "Bicep curls",
-                  sets: 3,
-                  weight: 30,
-                  reps: 8,
-                  id: "3",
-                },
-              ],
-              createdBy: "uid",
-            },
-            {
-              id: "432425233442",
-              title: "Shoulders",
-              image: require("../assets/React_Native_Logo.png"),
-              plan: [
-                {
-                  title: "Shoulder Press",
-                  sets: 3,
-                  weight: 40,
-                  reps: 8,
-                  id: "4",
-                },
-                {
-                  title: "Overhead Shoulder Press",
-                  sets: 3,
-                  weight: 45,
-                  reps: 8,
-                  id: "5",
-                },
-                {
-                  title: "Machine Shoulder Press",
-                  sets: 3,
-                  weight: 120,
-                  reps: 8,
-                  id: "6",
-                },
-              ],
-              createdBy: "uid",
-            },
-          ],
-          sharedWorkouts: [],
-        });
-        navigation.navigate("TabNavigator");
-      } catch (error) {
-        console.log("got error:", error);
-      }
+    const { username, email, password } = values;
+    if (!email || !password || !username) {
+      // display alert
+      return;
     }
+    const currentUser = { username, email, password };
+    try {
+      dispatch(registerUser(currentUser));
+    } catch (error) {
+      console.log("got error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (userId) {
+      navigation.navigate("TabNavigator");
+    }
+  }, [userId]);
+
+  const handleChange = (value, name) => {
+    setValues({ ...values, [name]: value });
   };
 
   // fonts
@@ -164,8 +109,8 @@ const Signup = () => {
           <FormRow
             name="username"
             placeholder="Create a username"
-            handleChange={(value) => setUsername(value)}
-            value={username}
+            handleChange={handleChange}
+            value={values.username}
           />
         </Animated.View>
         <Animated.View
@@ -176,8 +121,8 @@ const Signup = () => {
           <FormRow
             name="Email"
             placeholder="Enter your email"
-            handleChange={(value) => setEmail(value)}
-            value={email}
+            handleChange={handleChange}
+            value={values.email}
           />
         </Animated.View>
         <Animated.View
@@ -188,9 +133,9 @@ const Signup = () => {
           <FormRow
             name="Password"
             placeholder="Create a Password"
-            handleChange={(value) => setPassword(value)}
+            handleChange={handleChange}
             isPassword={true}
-            value={password}
+            value={values.password}
           />
         </Animated.View>
         {/* sign up button */}

@@ -1,5 +1,5 @@
 import { View, Text, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   GenericButton,
@@ -9,9 +9,8 @@ import {
 } from "../components";
 import { useNavigation } from "@react-navigation/native";
 
-// Firebase
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
 
 // Fonts
 import {
@@ -29,24 +28,45 @@ import {
   FadeOutUp,
   FadeOutDown,
 } from "react-native-reanimated";
+import { loginUser } from "../context/userSlice";
+
+const initialState = {
+  email: "",
+  password: "",
+};
 
 const Login = () => {
-  // auth
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [values, setValues] = useState(initialState);
+  const userId = useSelector((state) => state.user.uid);
+
+  // redux
+  const dispatch = useDispatch();
 
   // navigation
   const navigation = useNavigation();
 
   const onSubmit = async () => {
-    if (email && password) {
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        navigation.navigate("TabNavigator");
-      } catch (error) {
-        console.log("got error:", error);
-      }
+    const { email, password } = values;
+    if (!email || !password) {
+      // display alert
+      return;
     }
+    const currentUser = { email, password };
+    try {
+      dispatch(loginUser(currentUser));
+    } catch (error) {
+      console.log("got error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (userId) {
+      navigation.navigate("TabNavigator");
+    }
+  }, [userId]);
+
+  const handleChange = (value, name) => {
+    setValues({ ...values, [name]: value });
   };
 
   // fonts
@@ -82,8 +102,8 @@ const Login = () => {
           <FormRow
             name="Email"
             placeholder="Enter your email"
-            handleChange={(value) => setEmail(value)}
-            value={email}
+            handleChange={handleChange}
+            value={values.email}
           />
         </Animated.View>
         <Animated.View
@@ -94,9 +114,9 @@ const Login = () => {
           <FormRow
             name="Password"
             placeholder="Enter your Password"
-            handleChange={(value) => setPassword(value)}
+            handleChange={handleChange}
             isPassword={true}
-            value={password}
+            value={values.password}
           />
         </Animated.View>
         {/* login button */}
