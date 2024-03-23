@@ -117,17 +117,6 @@ export const loginUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
-    },
-  },
   extraReducers: (builder) => {
     // register
     builder.addCase(registerUser.pending, (state, action) => {
@@ -165,6 +154,6 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = userSlice.actions;
+//export const {} = userSlice.actions;
 
 export default userSlice.reducer;

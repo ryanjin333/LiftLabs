@@ -56,12 +56,10 @@ const Home = () => {
           Workouts
         </Text>
       </View>
+      {/* button bar */}
       <View className="w-full flex-row justify-between mt-6">
-        <OutlineButton title="All"></OutlineButton>
-        <OutlineButton
-          title="+ Add"
-          onPress={() => setModalVisible(true)}
-        ></OutlineButton>
+        <OutlineButton title="All" />
+        <OutlineButton title="+ Add" onPress={() => setModalVisible(true)} />
       </View>
 
       <FlatList

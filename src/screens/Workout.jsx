@@ -10,10 +10,12 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 
-import { PlanRow, GenericButton } from "../components";
+import { PlanRow, OutlineButton } from "../components";
 
 const Workout = ({ route, navigation }) => {
   const { title, plan } = route.params;
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   // fonts
   let [fontsLoaded] = useFonts({
@@ -35,8 +37,13 @@ const Workout = ({ route, navigation }) => {
         >
           {title}
         </Text>
+        {/* button bar */}
+        <View className="w-full flex-row justify-between mt-6">
+          <OutlineButton title="All" />
+          <OutlineButton title="+ Add" onPress={() => setModalVisible(true)} />
+        </View>
         <FlatList
-          className="w-full mt-20 rounded-[18px]"
+          className="w-full mt-6 rounded-[18px]"
           data={plan}
           renderItem={({ item }) => <PlanRow plan={item} />}
           keyExtractor={(item) => item.id}
