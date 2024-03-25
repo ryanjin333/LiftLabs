@@ -6,6 +6,7 @@ import {
   FormRow,
   LoginSignupSwitcher,
   GoogleAppleAuth,
+  LoadingGenericButton,
 } from "../components";
 
 import { useNavigation } from "@react-navigation/native";
@@ -39,7 +40,7 @@ const initialState = {
 
 const Signup = () => {
   const [values, setValues] = useState(initialState);
-  const userId = useSelector((state) => state.user.uid);
+  const user = useSelector((state) => state.user);
 
   // redux
   const dispatch = useDispatch();
@@ -63,10 +64,10 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    if (userId) {
+    if (user.uid) {
       navigation.navigate("TabNavigator");
     }
-  }, [userId]);
+  }, [user.uid]);
 
   const handleChange = (value, name) => {
     setValues({ ...values, [name]: value });
@@ -144,7 +145,12 @@ const Signup = () => {
           entering={FadeInDown.delay(800).duration(1000).springify()}
           exiting={FadeOutUp}
         >
-          <GenericButton title="Sign up" onPress={onSubmit} color={"#F0F2A6"} />
+          <LoadingGenericButton
+            title="Sign up"
+            onPress={onSubmit}
+            color={"#F0F2A6"}
+            isLoading={user.isLoading}
+          />
         </Animated.View>
         {/* Google or Apple sign in options */}
         <Animated.View

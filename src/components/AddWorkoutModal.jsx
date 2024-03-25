@@ -8,6 +8,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { BlurView } from "expo-blur";
@@ -16,34 +17,47 @@ import * as ImagePicker from "expo-image-picker";
 
 // firebase
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { auth, db } from "../config/firebase";
+import { db, auth } from "../config/firebase";
+
+const initialState = {
+  title: "",
+  image: null,
+  isLoading: false,
+};
 
 const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState(null);
+  const [values, setValues] = useState(initialState);
 
   // functions
   const resetModal = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setModalVisible(!modalVisible);
-    setTitle("");
-    setImage(null);
+    setValues({ ...values, title: "", image: null });
   };
 
   const donePressed = async () => {
-    resetModal();
-    await updateDoc(doc(db, "users", auth.currentUser.uid), {
-      workouts: arrayUnion({
-        id: uuid.v4(),
-        title: title,
-        image: image
-          ? { uri: image }
-          : require("../assets/React_Native_Logo.png"),
-        plan: [],
-        createdBy: "uid",
-      }),
-    });
+    setValues({ ...values, isLoading: true });
+    try {
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        workouts: arrayUnion({
+          id: uuid.v4(),
+          title: values.title,
+          image: values.image
+            ? { uri: values.image }
+            : require("../assets/React_Native_Logo.png"),
+          plan: [],
+          createdBy: "uid",
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setValues({ ...values, isLoading: false });
+      resetModal();
+    }
   };
+
+  // TODO: add button press indicators, loading, and put workout into redux
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -56,7 +70,7 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
     console.log(result);
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setValues({ ...values, image: result.assets[0].uri });
     }
   };
   return (
@@ -104,8 +118,8 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
                   <Image
                     className="h-16 w-16 rounded-[18px] mt-2 mr-2 overflow-hidden"
                     source={
-                      image
-                        ? { uri: image }
+                      values.image
+                        ? { uri: values.image }
                         : require("../assets/React_Native_Logo.png")
                     }
                   />
@@ -116,8 +130,10 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
                   style={{ fontFamily: "Inter_400Regular" }}
                   placeholderTextColor="#7C7C7C"
                   placeholder="Title"
-                  onChangeText={(value) => setTitle(value)}
-                  value={title}
+                  onChangeText={(value) =>
+                    setValues({ ...values, title: value })
+                  }
+                  value={values.title}
                 />
               </View>
               {/* done button */}
@@ -125,12 +141,16 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
                 className="h-12 w-28 rounded-full justify-center items-center bg-[#F0F2A6] mt-16"
                 onPress={donePressed}
               >
-                <Text
-                  className="text-base"
-                  style={{ fontFamily: "Inter_600SemiBold" }}
-                >
-                  Done
-                </Text>
+                {values.isLoading ? (
+                  <ActivityIndicator size="small" color="#000000" />
+                ) : (
+                  <Text
+                    className="text-base"
+                    style={{ fontFamily: "Inter_600SemiBold" }}
+                  >
+                    Done
+                  </Text>
+                )}
               </Pressable>
             </BlurView>
           </View>
