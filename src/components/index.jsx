@@ -7,6 +7,7 @@ import PlanRow from "./PlanRow";
 import OutlineButton from "./OutlineButton";
 import AddWorkoutModal from "./AddWorkoutModal";
 import LoadingGenericButton from "./LoadingGenericButton";
+import Dropdown from "./Dropdown";
 
 export {
   FormRow,
@@ -18,4 +19,5 @@ export {
   OutlineButton,
   AddWorkoutModal,
   LoadingGenericButton,
+  Dropdown,
 };

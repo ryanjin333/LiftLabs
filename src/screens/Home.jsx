@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Inter_400Regular,
   Inter_600SemiBold,
+  Inter_500Medium,
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
@@ -12,7 +13,12 @@ import { auth, db } from "../config/firebase";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { WorkoutRow, OutlineButton, AddWorkoutModal } from "../components";
+import {
+  WorkoutRow,
+  OutlineButton,
+  AddWorkoutModal,
+  Dropdown,
+} from "../components";
 
 const Home = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -38,6 +44,7 @@ const Home = () => {
   // fonts
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
+    Inter_500Medium,
     Inter_600SemiBold,
     Inter_700Bold,
   });
@@ -57,8 +64,8 @@ const Home = () => {
         </Text>
       </View>
       {/* button bar */}
-      <View className="w-full flex-row justify-between mt-6">
-        <OutlineButton title="All" />
+      <View className="w-full flex-row justify-between mt-6 z-10">
+        <Dropdown />
         <OutlineButton title="+ Add" onPress={() => setModalVisible(true)} />
       </View>
 

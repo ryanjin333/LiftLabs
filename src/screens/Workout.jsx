@@ -15,8 +15,6 @@ import { PlanRow, OutlineButton } from "../components";
 const Workout = ({ route, navigation }) => {
   const { title, plan } = route.params;
 
-  const [modalVisible, setModalVisible] = useState(false);
-
   // fonts
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
