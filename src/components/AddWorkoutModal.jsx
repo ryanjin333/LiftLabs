@@ -25,7 +25,12 @@ const initialState = {
   isLoading: false,
 };
 
-const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
+const AddWorkoutModal = ({
+  modalVisible,
+  setModalVisible,
+  workouts,
+  setWorkouts,
+}) => {
   const [values, setValues] = useState(initialState);
 
   // functions
@@ -38,7 +43,7 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
   const donePressed = async () => {
     setValues({ ...values, isLoading: true });
     try {
-      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+      const newWorkout = {
         workouts: arrayUnion({
           id: uuid.v4(),
           title: values.title,
@@ -48,7 +53,9 @@ const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
           plan: [],
           createdBy: "uid",
         }),
-      });
+      };
+      setWorkouts({ ...workouts, newWorkout });
+      await updateDoc(doc(db, "users", auth.currentUser.uid), newWorkout);
     } catch (error) {
       console.log(error);
     } finally {

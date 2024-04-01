@@ -1,5 +1,5 @@
 import { View, Text, FlatList, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import OutlineButton from "./OutlineButton";
 import { BlurView } from "expo-blur";
 
@@ -36,8 +36,11 @@ const DropdownRow = ({ title, values, setValues }) => {
     </Pressable>
   );
 };
-const Dropdown = () => {
+const Dropdown = ({ dropdownTitle, setDropdownTitle }) => {
   const [values, setValues] = useState(initialState);
+  useEffect(() => {
+    setDropdownTitle(values.title);
+  }, [values.title]);
 
   return (
     <>

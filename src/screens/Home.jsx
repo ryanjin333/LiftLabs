@@ -21,23 +21,39 @@ import {
 } from "../components";
 
 const Home = () => {
-  const [workouts, setWorkouts] = useState([]);
+  const [mode, setMode] = useState([]);
+  const [workouts, setWorkouts] = useState([]); // redux
+  const [sharedWorkouts, setSharedWorkouts] = useState([]); // redux
+  const [dropdownTitle, setDropdownTitle] = useState([]); // redux
   const user = useSelector((state) => state.user);
   const workoutRef = doc(db, "users", user.uid);
   useEffect(() => {
-    (async function () {
+    const fetchWorkouts = async () => {
       try {
         const workoutsSnap = await getDoc(workoutRef);
         if (workoutsSnap.exists()) {
           setWorkouts(workoutsSnap.data().workouts);
+          setSharedWorkouts(workoutsSnap.data().sharedWorkouts);
         } else {
           console.log("Cannot find document for uid:", user.uid);
         }
       } catch (error) {
         console.error(error);
       }
-    })();
-  }, [workoutRef]);
+    };
+
+    fetchWorkouts();
+  }, [workouts.length]);
+
+  useEffect(() => {
+    if (dropdownTitle == "All") {
+      setMode([...workouts, ...sharedWorkouts]);
+    } else if (dropdownTitle == "Shared") {
+      setMode(sharedWorkouts);
+    } else {
+      setMode(workouts);
+    }
+  }, [dropdownTitle, workouts.length]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -65,13 +81,12 @@ const Home = () => {
       </View>
       {/* button bar */}
       <View className="w-full flex-row justify-between mt-6 z-10">
-        <Dropdown />
+        <Dropdown setDropdownTitle={setDropdownTitle} />
         <OutlineButton title="+ Add" onPress={() => setModalVisible(true)} />
       </View>
-
       <FlatList
         className="w-full mt-7"
-        data={workouts}
+        data={mode}
         renderItem={({ item }) => (
           <WorkoutRow
             title={item.title}
