@@ -8,10 +8,10 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../config/firebase";
 
+// redux imports
 import { useSelector, useDispatch } from "react-redux";
+import { fetchWorkouts } from "../context/workoutSlice";
 
 import {
   WorkoutRow,
@@ -21,39 +21,19 @@ import {
 } from "../components";
 
 const Home = () => {
-  const [mode, setMode] = useState([]);
-  const [workouts, setWorkouts] = useState([]); // redux
-  const [sharedWorkouts, setSharedWorkouts] = useState([]); // redux
-  const [dropdownTitle, setDropdownTitle] = useState([]); // redux
-  const user = useSelector((state) => state.user);
-  const workoutRef = doc(db, "users", user.uid);
+  // redux
+  const dispatch = useDispatch();
+  const workout = useSelector((state) => state.workout);
   useEffect(() => {
-    const fetchWorkouts = async () => {
-      try {
-        const workoutsSnap = await getDoc(workoutRef);
-        if (workoutsSnap.exists()) {
-          setWorkouts(workoutsSnap.data().workouts);
-          setSharedWorkouts(workoutsSnap.data().sharedWorkouts);
-        } else {
-          console.log("Cannot find document for uid:", user.uid);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+    const updateWorkouts = async () => {
+      dispatch(fetchWorkouts());
     };
-
-    fetchWorkouts();
-  }, [workouts.length]);
-
-  useEffect(() => {
-    if (dropdownTitle == "All") {
-      setMode([...workouts, ...sharedWorkouts]);
-    } else if (dropdownTitle == "Shared") {
-      setMode(sharedWorkouts);
-    } else {
-      setMode(workouts);
-    }
-  }, [dropdownTitle, workouts.length]);
+    updateWorkouts();
+  }, [
+    workout.dropdownTitle,
+    workout.workouts.length,
+    workout.sharedWorkouts.length,
+  ]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -81,12 +61,18 @@ const Home = () => {
       </View>
       {/* button bar */}
       <View className="w-full flex-row justify-between mt-6 z-10">
-        <Dropdown setDropdownTitle={setDropdownTitle} />
+        <Dropdown />
         <OutlineButton title="+ Add" onPress={() => setModalVisible(true)} />
       </View>
       <FlatList
         className="w-full mt-7"
-        data={mode}
+        data={
+          workout.dropdownTitle === "All"
+            ? [...workout.workouts, ...workout.sharedWorkouts]
+            : workout.dropdownTitle === "Shared"
+            ? workout.sharedWorkouts
+            : workout.workouts
+        }
         renderItem={({ item }) => (
           <WorkoutRow
             title={item.title}
@@ -95,13 +81,11 @@ const Home = () => {
             createdBy={item.createdBy}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => `${item.id}-${workout.dropdownTitle}`}
       />
       <AddWorkoutModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        workouts={workouts}
-        setWorkouts={setWorkouts}
       />
     </SafeAreaView>
   );

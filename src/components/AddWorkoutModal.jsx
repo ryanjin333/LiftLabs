@@ -19,19 +19,21 @@ import * as ImagePicker from "expo-image-picker";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db, auth } from "../config/firebase";
 
+// redux
+import { useDispatch } from "react-redux";
+import { createNewWorkout } from "../context/workoutSlice";
+
 const initialState = {
   title: "",
   image: null,
   isLoading: false,
 };
 
-const AddWorkoutModal = ({
-  modalVisible,
-  setModalVisible,
-  workouts,
-  setWorkouts,
-}) => {
+const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
   const [values, setValues] = useState(initialState);
+
+  // redux
+  const dispatch = useDispatch();
 
   // functions
   const resetModal = () => {
@@ -44,18 +46,15 @@ const AddWorkoutModal = ({
     setValues({ ...values, isLoading: true });
     try {
       const newWorkout = {
-        workouts: arrayUnion({
-          id: uuid.v4(),
-          title: values.title,
-          image: values.image
-            ? { uri: values.image }
-            : require("../assets/React_Native_Logo.png"),
-          plan: [],
-          createdBy: "uid",
-        }),
+        id: uuid.v4(),
+        title: values.title,
+        image: values.image
+          ? { uri: values.image }
+          : require("../assets/React_Native_Logo.png"),
+        plan: [],
+        createdBy: "uid",
       };
-      setWorkouts({ ...workouts, newWorkout });
-      await updateDoc(doc(db, "users", auth.currentUser.uid), newWorkout);
+      dispatch(createNewWorkout(newWorkout));
     } catch (error) {
       console.log(error);
     } finally {
@@ -63,8 +62,6 @@ const AddWorkoutModal = ({
       resetModal();
     }
   };
-
-  // TODO: add button press indicators, loading, and put workout into redux
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

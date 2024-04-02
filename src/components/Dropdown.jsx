@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import OutlineButton from "./OutlineButton";
 import { BlurView } from "expo-blur";
 
+// redux
+import { useSelector, useDispatch } from "react-redux";
+import { changeDropdownTitle } from "../context/workoutSlice";
+
 const filters = [
   {
     title: "All",
@@ -16,14 +20,16 @@ const filters = [
 ];
 const initialState = {
   dropdownVisibility: false,
-  title: "All",
 };
 
 const DropdownRow = ({ title, values, setValues }) => {
+  // redux
+  const dispatch = useDispatch();
+
   const filterPressed = () => {
+    dispatch(changeDropdownTitle(title));
     setValues({
       ...values,
-      title: title,
       dropdownVisibility: !values.dropdownVisibility,
     });
   };
@@ -36,16 +42,16 @@ const DropdownRow = ({ title, values, setValues }) => {
     </Pressable>
   );
 };
-const Dropdown = ({ dropdownTitle, setDropdownTitle }) => {
-  const [values, setValues] = useState(initialState);
-  useEffect(() => {
-    setDropdownTitle(values.title);
-  }, [values.title]);
 
+const Dropdown = () => {
+  const [values, setValues] = useState(initialState);
+
+  // redux
+  const dropdownTitle = useSelector((state) => state.workout.dropdownTitle);
   return (
     <>
       <OutlineButton
-        title={values.title}
+        title={dropdownTitle}
         onPress={() =>
           setValues({
             ...values,
