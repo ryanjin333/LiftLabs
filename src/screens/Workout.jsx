@@ -38,7 +38,10 @@ const Workout = ({ route, navigation }) => {
         {/* button bar */}
         <View className="w-full flex-row justify-between mt-6">
           <OutlineButton title="All" />
-          <OutlineButton title="+ Add" onPress={() => setModalVisible(true)} />
+          <OutlineButton
+            title="+ Add"
+            onPress={() => navigation.navigate("NewExercise")}
+          />
         </View>
         <FlatList
           className="w-full mt-6 rounded-[18px]"

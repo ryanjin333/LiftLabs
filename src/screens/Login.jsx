@@ -34,6 +34,7 @@ import { loginUser } from "../context/userSlice";
 const initialState = {
   email: "",
   password: "",
+  screenVisible: true,
 };
 
 const Login = () => {
@@ -62,6 +63,10 @@ const Login = () => {
 
   useEffect(() => {
     if (user.uid) {
+      // setTimeout(() => {
+      //   setValues({ ...values, screenVisible: false });
+      //   navigation.navigate("TabNavigator");
+      // }, 2000);
       navigation.navigate("TabNavigator");
     }
   }, [user.uid]);
@@ -80,7 +85,7 @@ const Login = () => {
   if (!fontsLoaded) {
     return null;
   }
-  return (
+  return values.screenVisible ? (
     <SafeAreaView className="flex-1 bg-black px-6 items-center">
       {/* login text */}
       <View className="items-start w-full">
@@ -151,7 +156,7 @@ const Login = () => {
         </Animated.View>
       </View>
     </SafeAreaView>
-  );
+  ) : null;
 };
 
 export default Login;

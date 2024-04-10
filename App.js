@@ -3,7 +3,13 @@ import { store } from "./src/context/store";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, Signup, Workout, TabNavigator } from "./src/screens";
+import {
+  Login,
+  Signup,
+  Workout,
+  TabNavigator,
+  NewExercise,
+} from "./src/screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +28,7 @@ function App() {
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="Workout" component={Workout} />
+          <Stack.Screen name="NewExercise" component={NewExercise} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
