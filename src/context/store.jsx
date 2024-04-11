@@ -1,16 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
 import workoutReducer from "./workoutSlice";
+import exerciseReducer from "./exerciseSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     workout: workoutReducer,
+    exercise: exerciseReducer,
   },
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware({
-  //     serializableCheck: {
-  //       warnAfter: 100,
-  //     },
-  //   }),
 });

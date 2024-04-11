@@ -58,7 +58,6 @@ export const workoutSlice = createSlice({
       state.dropdownTitle = action.payload;
     },
     changeModalVisible(state, action) {
-      console.log("ran");
       state.modalVisible = action.payload;
     },
   },

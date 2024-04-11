@@ -10,10 +10,17 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 
-import { ExerciseRow, OutlineButton } from "../components";
+// redux imports
+import { useDispatch } from "react-redux";
+import { changeModalVisible } from "../context/exerciseSlice";
+
+import { ExerciseRow, OutlineButton, AddExerciseModal } from "../components";
 
 const Workout = ({ route, navigation }) => {
   const { title, plan } = route.params;
+
+  //redux
+  const dispatch = useDispatch();
 
   // fonts
   let [fontsLoaded] = useFonts({
@@ -40,7 +47,7 @@ const Workout = ({ route, navigation }) => {
           <OutlineButton title="All" />
           <OutlineButton
             title="+ Add"
-            onPress={() => navigation.navigate("NewExercise")}
+            onPress={() => dispatch(changeModalVisible(true))}
           />
         </View>
         <FlatList
@@ -65,6 +72,7 @@ const Workout = ({ route, navigation }) => {
           ></Image>
         </Pressable>
       </View>
+      <AddExerciseModal />
     </SafeAreaView>
   );
 };
