@@ -11,7 +11,7 @@ import {
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
-import { fetchWorkouts } from "../context/workoutSlice";
+import { fetchWorkouts, changeModalVisible } from "../context/workoutSlice";
 
 import {
   WorkoutRow,
@@ -24,6 +24,7 @@ const Home = () => {
   // redux
   const dispatch = useDispatch();
   const workout = useSelector((state) => state.workout);
+
   useEffect(() => {
     const updateWorkouts = async () => {
       dispatch(fetchWorkouts());
@@ -34,8 +35,6 @@ const Home = () => {
     workout.workouts.length,
     workout.sharedWorkouts.length,
   ]);
-
-  const [modalVisible, setModalVisible] = useState(false);
 
   // fonts
   let [fontsLoaded] = useFonts({
@@ -62,7 +61,10 @@ const Home = () => {
       {/* button bar */}
       <View className="w-full flex-row justify-between mt-6 z-10">
         <Dropdown />
-        <OutlineButton title="+ Add" onPress={() => setModalVisible(true)} />
+        <OutlineButton
+          title="+ Add"
+          onPress={() => dispatch(changeModalVisible(true))}
+        />
       </View>
       <FlatList
         className="w-full mt-7"
@@ -83,10 +85,7 @@ const Home = () => {
         )}
         keyExtractor={(item) => `${item.id}-${workout.dropdownTitle}`}
       />
-      <AddWorkoutModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
+      <AddWorkoutModal />
     </SafeAreaView>
   );
 };

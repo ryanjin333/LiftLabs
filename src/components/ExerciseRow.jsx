@@ -7,7 +7,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 
-const PlanRow = ({ plan }) => {
+const ExerciseRow = ({ plan }) => {
   const { title, sets, weight, reps } = plan;
   // fonts
   let [fontsLoaded] = useFonts({
@@ -44,4 +44,4 @@ const PlanRow = ({ plan }) => {
   );
 };
 
-export default PlanRow;
+export default ExerciseRow;

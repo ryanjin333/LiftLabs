@@ -13,6 +13,7 @@ const initialState = {
   workouts: [],
   sharedWorkouts: [],
   dropdownTitle: "All",
+  modalVisible: false,
 };
 
 export const fetchWorkouts = createAsyncThunk(
@@ -56,6 +57,10 @@ export const workoutSlice = createSlice({
     changeDropdownTitle(state, action) {
       state.dropdownTitle = action.payload;
     },
+    changeModalVisible(state, action) {
+      console.log("ran");
+      state.modalVisible = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // fetch workouts
@@ -85,6 +90,6 @@ export const workoutSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeDropdownTitle } = workoutSlice.actions;
+export const { changeDropdownTitle, changeModalVisible } = workoutSlice.actions;
 
 export default workoutSlice.reducer;

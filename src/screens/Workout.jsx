@@ -10,7 +10,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 
-import { PlanRow, OutlineButton } from "../components";
+import { ExerciseRow, OutlineButton } from "../components";
 
 const Workout = ({ route, navigation }) => {
   const { title, plan } = route.params;
@@ -46,7 +46,7 @@ const Workout = ({ route, navigation }) => {
         <FlatList
           className="w-full mt-6 rounded-[18px]"
           data={plan}
-          renderItem={({ item }) => <PlanRow plan={item} />}
+          renderItem={({ item }) => <ExerciseRow plan={item} />}
           keyExtractor={(item) => item.id}
           scrollEnabled={false}
         />

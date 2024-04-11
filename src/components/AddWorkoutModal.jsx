@@ -15,13 +15,9 @@ import { BlurView } from "expo-blur";
 import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
 
-// firebase
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { db, auth } from "../config/firebase";
-
 // redux
-import { useDispatch } from "react-redux";
-import { createNewWorkout } from "../context/workoutSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createNewWorkout, changeModalVisible } from "../context/workoutSlice";
 
 const initialState = {
   title: "",
@@ -29,16 +25,17 @@ const initialState = {
   isLoading: false,
 };
 
-const AddWorkoutModal = ({ modalVisible, setModalVisible }) => {
+const AddWorkoutModal = () => {
   const [values, setValues] = useState(initialState);
 
   // redux
   const dispatch = useDispatch();
+  const modalVisible = useSelector((state) => state.workout.modalVisible);
 
   // functions
   const resetModal = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    setModalVisible(!modalVisible);
+    dispatch(changeModalVisible(false));
     setValues({ ...values, title: "", image: null });
   };
 
