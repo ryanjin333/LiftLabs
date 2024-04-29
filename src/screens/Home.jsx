@@ -67,6 +67,7 @@ const Home = () => {
         />
       </View>
       <FlatList
+        showsVerticalScrollIndicator={false}
         className="w-full mt-7"
         data={
           workout.dropdownTitle === "All"
