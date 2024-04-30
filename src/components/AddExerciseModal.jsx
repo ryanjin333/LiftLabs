@@ -17,12 +17,14 @@ import { useNavigation } from "@react-navigation/native";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { changeModalVisible } from "../context/exerciseSlice";
+import {
+  changeModalVisible,
+  changeExerciseName,
+} from "../context/exerciseSlice";
 
 const initialState = {
-  title: "",
-  sets: 1,
-  reps: 1,
+  sets: 0,
+  reps: 0,
   weight: 0,
   isLoading: false,
 };
@@ -33,6 +35,7 @@ const AddExerciseModal = () => {
   // redux
   const dispatch = useDispatch();
   const modalVisible = useSelector((state) => state.exercise.modalVisible);
+  const exerciseName = useSelector((state) => state.exercise.exerciseName);
 
   // navigation
   const navigation = useNavigation();
@@ -49,10 +52,16 @@ const AddExerciseModal = () => {
     }
   };
 
+  const pickExercise = () => {
+    navigation.navigate("SearchExercise");
+    dispatch(changeModalVisible(false));
+  };
+
   const resetModal = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     dispatch(changeModalVisible(false));
-    setValues({ ...values, title: "", sets: 1, reps: 1, weight: 0 });
+    dispatch(changeExerciseName(""));
+    setValues({ ...values, sets: 0, reps: 0, weight: 0 });
   };
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -84,13 +93,13 @@ const AddExerciseModal = () => {
               </Pressable>
             </View>
             {/* choose workout */}
-            <Pressable onPress={() => navigation.navigate("SearchExercise")}>
+            <Pressable onPress={pickExercise}>
               <View className="h-12 w-80 bg-[#292929] rounded-[25px] justify-center items-center flex-row space-x-2 mt-6">
                 <Text
                   className="text-white"
                   style={{ fontFamily: "Inter_600SemiBold" }}
                 >
-                  Choose Exercise
+                  {exerciseName == "" ? "Choose Exercise" : exerciseName}
                 </Text>
 
                 <Image
@@ -103,8 +112,8 @@ const AddExerciseModal = () => {
               {/* scroll sets */}
 
               <ScrollPicker
-                dataSource={["1", "2", "3", "4", "5", "6"]}
-                selectedIndex={0}
+                dataSource={["0", "1", "2", "3", "4", "5", "6"]}
+                selectedIndex={values.sets}
                 renderItem={(data, index) => {
                   return (
                     <View>
@@ -118,7 +127,7 @@ const AddExerciseModal = () => {
                   );
                 }}
                 onValueChange={(data, selectedIndex) => {
-                  //
+                  setValues({ ...values, sets: selectedIndex });
                 }}
                 wrapperHeight={150}
                 wrapperBackground="#ffffff0"
@@ -133,8 +142,8 @@ const AddExerciseModal = () => {
               </Text>
               {/* scroll reps */}
               <ScrollPicker
-                dataSource={["1", "2", "3", "4", "5", "6"]}
-                selectedIndex={0}
+                dataSource={["0", "1", "2", "3", "4", "5", "6"]}
+                selectedIndex={values.reps}
                 renderItem={(data, index) => {
                   return (
                     <View>
@@ -148,7 +157,7 @@ const AddExerciseModal = () => {
                   );
                 }}
                 onValueChange={(data, selectedIndex) => {
-                  //
+                  setValues({ ...values, reps: selectedIndex });
                 }}
                 wrapperHeight={150}
                 wrapperBackground="#ffffff0"
@@ -163,8 +172,8 @@ const AddExerciseModal = () => {
               </Text>
               {/* scroll weight */}
               <ScrollPicker
-                dataSource={["1", "2", "3", "4", "5", "6"]}
-                selectedIndex={0}
+                dataSource={["0", "1", "2", "3", "4", "5", "6"]}
+                selectedIndex={values.weight}
                 renderItem={(data, index) => {
                   return (
                     <View>
@@ -178,7 +187,7 @@ const AddExerciseModal = () => {
                   );
                 }}
                 onValueChange={(data, selectedIndex) => {
-                  //
+                  setValues({ ...values, weight: selectedIndex });
                 }}
                 wrapperHeight={150}
                 wrapperBackground="#ffffff0"
