@@ -18,13 +18,12 @@ const initialState = {
 
 export const fetchWorkouts = createAsyncThunk(
   "workout/fetchWorkouts",
-  async () => {
+  async (userData) => {
     try {
-      const workoutRef = doc(db, "users", auth.currentUser.uid);
-      const workoutsSnap = await getDoc(workoutRef);
-      return workoutsSnap.data();
+      return userData;
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 );

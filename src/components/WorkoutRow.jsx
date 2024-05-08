@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   Inter_400Regular,
@@ -7,9 +7,19 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
+import { useDispatch } from "react-redux";
+import { changeCurrentWorkout } from "../context/exerciseSlice";
 
-const WorkoutRow = ({ title, image, plan, createdBy }) => {
+const WorkoutRow = ({ currentWorkout }) => {
+  // navigation
   const navigation = useNavigation();
+
+  // props
+  const { title, image, plan, createdBy } = currentWorkout;
+
+  // redux
+  const dispatch = useDispatch();
+
   // fonts
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -25,6 +35,7 @@ const WorkoutRow = ({ title, image, plan, createdBy }) => {
       className="w-full h-20 bg-[#151515] flex-row rounded-[18px] items-center mb-3.5"
       onPress={() => {
         navigation.navigate("Workout", { title, plan });
+        dispatch(changeCurrentWorkout(currentWorkout));
       }}
     >
       <Image

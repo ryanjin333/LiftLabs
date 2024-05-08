@@ -14,12 +14,14 @@ import React, { useState } from "react";
 import { BlurView } from "expo-blur";
 import ScrollPicker from "react-native-wheel-scrollview-picker";
 import { useNavigation } from "@react-navigation/native";
+import uuid from "react-native-uuid";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeModalVisible,
   changeExerciseName,
+  createNewExercise,
 } from "../context/exerciseSlice";
 
 const initialState = {
@@ -44,6 +46,14 @@ const AddExerciseModal = () => {
   const donePressed = async () => {
     setValues({ ...values, isLoading: true });
     try {
+      const newExercise = {
+        id: uuid.v4(),
+        title: exerciseName,
+        sets: values.sets,
+        reps: values.reps,
+        weight: values.weight,
+      };
+      dispatch(createNewExercise(newExercise));
     } catch (error) {
       console.log(error);
     } finally {

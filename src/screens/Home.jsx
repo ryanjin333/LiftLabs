@@ -13,6 +13,10 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { fetchWorkouts, changeModalVisible } from "../context/workoutSlice";
 
+// Firebase imports
+import { auth, db } from "../config/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+
 import {
   WorkoutRow,
   OutlineButton,
@@ -26,15 +30,17 @@ const Home = () => {
   const workout = useSelector((state) => state.workout);
 
   useEffect(() => {
-    const updateWorkouts = async () => {
-      dispatch(fetchWorkouts());
-    };
-    updateWorkouts();
-  }, [
-    workout.dropdownTitle,
-    workout.workouts.length,
-    workout.sharedWorkouts.length,
-  ]);
+    const unsubscribe = onSnapshot(
+      doc(db, "users", auth.currentUser.uid),
+      (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          dispatch(fetchWorkouts(docSnapshot.data()));
+        }
+      }
+    );
+
+    return () => unsubscribe();
+  }, [dispatch]);
 
   // fonts
   let [fontsLoaded] = useFonts({
@@ -76,14 +82,7 @@ const Home = () => {
             ? workout.sharedWorkouts
             : workout.workouts
         }
-        renderItem={({ item }) => (
-          <WorkoutRow
-            title={item.title}
-            image={item.image}
-            plan={item.plan}
-            createdBy={item.createdBy}
-          />
-        )}
+        renderItem={({ item }) => <WorkoutRow currentWorkout={item} />}
         keyExtractor={(item) => `${item.id}-${workout.dropdownTitle}`}
       />
       <AddWorkoutModal />

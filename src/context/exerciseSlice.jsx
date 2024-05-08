@@ -10,15 +10,15 @@ const initialState = {
   showAlert: false,
   alertText: "",
   alertType: "",
-  plan: [],
+  currentPlan: [],
   modalVisible: false,
   exerciseName: "",
+  currentWorkout: null,
 };
 
-export const fetchPlan = createAsyncThunk("workout/fetchPlan", async () => {
+export const fetchPlan = createAsyncThunk("exercise/fetchPlan", async () => {
   // try {
   //   const workoutRef = doc(db, "users", auth.currentUser.uid);
-  //   const workoutsSnap = await getDoc(workoutRef);
   //   return workoutsSnap.data();
   // } catch (error) {
   //   console.error(error);
@@ -26,23 +26,34 @@ export const fetchPlan = createAsyncThunk("workout/fetchPlan", async () => {
 });
 
 export const createNewExercise = createAsyncThunk(
-  "workout/createNewExercise",
-  async (newWorkout) => {
-    //     try {
-    //       const newWorkoutFirestore = {
-    //         workouts: arrayUnion(newWorkout),
-    //       };
-    //       const newWorkoutLocal = {
-    //         workouts: newWorkout,
-    //       };
-    //       await updateDoc(
-    //         doc(db, "users", auth.currentUser.uid),
-    //         newWorkoutFirestore
-    //       );
-    //       return newWorkoutLocal;
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
+  "exercise/createNewExercise",
+  async (newExercise, { getState }) => {
+    try {
+      const currentWorkout = getState().exercise.currentWorkout;
+      const workouts = getState().workout.workouts;
+      const localWorkout = {
+        ...currentWorkout,
+        plan: [...currentWorkout.plan, newExercise],
+      };
+      const newExerciseFirestore = {
+        workouts: workouts.map((workout) => {
+          if (workout.id === currentWorkout.id) {
+            return {
+              ...workout,
+              plan: [...workout.plan, newExercise],
+            };
+          }
+          return workout;
+        }),
+      };
+      await updateDoc(
+        doc(db, "users", auth.currentUser.uid),
+        newExerciseFirestore
+      );
+      return localWorkout;
+    } catch (error) {
+      console.error(error);
+    }
   }
 );
 
@@ -56,6 +67,9 @@ export const exerciseSlice = createSlice({
     changeExerciseName(state, action) {
       state.exerciseName = action.payload;
     },
+    changeCurrentWorkout(state, action) {
+      state.currentWorkout = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // fetch plan
@@ -63,7 +77,6 @@ export const exerciseSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchPlan.fulfilled, (state, action) => {
-      //state.workouts = action.payload.workouts;
       state.isLoading = false;
     });
     builder.addCase(fetchPlan.rejected, (state, action) => {
@@ -75,7 +88,7 @@ export const exerciseSlice = createSlice({
     });
     builder.addCase(createNewExercise.fulfilled, (state, action) => {
       state.isLoading = false;
-      //state.workouts = [...state.workouts, action.payload];
+      state.currentWorkout = action.payload;
     });
     builder.addCase(createNewExercise.rejected, (state, action) => {
       state.isLoading = false;
@@ -84,6 +97,7 @@ export const exerciseSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeModalVisible, changeExerciseName } = exerciseSlice.actions;
+export const { changeModalVisible, changeExerciseName, changeCurrentWorkout } =
+  exerciseSlice.actions;
 
 export default exerciseSlice.reducer;

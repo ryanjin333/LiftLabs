@@ -11,7 +11,7 @@ import {
 } from "@expo-google-fonts/inter";
 
 // redux imports
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeModalVisible } from "../context/exerciseSlice";
 
 import { ExerciseRow, OutlineButton, AddExerciseModal } from "../components";
@@ -21,6 +21,7 @@ const Workout = ({ route, navigation }) => {
 
   //redux
   const dispatch = useDispatch();
+  const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
 
   // fonts
   let [fontsLoaded] = useFonts({
@@ -33,7 +34,7 @@ const Workout = ({ route, navigation }) => {
     return null;
   }
   return (
-    <SafeAreaView className="flex-1 bg-black px-6 items-center">
+    <SafeAreaView className="flex-1 bg-black px-6 pb-40 items-center">
       <View className="w-full items-start mt-16">
         {/* title */}
         <Text
@@ -52,10 +53,9 @@ const Workout = ({ route, navigation }) => {
         </View>
         <FlatList
           className="w-full mt-6 rounded-[18px]"
-          data={plan}
+          data={currentWorkout.plan ? currentWorkout.plan : plan}
           renderItem={({ item }) => <ExerciseRow plan={item} />}
           keyExtractor={(item) => item.id}
-          scrollEnabled={false}
         />
       </View>
       <View className=" absolute bottom-16 items-end w-full">
