@@ -20,6 +20,10 @@ const WorkoutRow = ({ currentWorkout }) => {
   // redux
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    console.log("currentWorkout plan:", plan);
+  }, []);
+
   // fonts
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -53,7 +57,7 @@ const WorkoutRow = ({ currentWorkout }) => {
           className="text-[#848484] text-xs"
           style={{ fontFamily: "Inter_600SemiBold" }}
         >
-          {/* {plan.length} Exercise{plan.length == 1 ? "" : "s"} */}
+          {plan.length} Exercise{plan.length == 1 ? "" : "s"}
         </Text>
       </View>
     </Pressable>

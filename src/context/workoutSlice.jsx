@@ -35,14 +35,10 @@ export const createNewWorkout = createAsyncThunk(
       const newWorkoutFirestore = {
         workouts: arrayUnion(newWorkout),
       };
-      const newWorkoutLocal = {
-        workouts: newWorkout,
-      };
       await updateDoc(
         doc(db, "users", auth.currentUser.uid),
         newWorkoutFirestore
       );
-      return newWorkoutLocal;
     } catch (error) {
       console.error(error);
     }
@@ -79,7 +75,6 @@ export const workoutSlice = createSlice({
     });
     builder.addCase(createNewWorkout.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.workouts = [...state.workouts, action.payload];
     });
     builder.addCase(createNewWorkout.rejected, (state, action) => {
       state.isLoading = false;
