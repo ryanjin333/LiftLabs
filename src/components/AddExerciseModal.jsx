@@ -31,6 +31,22 @@ const initialState = {
   isLoading: false,
 };
 
+// miscellaneous functions
+const listGenerator = (amount) => {
+  var list = [];
+  console.log("bam");
+  for (let i = 0; i <= amount; i++) {
+    list.push(i.toString());
+  }
+  return list;
+};
+
+// CONSTANTS
+
+const setList = listGenerator(100);
+const repList = listGenerator(100);
+const weightList = listGenerator(1000);
+
 const AddExerciseModal = () => {
   const [values, setValues] = useState(initialState);
 
@@ -122,7 +138,7 @@ const AddExerciseModal = () => {
               {/* scroll sets */}
 
               <ScrollPicker
-                dataSource={["0", "1", "2", "3", "4", "5", "6"]}
+                dataSource={setList}
                 selectedIndex={values.sets}
                 renderItem={(data, index) => {
                   return (
@@ -152,7 +168,7 @@ const AddExerciseModal = () => {
               </Text>
               {/* scroll reps */}
               <ScrollPicker
-                dataSource={["0", "1", "2", "3", "4", "5", "6"]}
+                dataSource={repList}
                 selectedIndex={values.reps}
                 renderItem={(data, index) => {
                   return (
@@ -182,7 +198,7 @@ const AddExerciseModal = () => {
               </Text>
               {/* scroll weight */}
               <ScrollPicker
-                dataSource={["0", "1", "2", "3", "4", "5", "6"]}
+                dataSource={weightList}
                 selectedIndex={values.weight}
                 renderItem={(data, index) => {
                   return (

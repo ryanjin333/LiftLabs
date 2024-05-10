@@ -10,7 +10,6 @@ const initialState = {
   showAlert: false,
   alertText: "",
   alertType: "",
-  currentPlan: [],
   modalVisible: false,
   exerciseName: "",
   currentWorkout: null,
