@@ -22,7 +22,6 @@ const Workout = ({ route, navigation }) => {
   //redux
   const dispatch = useDispatch();
   const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
-
   // fonts
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -43,21 +42,37 @@ const Workout = ({ route, navigation }) => {
         >
           {title}
         </Text>
-        {/* button bar */}
-        <View className="w-full flex-row justify-between mt-6">
-          <OutlineButton title="All" />
-          <OutlineButton
-            title="+ Add"
-            onPress={() => dispatch(changeModalVisible(true))}
-          />
-        </View>
-        <FlatList
-          className="w-full mt-6 rounded-[18px]"
-          data={currentWorkout.plan ? currentWorkout.plan : plan}
-          renderItem={({ item }) => <ExerciseRow plan={item} />}
-          keyExtractor={(item) => item.id}
+      </View>
+      {/* button bar */}
+      <View className="w-full flex-row justify-between mt-6">
+        <OutlineButton title="All" />
+        <OutlineButton
+          title="+ Add"
+          onPress={() => dispatch(changeModalVisible(true))}
         />
       </View>
+
+      {/* exercise list */}
+      {currentWorkout.plan.length == 0 ? (
+        <View className="flex-1 justify-center">
+          {/* TODO: highlight Add */}
+          <Text
+            className="text-center text-white w-44"
+            style={{ fontFamily: "Inter_600SemiBold" }}
+          >
+            Tap Add to create a new exercise
+          </Text>
+        </View>
+      ) : (
+        <View className="w-full mt-6 rounded-[18px]">
+          <FlatList
+            className="rounded-[18px] "
+            data={currentWorkout.plan ? currentWorkout.plan : plan}
+            renderItem={({ item }) => <ExerciseRow plan={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+      )}
       <View className=" absolute bottom-16 items-end w-full">
         <Pressable
           className="bg-[#F0F2A6] rounded-full h-20 w-20 justify-center items-center"

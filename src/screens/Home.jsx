@@ -54,7 +54,7 @@ const Home = () => {
     return null;
   }
   return (
-    <SafeAreaView className="flex-1 bg-black px-6 items-center">
+    <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
       <View className="w-full items-start mt-16">
         {/* title */}
         <Text
@@ -72,19 +72,31 @@ const Home = () => {
           onPress={() => dispatch(changeModalVisible(true))}
         />
       </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        className="w-full mt-7"
-        data={
-          workout.dropdownTitle === "All"
-            ? [...workout.workouts, ...workout.sharedWorkouts]
-            : workout.dropdownTitle === "Shared"
-            ? workout.sharedWorkouts
-            : workout.workouts
-        }
-        renderItem={({ item }) => <WorkoutRow currentWorkout={item} />}
-        keyExtractor={(item) => `${item.id}-${workout.dropdownTitle}`}
-      />
+      {workout.workouts.length == 0 ? (
+        <View className="flex-1 justify-center">
+          <Text
+            className="text-center text-white w-44"
+            style={{ fontFamily: "Inter_600SemiBold" }}
+          >
+            Tap Add to create a new workout
+          </Text>
+        </View>
+      ) : (
+        <View className="w-full mt-7">
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={
+              workout.dropdownTitle === "All"
+                ? [...workout.workouts, ...workout.sharedWorkouts]
+                : workout.dropdownTitle === "Shared"
+                ? workout.sharedWorkouts
+                : workout.workouts
+            }
+            renderItem={({ item }) => <WorkoutRow currentWorkout={item} />}
+            keyExtractor={(item) => `${item.id}-${workout.dropdownTitle}`}
+          />
+        </View>
+      )}
       <AddWorkoutModal />
     </SafeAreaView>
   );

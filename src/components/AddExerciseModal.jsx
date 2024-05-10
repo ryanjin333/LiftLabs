@@ -34,7 +34,6 @@ const initialState = {
 // miscellaneous functions
 const listGenerator = (amount) => {
   var list = [];
-  console.log("bam");
   for (let i = 0; i <= amount; i++) {
     list.push(i.toString());
   }
@@ -42,7 +41,6 @@ const listGenerator = (amount) => {
 };
 
 // CONSTANTS
-
 const setList = listGenerator(100);
 const repList = listGenerator(100);
 const weightList = listGenerator(1000);
