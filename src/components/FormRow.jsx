@@ -1,26 +1,10 @@
 import { View, Text, TextInput } from "react-native";
 import React from "react";
 
-import {
-  Inter_400Regular,
-  Inter_700Bold,
-  useFonts,
-} from "@expo-google-fonts/inter";
-
 const FormRow = ({ name, placeholder, value, isPassword, handleChange }) => {
-  // fonts
-  let [fontsLoaded] = useFonts({
-    Inter_400Regular,
-    Inter_700Bold,
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <TextInput
-      className="h-16 w-full text-sm bg-transparent text-white px-4 border border-[#2C2C2C] rounded-2xl"
-      style={{ fontFamily: "Inter_400Regular" }}
+      className="h-16 w-full text-sm bg-transparent text-white px-4 border border-[#2C2C2C] rounded-2xl font-inter"
       placeholderTextColor="#7C7C7C"
       placeholder={placeholder}
       secureTextEntry={isPassword}

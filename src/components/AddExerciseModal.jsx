@@ -119,10 +119,7 @@ const AddExerciseModal = () => {
             {/* choose workout */}
             <Pressable onPress={pickExercise}>
               <View className="h-12 w-80 bg-[#292929] rounded-[25px] justify-center items-center flex-row space-x-2 mt-6">
-                <Text
-                  className="text-white"
-                  style={{ fontFamily: "Inter_600SemiBold" }}
-                >
+                <Text className="text-white font-interSemiBold">
                   {exerciseName == "" ? "Choose Exercise" : exerciseName}
                 </Text>
 
@@ -141,10 +138,7 @@ const AddExerciseModal = () => {
                 renderItem={(data, index) => {
                   return (
                     <View>
-                      <Text
-                        className=" text-[#F0F2A6] text-lg"
-                        style={{ fontFamily: "Inter_600SemiBold" }}
-                      >
+                      <Text className=" text-[#F0F2A6] text-lg font-interSemiBold">
                         {data}
                       </Text>
                     </View>
@@ -158,12 +152,7 @@ const AddExerciseModal = () => {
                 itemHeight={50}
                 highlightBorderWidth={0}
               />
-              <Text
-                className="text-white"
-                style={{ fontFamily: "Inter_500Medium" }}
-              >
-                sets
-              </Text>
+              <Text className="text-white font-interMedium">sets</Text>
               {/* scroll reps */}
               <ScrollPicker
                 dataSource={repList}
@@ -171,10 +160,7 @@ const AddExerciseModal = () => {
                 renderItem={(data, index) => {
                   return (
                     <View>
-                      <Text
-                        className=" text-[#F0F2A6] text-lg"
-                        style={{ fontFamily: "Inter_600SemiBold" }}
-                      >
+                      <Text className=" text-[#F0F2A6] text-lg font-interSemiBold">
                         {data}
                       </Text>
                     </View>
@@ -188,12 +174,7 @@ const AddExerciseModal = () => {
                 itemHeight={50}
                 highlightBorderWidth={0}
               />
-              <Text
-                className="text-white"
-                style={{ fontFamily: "Inter_500Medium" }}
-              >
-                reps
-              </Text>
+              <Text className="text-white font-interMedium">reps</Text>
               {/* scroll weight */}
               <ScrollPicker
                 dataSource={weightList}
@@ -201,10 +182,7 @@ const AddExerciseModal = () => {
                 renderItem={(data, index) => {
                   return (
                     <View>
-                      <Text
-                        className=" text-[#F0F2A6] text-lg"
-                        style={{ fontFamily: "Inter_600SemiBold" }}
-                      >
+                      <Text className=" text-[#F0F2A6] text-lg font-interSemiBold">
                         {data}
                       </Text>
                     </View>
@@ -218,12 +196,7 @@ const AddExerciseModal = () => {
                 itemHeight={50}
                 highlightBorderWidth={0}
               />
-              <Text
-                className="text-white"
-                style={{ fontFamily: "Inter_500Medium" }}
-              >
-                lbs
-              </Text>
+              <Text className="text-white font-interMedium">lbs</Text>
             </View>
             {/* done button */}
             <Pressable
@@ -233,12 +206,7 @@ const AddExerciseModal = () => {
               {values.isLoading ? (
                 <ActivityIndicator size="small" color="#000000" />
               ) : (
-                <Text
-                  className="text-base"
-                  style={{ fontFamily: "Inter_600SemiBold" }}
-                >
-                  Done
-                </Text>
+                <Text className="text-base font-interSemiBold">Done</Text>
               )}
             </Pressable>
           </BlurView>

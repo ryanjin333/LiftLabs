@@ -14,14 +14,6 @@ import { useNavigation } from "@react-navigation/native";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 
-// Fonts
-import {
-  Inter_400Regular,
-  Inter_600SemiBold,
-  Inter_700Bold,
-  useFonts,
-} from "@expo-google-fonts/inter";
-
 //Animations
 import Animated from "react-native-reanimated";
 import {
@@ -72,17 +64,6 @@ const Signup = () => {
   const handleChange = (value, name) => {
     setValues({ ...values, [name]: value });
   };
-
-  // fonts
-  let [fontsLoaded] = useFonts({
-    Inter_400Regular,
-    Inter_600SemiBold,
-    Inter_700Bold,
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <SafeAreaView className="flex-1 bg-black px-6 items-center">
       {/* sign up text */}
@@ -92,8 +73,7 @@ const Signup = () => {
         exiting={FadeOutDown}
       >
         <Animated.Text
-          className="text-white text-5xl mt-24 mb-16"
-          style={{ fontFamily: "Inter_700Bold" }}
+          className="text-white text-5xl mt-24 mb-16 font-interBold"
           entering={FadeInDown.duration(1000).springify()}
           exiting={FadeOutUp}
         >

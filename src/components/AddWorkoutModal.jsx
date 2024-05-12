@@ -127,8 +127,7 @@ const AddWorkoutModal = () => {
                 </Pressable>
                 {/* title textfield */}
                 <TextInput
-                  className="border-b border-[#2C2C2C] w-72 h-11 bg-transparent text-white px-4 mt-3"
-                  style={{ fontFamily: "Inter_400Regular" }}
+                  className="border-b border-[#2C2C2C] w-72 h-11 bg-transparent text-white px-4 mt-3 font-inter"
                   placeholderTextColor="#7C7C7C"
                   placeholder="Title"
                   onChangeText={(value) =>
@@ -145,12 +144,7 @@ const AddWorkoutModal = () => {
                 {values.isLoading ? (
                   <ActivityIndicator size="small" color="#000000" />
                 ) : (
-                  <Text
-                    className="text-base"
-                    style={{ fontFamily: "Inter_600SemiBold" }}
-                  >
-                    Done
-                  </Text>
+                  <Text className="text-base font-interSemiBold">Done</Text>
                 )}
               </Pressable>
             </BlurView>

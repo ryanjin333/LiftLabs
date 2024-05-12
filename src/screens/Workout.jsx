@@ -2,14 +2,6 @@ import { View, Text, FlatList, Pressable, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
 
-// Fonts
-import {
-  Inter_400Regular,
-  Inter_600SemiBold,
-  Inter_700Bold,
-  useFonts,
-} from "@expo-google-fonts/inter";
-
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
 import { changeModalVisible } from "../context/exerciseSlice";
@@ -22,26 +14,11 @@ const Workout = ({ route, navigation }) => {
   //redux
   const dispatch = useDispatch();
   const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
-  // fonts
-  let [fontsLoaded] = useFonts({
-    Inter_400Regular,
-    Inter_600SemiBold,
-    Inter_700Bold,
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <SafeAreaView className="flex-1 bg-black px-6 pb-40 items-center">
       <View className="w-full items-start mt-16">
         {/* title */}
-        <Text
-          className="text-white text-4xl"
-          style={{ fontFamily: "Inter_700Bold" }}
-        >
-          {title}
-        </Text>
+        <Text className="text-white text-4xl font-interBold">{title}</Text>
       </View>
       {/* button bar */}
       <View className="w-full flex-row justify-between mt-6">
@@ -55,12 +32,9 @@ const Workout = ({ route, navigation }) => {
       {/* exercise list */}
       {currentWorkout.plan.length == 0 ? (
         <View className="flex-1 justify-center">
-          {/* TODO: highlight Add */}
-          <Text
-            className="text-center text-white w-44"
-            style={{ fontFamily: "Inter_600SemiBold" }}
-          >
-            Tap Add to create a new exercise
+          <Text className="text-center text-white w-44 font-inter">
+            Tap <Text className="font-interBold">Add</Text> to create a new
+            exercise
           </Text>
         </View>
       ) : (

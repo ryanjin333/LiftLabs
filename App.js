@@ -8,7 +8,6 @@ import {
   Signup,
   Workout,
   TabNavigator,
-  NewExercise,
   SearchExercise,
 } from "./src/screens";
 
@@ -29,7 +28,6 @@ function App() {
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="Workout" component={Workout} />
-          <Stack.Screen name="NewExercise" component={NewExercise} />
           <Stack.Screen name="SearchExercise" component={SearchExercise} />
         </Stack.Navigator>
       </NavigationContainer>

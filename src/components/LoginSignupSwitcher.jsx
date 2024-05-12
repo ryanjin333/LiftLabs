@@ -1,10 +1,5 @@
 import { Text, Pressable } from "react-native";
 import * as Haptics from "expo-haptics";
-import {
-  Inter_400Regular,
-  Inter_700Bold,
-  useFonts,
-} from "@expo-google-fonts/inter";
 import { useNavigation } from "@react-navigation/native";
 
 const LoginSignupSwitcher = ({ isLogin }) => {
@@ -18,27 +13,12 @@ const LoginSignupSwitcher = ({ isLogin }) => {
       navigation.navigate("Login");
     }
   };
-  // fonts
-  let [fontsLoaded] = useFonts({
-    Inter_400Regular,
-    Inter_700Bold,
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <Pressable className="flex-row" onPress={btnTapped}>
-      <Text
-        className="text-[#D6D6D6] text-sm"
-        style={{ fontFamily: "Inter_400Regular" }}
-      >
+      <Text className="text-[#D6D6D6] text-sm font-inter">
         {isLogin ? "Don't have an Account? " : "Already have an account? "}
       </Text>
-      <Text
-        className="text-white text-sm"
-        style={{ fontFamily: "Inter_700Bold" }}
-      >
+      <Text className="text-white text-sm font-interBold">
         {isLogin ? "Sign up" : "Log in"}
       </Text>
     </Pressable>
