@@ -34,8 +34,7 @@ const SearchExercise = ({ navigation }) => {
       <View className="flex-row justify-center items-center space-x-4 mx-6 mt-6">
         {/* search textfield */}
         <TextInput
-          className="border rounded-[18px] border-[#2C2C2C] w-full h-11 bg-transparent text-white px-4"
-          style={{ fontFamily: "Inter_400Regular" }}
+          className="border rounded-[18px] border-[#2C2C2C] w-full h-11 bg-transparent text-white px-4 font-inter"
           placeholderTextColor="#7C7C7C"
           placeholder="Search exercise"
           onChangeText={(value) => setValues({ ...values, prompt: value })}
@@ -43,12 +42,7 @@ const SearchExercise = ({ navigation }) => {
           onSubmitEditing={submit}
         />
         <Pressable onPress={goBack}>
-          <Text
-            className="text-white"
-            style={{ fontFamily: "Inter_400Regular" }}
-          >
-            Cancel
-          </Text>
+          <Text className="text-white font-inter">Cancel</Text>
         </Pressable>
       </View>
     </SafeAreaView>

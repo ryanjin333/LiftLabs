@@ -1,15 +1,14 @@
 import * as Haptics from "expo-haptics";
 import { Text, Pressable, ActivityIndicator } from "react-native";
 
-const LoadingGenericButton = ({ onPress, title, color, isLoading }) => {
+const LoadingGenericButton = ({ onPress, title, isLoading }) => {
   const btnTapped = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     onPress();
   };
   return (
     <Pressable
-      className="h-16 w-full rounded-2xl justify-center items-center"
-      style={{ backgroundColor: color }}
+      className="h-16 w-full rounded-2xl justify-center items-center bg-primary"
       onPress={btnTapped}
     >
       {isLoading ? (

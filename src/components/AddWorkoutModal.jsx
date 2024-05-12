@@ -68,8 +68,6 @@ const AddWorkoutModal = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setValues({ ...values, image: result.assets[0].uri });
     }
@@ -138,7 +136,7 @@ const AddWorkoutModal = () => {
               </View>
               {/* done button */}
               <Pressable
-                className="h-12 w-28 rounded-full justify-center items-center bg-[#F0F2A6] mt-16"
+                className="h-12 w-28 rounded-full justify-center items-center bg-primary mt-16"
                 onPress={donePressed}
               >
                 {values.isLoading ? (

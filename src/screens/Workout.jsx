@@ -49,7 +49,7 @@ const Workout = ({ route, navigation }) => {
       )}
       <View className=" absolute bottom-16 items-end w-full">
         <Pressable
-          className="bg-[#F0F2A6] rounded-full h-20 w-20 justify-center items-center"
+          className="bg-primary rounded-full h-20 w-20 justify-center items-center"
           onPress={() => {
             console.log("hi");
           }}

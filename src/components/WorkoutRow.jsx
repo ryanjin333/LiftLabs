@@ -13,10 +13,6 @@ const WorkoutRow = ({ currentWorkout }) => {
 
   // redux
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log("currentWorkout plan:", plan);
-  }, []);
   return (
     <Pressable
       className="w-full h-20 bg-[#151515] flex-row rounded-[18px] items-center mb-3.5"

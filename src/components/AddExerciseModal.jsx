@@ -138,7 +138,7 @@ const AddExerciseModal = () => {
                 renderItem={(data, index) => {
                   return (
                     <View>
-                      <Text className=" text-[#F0F2A6] text-lg font-interSemiBold">
+                      <Text className=" text-primary text-lg font-interSemiBold">
                         {data}
                       </Text>
                     </View>
@@ -160,7 +160,7 @@ const AddExerciseModal = () => {
                 renderItem={(data, index) => {
                   return (
                     <View>
-                      <Text className=" text-[#F0F2A6] text-lg font-interSemiBold">
+                      <Text className=" text-primary text-lg font-interSemiBold">
                         {data}
                       </Text>
                     </View>
@@ -182,7 +182,7 @@ const AddExerciseModal = () => {
                 renderItem={(data, index) => {
                   return (
                     <View>
-                      <Text className=" text-[#F0F2A6] text-lg font-interSemiBold">
+                      <Text className=" text-primary text-lg font-interSemiBold">
                         {data}
                       </Text>
                     </View>
@@ -200,7 +200,7 @@ const AddExerciseModal = () => {
             </View>
             {/* done button */}
             <Pressable
-              className="h-12 w-28 rounded-full justify-center items-center bg-[#F0F2A6] mt-6"
+              className="h-12 w-28 rounded-full justify-center items-center bg-primary mt-6"
               onPress={donePressed}
             >
               {values.isLoading ? (

@@ -13,6 +13,9 @@ module.exports = {
       interExtraBold: ["Inter-ExtraBold"],
       interBlack: ["Inter-Black"],
     },
+    colors: {
+      primary: "#F0F2A6",
+    },
   },
   plugins: [],
 };

@@ -128,7 +128,6 @@ const Signup = () => {
           <LoadingGenericButton
             title="Sign up"
             onPress={onSubmit}
-            color={"#F0F2A6"}
             isLoading={user.isLoading}
           />
         </Animated.View>

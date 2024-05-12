@@ -115,7 +115,6 @@ const Login = () => {
           <LoadingGenericButton
             title="Login"
             onPress={onSubmit}
-            color={"#F0F2A6"}
             isLoading={user.isLoading}
           />
         </Animated.View>
