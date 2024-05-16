@@ -5,6 +5,24 @@ import { updateDoc, arrayUnion } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
+// Axios
+import axios from "axios";
+
+//ExerciseDB API options
+const EXERCISE_DB_OPTIONS = {
+  method: "GET",
+  url: "https://exercisedb.p.rapidapi.com/exercises",
+  params: {
+    limit: "9999",
+    offset: "0",
+  },
+  headers: {
+    "x-rapidapi-key": "a31298262cmsh4165cf285213c1ep185e0bjsnc72489d39be3",
+    "x-rapidapi-host": "exercisedb.p.rapidapi.com",
+    "Content-Type": "application/json",
+  },
+};
+
 const initialState = {
   isLoading: false,
   showAlert: false,
@@ -23,6 +41,23 @@ export const fetchPlan = createAsyncThunk("exercise/fetchPlan", async () => {
   //   console.error(error);
   // }
 });
+
+export const addAllExercisesToFirestore = createAsyncThunk(
+  "exercise/addAllExercisesToFirestore",
+  async (_, { getState }) => {
+    try {
+      const response = await axios.request(EXERCISE_DB_OPTIONS);
+      const nameAndGif = response.data.map((item) => {
+        return { name: item.name, gif: item.gifUrl };
+      });
+      await updateDoc(doc(db, "exercises", "allExercises"), {
+        exercises: nameAndGif,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
 
 export const createNewExercise = createAsyncThunk(
   "exercise/createNewExercise",
