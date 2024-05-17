@@ -47,11 +47,16 @@ export const addAllExercisesToFirestore = createAsyncThunk(
   async (_, { getState }) => {
     try {
       const response = await axios.request(EXERCISE_DB_OPTIONS);
-      const nameAndGif = response.data.map((item) => {
-        return { name: item.name, gif: item.gifUrl };
+      const exerciseProperties = response.data.map((item) => {
+        return {
+          name: item.name,
+          gif: item.gifUrl,
+          mainMuscle: item.bodyPart,
+          id: item.id,
+        };
       });
       await updateDoc(doc(db, "exercises", "allExercises"), {
-        exercises: nameAndGif,
+        exercises: exerciseProperties,
       });
     } catch (error) {
       console.error(error);
