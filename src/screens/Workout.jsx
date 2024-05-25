@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeModalVisible } from "../context/exerciseSlice";
 
 import { ExerciseRow, OutlineButton, AddExerciseModal } from "../components";
+import { useNavigation } from "@react-navigation/native";
 
 const Workout = ({ route, navigation }) => {
   const { title, plan } = route.params;
@@ -48,10 +49,11 @@ const Workout = ({ route, navigation }) => {
         </View>
       )}
       <View className=" absolute bottom-16 items-end w-full">
+        {/* start button */}
         <Pressable
           className="bg-primary rounded-full h-20 w-20 justify-center items-center"
           onPress={() => {
-            console.log("hi");
+            navigation.navigate("Focus");
           }}
         >
           <Image

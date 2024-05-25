@@ -6,6 +6,7 @@ import Search from "./Search";
 import User from "./User";
 import TabNavigator from "./TabNavigator";
 import SearchExercise from "./SearchExercise";
+import Focus from "./Focus";
 
 export {
   Login,
@@ -16,4 +17,5 @@ export {
   User,
   TabNavigator,
   SearchExercise,
+  Focus,
 };

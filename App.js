@@ -9,6 +9,7 @@ import {
   Workout,
   TabNavigator,
   SearchExercise,
+  Focus,
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
@@ -29,6 +30,7 @@ function App() {
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="Workout" component={Workout} />
           <Stack.Screen name="SearchExercise" component={SearchExercise} />
+          <Stack.Screen name="Focus" component={Focus} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
