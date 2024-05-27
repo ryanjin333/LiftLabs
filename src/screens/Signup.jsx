@@ -45,6 +45,7 @@ const Signup = () => {
     const { username, email, password } = values;
     if (!email || !password || !username) {
       // display alert
+      console.log("missing username, email, or alert");
       return;
     }
     const currentUser = { username, email, password };

@@ -43,6 +43,7 @@ const Login = () => {
     const { email, password } = values;
     if (!email || !password) {
       // display alert
+      console.log("missing email or password");
       return;
     }
     const currentUser = { email, password };

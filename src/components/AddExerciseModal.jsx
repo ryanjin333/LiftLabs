@@ -58,6 +58,12 @@ const AddExerciseModal = () => {
 
   // functions
   const donePressed = async () => {
+    // if the title is not empty, add to list otherwise warn users
+    if (exerciseName == "") {
+      // display alert
+      console.log("empty title");
+      return;
+    }
     setValues({ ...values, isLoading: true });
     try {
       const newExercise = {

@@ -40,6 +40,12 @@ const AddWorkoutModal = () => {
   };
 
   const donePressed = async () => {
+    // if the title is not empty, add to list otherwise warn users
+    if (values.title == "") {
+      // display alert
+      console.log("empty title");
+      return;
+    }
     setValues({ ...values, isLoading: true });
     try {
       const newWorkout = {
