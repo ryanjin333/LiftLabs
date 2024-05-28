@@ -25,8 +25,16 @@ function App() {
             //gestureEnabled: false,
           }}
         >
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ animation: "none" }}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={Signup}
+            options={{ animation: "none" }}
+          />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="Workout" component={Workout} />
           <Stack.Screen name="SearchExercise" component={SearchExercise} />

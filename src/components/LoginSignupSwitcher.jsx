@@ -1,17 +1,23 @@
+import { useEffect } from "react";
 import { Text, Pressable } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useNavigation } from "@react-navigation/native";
 
-const LoginSignupSwitcher = ({ isLogin }) => {
+const LoginSignupSwitcher = ({ isLogin, onPress }) => {
   // navigation
   const navigation = useNavigation();
   const btnTapped = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    if (isLogin) {
-      navigation.navigate("Signup");
-    } else {
-      navigation.navigate("Login");
-    }
+    onPress();
+    // let animation finish then switch screen
+    let duration = isLogin ? 800 : 900;
+    setTimeout(() => {
+      if (isLogin) {
+        navigation.navigate("Signup");
+      } else {
+        navigation.navigate("Login");
+      }
+    }, duration);
   };
   return (
     <Pressable className="flex-row" onPress={btnTapped}>

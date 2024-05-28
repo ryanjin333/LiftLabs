@@ -9,11 +9,8 @@ import {
   LoadingGenericButton,
 } from "../components";
 import { useNavigation } from "@react-navigation/native";
-
-// Redux
+import { useIsFocused } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-
-//Animations
 import Animated from "react-native-reanimated";
 import {
   FadeInUp,
@@ -26,7 +23,7 @@ import { loginUser } from "../context/userSlice";
 const initialState = {
   email: "",
   password: "",
-  screenVisible: true,
+  loginScreenVisible: true,
 };
 
 const Login = () => {
@@ -38,6 +35,20 @@ const Login = () => {
 
   // navigation
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    // activates when transitioning to another screen and then back
+    const unsubscribe = navigation.addListener("transitionEnd", () => {
+      if (isFocused) {
+        setValues({ ...values, loginScreenVisible: true });
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation, isFocused]);
+
+  // functions
 
   const onSubmit = async () => {
     const { email, password } = values;
@@ -56,11 +67,10 @@ const Login = () => {
 
   useEffect(() => {
     if (user.uid) {
-      // setTimeout(() => {
-      //   setValues({ ...values, screenVisible: false });
-      //   navigation.navigate("TabNavigator");
-      // }, 2000);
-      navigation.navigate("TabNavigator");
+      setValues({ ...values, loginScreenVisible: false });
+      setTimeout(() => {
+        navigation.navigate("TabNavigator");
+      }, 1000);
     }
   }, [user.uid]);
 
@@ -68,76 +78,86 @@ const Login = () => {
     setValues({ ...values, [name]: value });
   };
 
-  return values.screenVisible ? (
+  return (
     <SafeAreaView className="flex-1 bg-black px-6 items-center">
-      {/* login text */}
-      <View className="items-start w-full">
-        <Animated.Text
-          className="text-white text-5xl mt-24 mb-16 font-interBold"
-          entering={FadeInDown.duration(1000).springify()}
-          exiting={FadeOutUp}
-        >
-          Login
-        </Animated.Text>
-      </View>
-      {/* form layout */}
-      <View className="mt-32 mb-7 gap-7 w-full items-center">
-        <Animated.View
-          className="w-full"
-          entering={FadeInDown.delay(200).duration(1000).springify()}
-          exiting={FadeOutUp}
-        >
-          <FormRow
-            name="Email"
-            placeholder="Enter your email"
-            handleChange={handleChange}
-            value={values.email}
-          />
-        </Animated.View>
-        <Animated.View
-          className="w-full"
-          entering={FadeInDown.delay(400).duration(1000).springify()}
-          exiting={FadeOutUp}
-        >
-          <FormRow
-            name="Password"
-            placeholder="Enter your Password"
-            handleChange={handleChange}
-            isPassword={true}
-            value={values.password}
-          />
-        </Animated.View>
-        {/* login button */}
-        <Animated.View
-          className="w-full"
-          entering={FadeInDown.delay(600).duration(1000).springify()}
-          exiting={FadeOutUp}
-        >
-          <LoadingGenericButton
-            title="Login"
-            onPress={onSubmit}
-            isLoading={user.isLoading}
-          />
-        </Animated.View>
-        {/* Google or Apple sign in options */}
-        <Animated.View
-          className="w-full items-center"
-          entering={FadeInDown.delay(1000).duration(1000).springify()}
-          exiting={FadeOutUp}
-        >
-          <GoogleAppleAuth />
-        </Animated.View>
-        {/* switch between login and sign up screens */}
-        <Animated.View
-          className="w-full items-center"
-          entering={FadeInDown.delay(800).duration(1000).springify()}
-          exiting={FadeOutUp}
-        >
-          <LoginSignupSwitcher isLogin={true} />
-        </Animated.View>
-      </View>
+      {/* changes visibility of screen */}
+      {values.loginScreenVisible && (
+        <>
+          {/* login text */}
+          <View className="items-start w-full">
+            <Animated.Text
+              className="text-white text-5xl mt-24 mb-16 font-interBold"
+              entering={FadeInUp.duration(1000).springify()}
+              exiting={FadeOutUp.delay(500).duration(1000).springify()}
+            >
+              Login
+            </Animated.Text>
+          </View>
+          {/* form layout */}
+          <View className="mt-32 mb-7 gap-7 w-full items-center">
+            <Animated.View
+              className="w-full"
+              entering={FadeInUp.delay(100).duration(1000).springify()}
+              exiting={FadeOutUp.delay(400).duration(1000).springify()}
+            >
+              <FormRow
+                name="Email"
+                placeholder="Enter your email"
+                handleChange={handleChange}
+                value={values.email}
+              />
+            </Animated.View>
+            <Animated.View
+              className="w-full"
+              entering={FadeInUp.delay(200).duration(1000).springify()}
+              exiting={FadeOutUp.delay(300).duration(1000).springify()}
+            >
+              <FormRow
+                name="Password"
+                placeholder="Enter your Password"
+                handleChange={handleChange}
+                isPassword={true}
+                value={values.password}
+              />
+            </Animated.View>
+            {/* login button */}
+            <Animated.View
+              className="w-full"
+              entering={FadeInUp.delay(300).duration(1000).springify()}
+              exiting={FadeOutUp.delay(200).duration(1000).springify()}
+            >
+              <LoadingGenericButton
+                title="Login"
+                onPress={onSubmit}
+                isLoading={user.isLoading}
+              />
+            </Animated.View>
+            {/* Google or Apple sign in options */}
+            <Animated.View
+              className="w-full items-center"
+              entering={FadeInUp.delay(400).duration(1000).springify()}
+              exiting={FadeOutUp.delay(100).duration(1000).springify()}
+            >
+              <GoogleAppleAuth />
+            </Animated.View>
+            {/* switch between login and sign up screens */}
+            <Animated.View
+              className="w-full items-center"
+              entering={FadeInUp.delay(500).duration(1000).springify()}
+              exiting={FadeOutUp.duration(1000).springify()}
+            >
+              <LoginSignupSwitcher
+                isLogin={true}
+                onPress={() =>
+                  setValues({ ...values, loginScreenVisible: false })
+                }
+              />
+            </Animated.View>
+          </View>
+        </>
+      )}
     </SafeAreaView>
-  ) : null;
+  );
 };
 
 export default Login;
