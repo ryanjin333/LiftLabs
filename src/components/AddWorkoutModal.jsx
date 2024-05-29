@@ -134,6 +134,7 @@ const AddWorkoutModal = () => {
                   className="border-b border-[#2C2C2C] w-72 h-11 bg-transparent text-white px-4 mt-3 font-inter"
                   placeholderTextColor="#7C7C7C"
                   placeholder="Title"
+                  keyboardAppearance="dark"
                   onChangeText={(value) =>
                     setValues({ ...values, title: value })
                   }

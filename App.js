@@ -35,7 +35,11 @@ function App() {
             component={Signup}
             options={{ animation: "none" }}
           />
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          <Stack.Screen
+            name="TabNavigator"
+            component={TabNavigator}
+            options={{ animation: "none" }}
+          />
           <Stack.Screen name="Workout" component={Workout} />
           <Stack.Screen name="SearchExercise" component={SearchExercise} />
           <Stack.Screen name="Focus" component={Focus} />

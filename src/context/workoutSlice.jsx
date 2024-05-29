@@ -55,6 +55,9 @@ export const workoutSlice = createSlice({
     changeModalVisible(state, action) {
       state.modalVisible = action.payload;
     },
+    setIsLoading(state, action) {
+      state.isLoading = action;
+    },
   },
   extraReducers: (builder) => {
     // fetch workouts
@@ -83,6 +86,7 @@ export const workoutSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeDropdownTitle, changeModalVisible } = workoutSlice.actions;
+export const { changeDropdownTitle, changeModalVisible, setIsLoading } =
+  workoutSlice.actions;
 
 export default workoutSlice.reducer;

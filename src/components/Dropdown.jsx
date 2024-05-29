@@ -3,6 +3,17 @@ import React, { useState, useEffect } from "react";
 import OutlineButton from "./OutlineButton";
 import { BlurView } from "expo-blur";
 
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+  FadeInUp,
+  FadeInDown,
+  FadeOutUp,
+  FadeOutDown,
+} from "react-native-reanimated";
+
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import { changeDropdownTitle } from "../context/workoutSlice";
@@ -38,7 +49,7 @@ const DropdownRow = ({ title, values, setValues }) => {
       className="w-20 h-8 bg-transparent justify-center items-center"
       onPress={filterPressed}
     >
-      <Text className="text-white">{title}</Text>
+      <Text className="text-white font-inter">{title}</Text>
     </Pressable>
   );
 };
@@ -60,7 +71,11 @@ const Dropdown = () => {
         }
       />
       {values.dropdownVisibility && (
-        <View className="absolute w-20 mt-10 rounded-[18px] overflow-hidden">
+        <Animated.View
+          className="absolute w-20 mt-10 rounded-[18px] overflow-hidden"
+          entering={FadeInUp.duration(1000).springify()}
+          exiting={FadeOutUp.duration(1000).springify()}
+        >
           <BlurView intensity={60} tint="dark">
             <FlatList
               data={filters}
@@ -74,7 +89,7 @@ const Dropdown = () => {
               keyExtractor={(item) => item.title}
             />
           </BlurView>
-        </View>
+        </Animated.View>
       )}
     </>
   );

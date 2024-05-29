@@ -150,6 +150,7 @@ const SearchExercise = ({ navigation }) => {
             autoCorrect={false}
             autoFocus={true}
             focusable={false}
+            keyboardAppearance="dark"
             returnKeyType="done"
           />
         </TouchableWithoutFeedback>

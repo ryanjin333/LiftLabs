@@ -11,6 +11,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useIsFocused } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
+import { setIsLoading } from "../context/workoutSlice";
 import Animated from "react-native-reanimated";
 import {
   FadeInUp,
@@ -67,6 +68,8 @@ const Login = () => {
 
   useEffect(() => {
     if (user.uid) {
+      // if user successfully logs in, also set loading of the workouts list to true
+      dispatch(setIsLoading(true));
       setValues({ ...values, loginScreenVisible: false });
       setTimeout(() => {
         navigation.navigate("TabNavigator");

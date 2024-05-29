@@ -24,7 +24,7 @@ const LoadingGenericButton = ({ onPress, title, isLoading }) => {
     scale.value = withSpring(0.85, { damping: 20, stiffness: 100 });
   };
   const handlePressOut = () => {
-    scale.value = withSpring(1, { damping: 10, stiffness: 100 });
+    scale.value = withSpring(1, { damping: 20, stiffness: 100 });
   };
 
   // functions

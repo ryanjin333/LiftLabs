@@ -1,6 +1,14 @@
 import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import Animated from "react-native-reanimated";
+import {
+  FadeInUp,
+  FadeInDown,
+  FadeOutUp,
+  FadeOutDown,
+} from "react-native-reanimated";
+
 import Home from "./Home";
 import Search from "./Search";
 import User from "./User";
@@ -34,7 +42,14 @@ const TabNavigator = () => {
               ? require("../assets/user_icon_bold.png")
               : require("../assets/user_icon_thin.png");
           }
-          return <Image source={iconName} style={{ width: 25, height: 25 }} />;
+          return (
+            <Animated.Image
+              source={iconName}
+              style={{ width: 25, height: 25 }}
+              entering={FadeInDown.delay(600).duration(1000).springify()}
+              exiting={FadeOutUp.duration(1000).springify()}
+            />
+          );
         },
       })}
     >

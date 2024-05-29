@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
+import { setIsLoading } from "../context/workoutSlice";
 
 //Animations
 import Animated from "react-native-reanimated";
@@ -58,6 +59,8 @@ const Signup = () => {
   };
 
   useEffect(() => {
+    // if user successfully signs up, also set loading of the workouts list to true
+    dispatch(setIsLoading(true));
     if (user.uid) {
       navigation.navigate("TabNavigator");
     }

@@ -8,6 +8,7 @@ const FormRow = ({ name, placeholder, value, isPassword, handleChange }) => {
       placeholderTextColor="#7C7C7C"
       placeholder={placeholder}
       secureTextEntry={isPassword}
+      keyboardAppearance="dark"
       onChangeText={(value) =>
         handleChange(value, name.charAt(0).toLowerCase() + name.slice(1))
       }
