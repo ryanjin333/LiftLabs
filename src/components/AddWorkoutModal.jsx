@@ -1,4 +1,3 @@
-import * as Haptics from "expo-haptics";
 import {
   View,
   Text,
@@ -34,7 +33,6 @@ const AddWorkoutModal = () => {
 
   // functions
   const resetModal = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     dispatch(changeModalVisible(false));
     setValues({ ...values, title: "", image: null });
   };

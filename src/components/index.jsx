@@ -9,6 +9,8 @@ import AddWorkoutModal from "./AddWorkoutModal";
 import AddExerciseModal from "./AddExerciseModal";
 import LoadingGenericButton from "./LoadingGenericButton";
 import Dropdown from "./Dropdown";
+import FocusStartButton from "./FocusStartButton";
+import AnimatedHeader from "./AnimatedHeader";
 
 export {
   FormRow,
@@ -22,4 +24,6 @@ export {
   AddExerciseModal,
   LoadingGenericButton,
   Dropdown,
+  FocusStartButton,
+  AnimatedHeader,
 };

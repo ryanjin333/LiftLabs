@@ -9,6 +9,8 @@ import {
   FadeOutDown,
 } from "react-native-reanimated";
 
+import { BlurView } from "expo-blur";
+
 import Home from "./Home";
 import Search from "./Search";
 import User from "./User";
@@ -21,11 +23,18 @@ const TabNavigator = () => {
       initialRouteName="Home"
       screenOptions={({ route }) => ({
         headerShown: false,
-        //gestureEnabled: false,
         tabBarStyle: {
-          backgroundColor: "black",
-          borderBlockColor: "black",
+          position: "absolute",
+          borderTopWidth: 0,
+          height: 80,
         },
+        tabBarBackground: () => (
+          <BlurView
+            tint="dark"
+            intensity={70}
+            className="bg-transparent overflow-hidden w-full h-full"
+          />
+        ),
         tabBarLabelStyle: { display: "none" },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -54,7 +63,11 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Search" component={Search} />
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{ title: "Search" }}
+      />
       <Tab.Screen name="User" component={User} />
     </Tab.Navigator>
   );

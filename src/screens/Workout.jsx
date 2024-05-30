@@ -6,15 +6,20 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeModalVisible } from "../context/exerciseSlice";
 
-import { ExerciseRow, OutlineButton, AddExerciseModal } from "../components";
-import { useNavigation } from "@react-navigation/native";
+import {
+  ExerciseRow,
+  OutlineButton,
+  AddExerciseModal,
+  FocusStartButton,
+} from "../components";
 
 const Workout = ({ route, navigation }) => {
   const { title, plan } = route.params;
 
-  //redux
+  // redux
   const dispatch = useDispatch();
   const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
+
   return (
     <SafeAreaView className="flex-1 bg-black px-6 pb-40 items-center">
       <View className="w-full items-start mt-16">
@@ -49,19 +54,7 @@ const Workout = ({ route, navigation }) => {
         </View>
       )}
       <View className=" absolute bottom-16 items-end w-full">
-        {/* start button */}
-        <Pressable
-          className="bg-primary rounded-full h-20 w-20 justify-center items-center"
-          onPress={() => {
-            navigation.navigate("Focus");
-          }}
-        >
-          <Image
-            style={{ resizeMode: "contain" }}
-            source={require("../assets/play_button.png")}
-            className="h-8 w-8"
-          ></Image>
-        </Pressable>
+        <FocusStartButton />
       </View>
       <AddExerciseModal />
     </SafeAreaView>

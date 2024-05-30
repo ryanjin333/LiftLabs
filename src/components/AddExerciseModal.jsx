@@ -88,7 +88,6 @@ const AddExerciseModal = () => {
   };
 
   const resetModal = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     dispatch(changeModalVisible(false));
     dispatch(changeExerciseName(""));
     setValues({ ...values, sets: 0, reps: 0, weight: 0 });

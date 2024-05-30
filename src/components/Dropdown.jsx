@@ -79,6 +79,7 @@ const Dropdown = () => {
           <BlurView intensity={60} tint="dark">
             <FlatList
               data={filters}
+              scrollEnabled={false}
               renderItem={({ item }) => (
                 <DropdownRow
                   title={item.title}
