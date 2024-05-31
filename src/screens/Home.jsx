@@ -34,6 +34,9 @@ import Animated, {
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
+  useScrollViewOffset,
+  useAnimatedRef,
+  useDerivedValue,
 } from "react-native-reanimated";
 
 const Home = () => {
@@ -57,11 +60,19 @@ const Home = () => {
   }, [dispatch]);
 
   // animations
-  const scrollOffsetY = useSharedValue(0);
+  const scrollViewAnimatedRef = useAnimatedRef();
+  const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);
+
+  const offsetY = useDerivedValue(() =>
+    parseInt(scrollViewOffsetY.value.toFixed(1))
+  );
   return (
     <>
-      <AnimatedHeader />
-      <ScrollView className="flex-1 bg-black ">
+      <AnimatedHeader offsetY={offsetY} />
+      <Animated.ScrollView
+        className="flex-1 bg-black"
+        ref={scrollViewAnimatedRef}
+      >
         <View className="h-24" />
         <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
           {/* changes visibility of screen */}
@@ -123,7 +134,7 @@ const Home = () => {
             </>
           )}
         </SafeAreaView>
-      </ScrollView>
+      </Animated.ScrollView>
     </>
   );
 };
