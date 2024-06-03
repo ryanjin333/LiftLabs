@@ -1,6 +1,6 @@
 import { View, Text, Dimensions } from "react-native";
 import React from "react";
-
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 
 import Animated, {
@@ -22,18 +22,21 @@ const AnimatedHeader = ({ offsetY }) => {
   // animations
 
   const screenWidth = Dimensions.get("window").width;
-  const center = screenWidth / 2;
-  const textWidth = 196 + 60;
+  const centerX = screenWidth / 2;
+  const textWidth = 192;
+
+  const insets = useSafeAreaInsets();
+  const centerY = 41 / 2; // half of header height
 
   // changes title style
 
   const translateX = useDerivedValue(() => {
     return offsetY.value > 30
-      ? withTiming(center - textWidth / 2)
+      ? withTiming(centerX - textWidth / 2 - 24) // center - half of text width - px-6
       : withTiming(0);
   });
   const translateY = useDerivedValue(() => {
-    return offsetY.value > 30 ? withTiming(-20) : withTiming(0);
+    return offsetY.value > 30 ? withTiming(-centerY) : withTiming(0);
   });
   const scale = useDerivedValue(() => {
     return offsetY.value > 30 ? withTiming(0.5) : withTiming(1);
@@ -45,7 +48,9 @@ const AnimatedHeader = ({ offsetY }) => {
     return offsetY.value > 30 ? withTiming(70) : withTiming(0);
   });
   const headerHeight = useDerivedValue(() => {
-    return offsetY.value > 30 ? withTiming(100) : withTiming(128);
+    return offsetY.value > 30
+      ? withTiming(insets.top + 41)
+      : withTiming(insets.top + 69);
   });
 
   // styling
@@ -76,7 +81,7 @@ const AnimatedHeader = ({ offsetY }) => {
       {/* title */}
       <Animated.View style={textViewAnimatedStyle}>
         <Animated.Text
-          className="text-white text-4xl font-interBold mt-16 w-48 text-center"
+          className="text-white text-4xl font-interBold mt-16 w-48 h-10 text-center "
           entering={FadeInUp.duration(1000).springify()}
           exiting={FadeOutUp.delay(300).duration(1000).springify()}
         >

@@ -1,6 +1,6 @@
 import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated from "react-native-reanimated";
 import {
   FadeInUp,
@@ -8,6 +8,8 @@ import {
   FadeOutUp,
   FadeOutDown,
 } from "react-native-reanimated";
+
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 import { BlurView } from "expo-blur";
 
@@ -18,6 +20,7 @@ import User from "./User";
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  const insets = useSafeAreaInsets();
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -26,13 +29,15 @@ const TabNavigator = () => {
         tabBarStyle: {
           position: "absolute",
           borderTopWidth: 0,
-          height: 80,
+          height: insets.bottom + 46,
         },
         tabBarBackground: () => (
-          <BlurView
+          <AnimatedBlurView
             tint="dark"
             intensity={70}
             className="bg-transparent overflow-hidden w-full h-full"
+            entering={FadeInDown.delay(600).duration(1000).springify()}
+            exiting={FadeOutUp.duration(1000).springify()}
           />
         ),
         tabBarLabelStyle: { display: "none" },
