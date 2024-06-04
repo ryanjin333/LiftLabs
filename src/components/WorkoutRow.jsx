@@ -53,7 +53,11 @@ const WorkoutRow = ({ currentWorkout }) => {
     >
       <Image
         className="h-16 w-16 rounded-[18px] overflow-hidden ml-2 mr-6"
-        source={image}
+        source={
+          typeof image == "string"
+            ? require("../assets/React_Native_Logo.png")
+            : image
+        }
       />
       <View className="">
         <Text className="text-white mb-5 text-base font-interSemiBold">

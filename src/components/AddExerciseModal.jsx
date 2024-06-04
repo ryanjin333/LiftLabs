@@ -11,7 +11,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { BlurView } from "expo-blur";
 import { useNavigation } from "@react-navigation/native";
 import uuid from "react-native-uuid";
@@ -44,6 +44,46 @@ const listGenerator = (amount) => {
 const setList = listGenerator(100);
 const repList = listGenerator(100);
 const weightList = listGenerator(1000);
+
+// Secondary components
+
+const Scrollable = ({ title, data, values, setValues }) => {
+  const onViewRef = useRef(({ viewableItems }) => {
+    if (viewableItems.length > 0) {
+      const newValue = viewableItems[0].index + 1;
+      setValues({ ...values, [title]: newValue });
+    }
+  });
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 100 });
+  return (
+    <>
+      <FlatList
+        className="h-36"
+        data={data}
+        snapToAlignment="start"
+        snapToInterval={48}
+        ListHeaderComponent={<View className="h-12" />}
+        ListFooterComponent={<View className="h-12" />}
+        decelerationRate="normal"
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <View className="items-center justify-center h-12">
+            <Text className="text-primary text-lg font-interSemiBold text-center w-12">
+              {item}
+            </Text>
+          </View>
+        )}
+        onViewableItemsChanged={onViewRef.current}
+        viewabilityConfig={viewConfigRef.current}
+      />
+      <Text className="text-white font-interMedium">
+        {title === "weight" ? "lbs" : title}
+      </Text>
+    </>
+  );
+};
+
+// main component
 
 const AddExerciseModal = () => {
   const [values, setValues] = useState(initialState);
@@ -136,72 +176,26 @@ const AddExerciseModal = () => {
             </Pressable>
             <View className="flex-row w-64 items-center">
               {/* scroll sets */}
-
-              <FlatList
-                className=" h-36"
+              <Scrollable
+                title="sets"
                 data={setList}
-                snapToAlignment="start"
-                snapToInterval={48}
-                ListHeaderComponent={<View className="h-12" />}
-                ListFooterComponent={<View className="h-12" />}
-                decelerationRate="normal"
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <View className="items-center justify-center h-12 ">
-                    <Text className=" text-primary text-lg font-interSemiBold text-center w-12">
-                      {item}
-                    </Text>
-                  </View>
-                )}
-                onValueChange={(data, selectedIndex) => {
-                  setValues({ ...values, sets: selectedIndex });
-                }}
+                values={values}
+                setValues={setValues}
               />
-              <Text className="text-white font-interMedium">sets</Text>
               {/* scroll reps */}
-              <FlatList
-                className=" h-36"
+              <Scrollable
+                title="reps"
                 data={repList}
-                snapToAlignment="start"
-                snapToInterval={48}
-                ListHeaderComponent={<View className="h-12" />}
-                ListFooterComponent={<View className="h-12" />}
-                decelerationRate="normal"
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <View className="items-center justify-center h-12 ">
-                    <Text className=" text-primary text-lg font-interSemiBold  text-center w-12">
-                      {item}
-                    </Text>
-                  </View>
-                )}
-                onValueChange={(data, selectedIndex) => {
-                  setValues({ ...values, sets: selectedIndex });
-                }}
+                values={values}
+                setValues={setValues}
               />
-              <Text className="text-white font-interMedium">reps</Text>
               {/* scroll weight */}
-              <FlatList
-                className=" h-36"
+              <Scrollable
+                title="weight"
                 data={weightList}
-                snapToAlignment="start"
-                snapToInterval={48}
-                ListHeaderComponent={<View className="h-12" />}
-                ListFooterComponent={<View className="h-12" />}
-                decelerationRate="normal"
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <View className="items-center justify-center h-12 ">
-                    <Text className=" text-primary text-lg font-interSemiBold text-center w-12">
-                      {item}
-                    </Text>
-                  </View>
-                )}
-                onValueChange={(data, selectedIndex) => {
-                  setValues({ ...values, sets: selectedIndex });
-                }}
+                values={values}
+                setValues={setValues}
               />
-              <Text className="text-white font-interMedium">lbs</Text>
             </View>
             {/* done button */}
             <Pressable

@@ -1,5 +1,5 @@
 import { View, Text, Dimensions } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 
@@ -18,12 +18,18 @@ import Animated, {
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
-const AnimatedHeader = ({ offsetY }) => {
+const AnimatedHeader = ({ offsetY, title }) => {
   // animations
 
   const screenWidth = Dimensions.get("window").width;
   const centerX = screenWidth / 2;
-  const textWidth = 192;
+  const [textWidth, setTextWidth] = useState(0);
+
+  const handleTextLayout = (event) => {
+    // handles dynamic text width
+    const { width } = event.nativeEvent.layout;
+    setTextWidth(width);
+  };
 
   const insets = useSafeAreaInsets();
   const centerY = 41 / 2; // half of header height
@@ -81,11 +87,12 @@ const AnimatedHeader = ({ offsetY }) => {
       {/* title */}
       <Animated.View style={textViewAnimatedStyle}>
         <Animated.Text
-          className="text-white text-4xl font-interBold mt-16 w-48 h-10 text-center "
+          className="text-white text-4xl font-interBold mt-16 h-10"
+          onLayout={handleTextLayout}
           entering={FadeInUp.duration(1000).springify()}
           exiting={FadeOutUp.delay(300).duration(1000).springify()}
         >
-          Workouts
+          {title}
         </Animated.Text>
       </Animated.View>
     </AnimatedBlurView>

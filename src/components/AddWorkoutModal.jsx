@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { BlurView } from "expo-blur";
 import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
+import { auth, db } from "../config/firebase";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -51,9 +52,9 @@ const AddWorkoutModal = () => {
         title: values.title,
         image: values.image
           ? { uri: values.image }
-          : require("../assets/React_Native_Logo.png"),
+          : "../assets/React_Native_Logo.png",
         plan: [],
-        createdBy: "uid",
+        createdBy: auth.currentUser.uid,
       };
       dispatch(createNewWorkout(newWorkout));
     } catch (error) {

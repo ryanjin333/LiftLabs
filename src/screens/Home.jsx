@@ -68,7 +68,7 @@ const Home = () => {
   );
   return (
     <>
-      <AnimatedHeader offsetY={offsetY} />
+      <AnimatedHeader offsetY={offsetY} title="Workouts" />
       <Animated.ScrollView
         className="flex-1 bg-black"
         ref={scrollViewAnimatedRef}
@@ -102,7 +102,7 @@ const Home = () => {
                 exiting={FadeOutUp.duration(1000).springify()}
               >
                 {workout.workouts.length == 0 ? (
-                  <View className="flex-1 justify-center">
+                  <View className="flex-1 items-center mt-20">
                     <Text className="text-center text-white w-44 font-inter">
                       Tap <Text className="font-interBold">Add</Text> to create
                       a new workout
