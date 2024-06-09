@@ -24,7 +24,7 @@ function App() {
             initialRouteName="Login"
             screenOptions={{
               headerShown: false,
-              //gestureEnabled: false,
+              gestureEnabled: false,
             }}
           >
             <Stack.Screen

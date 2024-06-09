@@ -11,6 +11,7 @@ import LoadingGenericButton from "./LoadingGenericButton";
 import Dropdown from "./Dropdown";
 import FocusStartButton from "./FocusStartButton";
 import AnimatedHeader from "./AnimatedHeader";
+import OutlineButtonCircle from "./OutlineButtonCircle";
 
 export {
   FormRow,
@@ -26,4 +27,5 @@ export {
   Dropdown,
   FocusStartButton,
   AnimatedHeader,
+  OutlineButtonCircle,
 };

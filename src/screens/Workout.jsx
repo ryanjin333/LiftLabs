@@ -28,6 +28,7 @@ import Animated, {
 import {
   ExerciseRow,
   OutlineButton,
+  OutlineButtonCircle,
   AddExerciseModal,
   FocusStartButton,
   AnimatedHeader,
@@ -58,7 +59,21 @@ const Workout = ({ route, navigation }) => {
         <SafeAreaView className="flex-1 bg-black px-6 pb-40 items-center">
           {/* button bar */}
           <View className="w-full flex-row justify-between mt-6">
-            <OutlineButton title="Send" onPress={() => console.log("hi")} />
+            <View className="flex-row space-x-1">
+              <View>
+                <OutlineButtonCircle
+                  image={"back_chevron"}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+              <View>
+                <OutlineButton
+                  title="Share"
+                  onPress={() => console.log("hi")}
+                />
+              </View>
+            </View>
+
             <OutlineButton
               title="+ Add"
               onPress={() => dispatch(changeModalVisible(true))}
