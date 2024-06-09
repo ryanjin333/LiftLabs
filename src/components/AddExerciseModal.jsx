@@ -31,55 +31,30 @@ const initialState = {
   isLoading: false,
 };
 
-// miscellaneous functions
-const listGenerator = (amount) => {
-  var list = [];
-  for (let i = 0; i <= amount; i++) {
-    list.push(i.toString());
-  }
-  return list;
-};
-
-// CONSTANTS
-const setList = listGenerator(100);
-const repList = listGenerator(100);
-const weightList = listGenerator(1000);
-
 // Secondary components
 
-const Scrollable = ({ title, data, values, setValues }) => {
-  const onViewRef = useRef(({ viewableItems }) => {
-    if (viewableItems.length > 0) {
-      const newValue = viewableItems[0].index + 1;
-      setValues({ ...values, [title]: newValue });
-    }
-  });
-  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 100 });
+const Input = ({ title, values, setValues }) => {
   return (
-    <>
-      <FlatList
-        className="h-36"
-        data={data}
-        snapToAlignment="start"
-        snapToInterval={48}
-        ListHeaderComponent={<View className="h-12" />}
-        ListFooterComponent={<View className="h-12" />}
-        decelerationRate="normal"
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <View className="items-center justify-center h-12">
-            <Text className="text-primary text-lg font-interSemiBold text-center w-12">
-              {item}
-            </Text>
-          </View>
-        )}
-        onViewableItemsChanged={onViewRef.current}
-        viewabilityConfig={viewConfigRef.current}
+    <View className="space-x-2 flex-row mt-6 items-center ">
+      <TextInput
+        className="border-b border-[#2C2C2C] w-12 bg-transparent text-primary text-base font-interSemiBold text-center pb-1"
+        placeholderTextColor="#7C7C7C"
+        placeholder="0"
+        keyboardType="number-pad"
+        keyboardAppearance="dark"
+        onChangeText={(value) => setValues({ ...values, [title]: value })}
+        value={
+          title == "weight"
+            ? values.weight
+            : title == "reps"
+            ? values.reps
+            : values.sets
+        }
       />
-      <Text className="text-white font-interMedium">
+      <Text className="text-white font-interMedium mr-2">
         {title === "weight" ? "lbs" : title}
       </Text>
-    </>
+    </View>
   );
 };
 
@@ -124,6 +99,14 @@ const AddExerciseModal = () => {
 
   const pickExercise = () => {
     navigation.navigate("SearchExercise");
+    console.log(
+      "reps:",
+      values.reps,
+      "sets:",
+      values.sets,
+      "weight:",
+      values.weight
+    );
     dispatch(changeModalVisible(false));
   };
 
@@ -134,83 +117,73 @@ const AddExerciseModal = () => {
   };
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
-      <View className="flex-1 items-center justify-end">
-        {/* opaque background */}
-        {modalVisible && (
-          <Pressable
-            className="absolute top-0 bottom-0 left-0 right-0 bg-black opacity-30"
-            onPress={resetModal}
-          />
-        )}
-        {/* modal view */}
-        <View className="rounded-[18px] overflow-hidden h-96 w-full justify-center items-center">
-          <BlurView
-            intensity={60}
-            tint="dark"
-            className="h-96 w-full items-center px-5"
-          >
-            {/* exit button */}
-            <View className=" w-full h-6 mt-5 justify-center items-end">
-              <Pressable
-                className="w-11 h-11 flex justify-start items-end mt-5"
-                onPress={resetModal}
-              >
-                <Image
-                  className="h-6 w-6"
-                  source={require("../assets/exit.png")}
-                />
-              </Pressable>
-            </View>
-            {/* choose workout */}
-            <Pressable onPress={pickExercise}>
-              <View className="h-12 w-80 bg-[#292929] rounded-[25px] justify-center items-center flex-row space-x-2 mt-6">
-                <Text className="text-white font-interSemiBold">
-                  {exerciseName == "" ? "Choose Exercise" : exerciseName}
-                </Text>
-
-                <Image
-                  className="h-5 w-5"
-                  source={require("../assets/edit_icon.png")}
-                />
-              </View>
-            </Pressable>
-            <View className="flex-row w-64 items-center">
-              {/* scroll sets */}
-              <Scrollable
-                title="sets"
-                data={setList}
-                values={values}
-                setValues={setValues}
-              />
-              {/* scroll reps */}
-              <Scrollable
-                title="reps"
-                data={repList}
-                values={values}
-                setValues={setValues}
-              />
-              {/* scroll weight */}
-              <Scrollable
-                title="weight"
-                data={weightList}
-                values={values}
-                setValues={setValues}
-              />
-            </View>
-            {/* done button */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1 justify-center"
+      >
+        <View className="flex-1 items-center justify-end">
+          {/* opaque background */}
+          {modalVisible && (
             <Pressable
-              className="h-12 w-28 rounded-full justify-center items-center bg-primary mt-6"
-              onPress={donePressed}
+              className="absolute top-0 bottom-0 left-0 right-0 bg-black opacity-30"
+              onPress={resetModal}
+            />
+          )}
+          {/* modal view */}
+          <View className="rounded-[18px] overflow-hidden h-80 w-full justify-center items-center">
+            <BlurView
+              intensity={60}
+              tint="dark"
+              className="h-80 w-full items-center px-5"
             >
-              {values.isLoading ? (
-                <ActivityIndicator size="small" color="#000000" />
-              ) : (
-                <Text className="text-base font-interSemiBold">Done</Text>
-              )}
-            </Pressable>
-          </BlurView>
+              {/* exit button */}
+              <View className=" w-full h-6 mt-5 justify-center items-end">
+                <Pressable
+                  className="w-11 h-11 flex justify-start items-end mt-5"
+                  onPress={resetModal}
+                >
+                  <Image
+                    className="h-6 w-6"
+                    source={require("../assets/exit.png")}
+                  />
+                </Pressable>
+              </View>
+              {/* choose exercise */}
+              <Pressable onPress={pickExercise}>
+                <View className="h-12 w-80 bg-[#292929] rounded-[25px] justify-center items-center flex-row space-x-2 mt-6">
+                  <Text className="text-white font-interSemiBold">
+                    {exerciseName == "" ? "Choose Exercise" : exerciseName}
+                  </Text>
+
+                  <Image
+                    className="h-5 w-5"
+                    source={require("../assets/edit_icon.png")}
+                  />
+                </View>
+              </Pressable>
+              <View className="flex-row w-64 items-center justify-center">
+                {/* scroll sets */}
+                <Input title="sets" values={values} setValues={setValues} />
+                {/* scroll reps */}
+                <Input title="reps" values={values} setValues={setValues} />
+                {/* scroll weight */}
+                <Input title="weight" values={values} setValues={setValues} />
+              </View>
+              {/* done button */}
+              <Pressable
+                className="h-12 w-28 rounded-full justify-center items-center bg-primary mt-10"
+                onPress={donePressed}
+              >
+                {values.isLoading ? (
+                  <ActivityIndicator size="small" color="#000000" />
+                ) : (
+                  <Text className="text-base font-interSemiBold">Done</Text>
+                )}
+              </Pressable>
+            </BlurView>
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };

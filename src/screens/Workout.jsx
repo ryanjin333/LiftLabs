@@ -58,7 +58,7 @@ const Workout = ({ route, navigation }) => {
         <SafeAreaView className="flex-1 bg-black px-6 pb-40 items-center">
           {/* button bar */}
           <View className="w-full flex-row justify-between mt-6">
-            <OutlineButton title="All" />
+            <OutlineButton title="Send" onPress={() => console.log("hi")} />
             <OutlineButton
               title="+ Add"
               onPress={() => dispatch(changeModalVisible(true))}
