@@ -69,7 +69,7 @@ const Workout = ({ route, navigation }) => {
               <View>
                 <OutlineButton
                   title="Share"
-                  onPress={() => console.log("hi")}
+                  onPress={() => navigation.navigate("SearchUser")}
                 />
               </View>
             </View>
@@ -82,7 +82,7 @@ const Workout = ({ route, navigation }) => {
 
           {/* exercise list */}
           {currentWorkout.plan.length == 0 ? (
-            <View className="flex-1 justify-center">
+            <View className="flex-1 justify-center mt-20">
               <Text className="text-center text-white w-44 font-inter">
                 Tap <Text className="font-interBold">Add</Text> to create a new
                 exercise

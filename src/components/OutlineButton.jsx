@@ -33,7 +33,7 @@ const OutlineButton = ({ title, onPress }) => {
 
   // standard functions
   const btnTapped = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     onPress();
   };
   return (

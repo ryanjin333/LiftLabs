@@ -14,7 +14,7 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 import { BlurView } from "expo-blur";
 
 import Home from "./Home";
-import Search from "./Search";
+import Notifications from "./Notifications";
 import User from "./User";
 
 const Tab = createBottomTabNavigator();
@@ -47,10 +47,10 @@ const TabNavigator = () => {
             iconName = focused
               ? require("../assets/home_icon_bold.png")
               : require("../assets/home_icon_thin.png");
-          } else if (route.name === "Search") {
+          } else if (route.name === "Notifications") {
             iconName = focused
-              ? require("../assets/search_icon_bold.png")
-              : require("../assets/search_icon_thin.png");
+              ? require("../assets/notification_icon_bold.png")
+              : require("../assets/notification_icon_thin.png");
           } else if (route.name === "User") {
             iconName = focused
               ? require("../assets/user_icon_bold.png")
@@ -69,9 +69,9 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen
-        name="Search"
-        component={Search}
-        options={{ title: "Search" }}
+        name="Notifications"
+        component={Notifications}
+        options={{ title: "Notifications" }}
       />
       <Tab.Screen name="User" component={User} />
     </Tab.Navigator>

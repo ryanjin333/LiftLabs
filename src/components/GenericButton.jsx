@@ -3,7 +3,7 @@ import { Text, Pressable } from "react-native";
 
 const GenericButton = ({ onPress, title }) => {
   const btnTapped = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     onPress();
   };
   return (

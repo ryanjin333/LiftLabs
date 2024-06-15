@@ -33,13 +33,13 @@ const OutlineButtonCircle = ({ image, onPress }) => {
 
   // standard functions
   const btnTapped = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     onPress();
   };
   return (
     <AnimatedPressable
       style={animatedStyle}
-      className="w-8 h-8 border border-[#2C2C2C] rounded-full items-center justify-center"
+      className="w-8 h-8 bg-[#fff] rounded-full items-center justify-center"
       onPress={btnTapped}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}

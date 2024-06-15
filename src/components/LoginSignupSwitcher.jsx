@@ -7,7 +7,7 @@ const LoginSignupSwitcher = ({ isLogin, onPress }) => {
   // navigation
   const navigation = useNavigation();
   const btnTapped = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     onPress();
     // let animation finish then switch screen
     let duration = isLogin ? 800 : 900;

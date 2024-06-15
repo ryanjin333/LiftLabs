@@ -150,8 +150,11 @@ const AddExerciseModal = () => {
               </View>
               {/* choose exercise */}
               <Pressable onPress={pickExercise}>
-                <View className="h-12 w-80 bg-[#292929] rounded-[25px] justify-center items-center flex-row space-x-2 mt-6">
-                  <Text className="text-white font-interSemiBold">
+                <View className="h-12 w-80 bg-[#292929] rounded-[25px] justify-center items-center flex-row space-x-2 mt-6 px-10">
+                  <Text
+                    className="text-white font-interSemiBold "
+                    numberOfLines={1}
+                  >
                     {exerciseName == "" ? "Choose Exercise" : exerciseName}
                   </Text>
 

@@ -35,7 +35,7 @@ const FocusStartButton = () => {
 
   // functions
   const buttonPressed = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     navigation.navigate("Focus");
   };
   return (

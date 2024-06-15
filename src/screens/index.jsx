@@ -2,20 +2,22 @@ import Login from "./Login";
 import Signup from "./Signup";
 import Home from "./Home";
 import Workout from "./Workout";
-import Search from "./Search";
+import SearchUser from "./SearchUser";
 import User from "./User";
 import TabNavigator from "./TabNavigator";
 import SearchExercise from "./SearchExercise";
 import Focus from "./Focus";
+import Notifications from "./Notifications";
 
 export {
   Login,
   Signup,
   Home,
   Workout,
-  Search,
+  SearchUser,
   User,
   TabNavigator,
   SearchExercise,
   Focus,
+  Notifications,
 };
