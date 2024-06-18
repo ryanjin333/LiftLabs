@@ -11,7 +11,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { BlurView } from "expo-blur";
 import { useNavigation } from "@react-navigation/native";
 import uuid from "react-native-uuid";
@@ -22,7 +22,9 @@ import {
   changeModalVisible,
   changeExerciseName,
   createNewExercise,
+  setEditModePlan,
 } from "../context/exerciseSlice";
+import ModalDoneButton from "./ModalDoneButton";
 
 const initialState = {
   sets: 0,
@@ -67,11 +69,27 @@ const AddExerciseModal = () => {
   const dispatch = useDispatch();
   const modalVisible = useSelector((state) => state.exercise.modalVisible);
   const exerciseName = useSelector((state) => state.exercise.exerciseName);
+  const editModePlan = useSelector((state) => state.exercise.editModePlan);
 
   // navigation
   const navigation = useNavigation();
 
   // functions
+
+  useEffect(() => {
+    if (editModePlan !== null) {
+      // the current modal is in edit mode
+      const { sets, weight, reps, title } = editModePlan;
+      dispatch(changeExerciseName(title));
+      setValues({
+        ...values,
+        sets: sets,
+        weight: weight,
+        reps: reps,
+      });
+    }
+  }, [editModePlan]);
+
   const donePressed = async () => {
     // if the title is not empty, add to list otherwise warn users
     if (exerciseName == "") {
@@ -99,20 +117,14 @@ const AddExerciseModal = () => {
 
   const pickExercise = () => {
     navigation.navigate("SearchExercise");
-    console.log(
-      "reps:",
-      values.reps,
-      "sets:",
-      values.sets,
-      "weight:",
-      values.weight
-    );
+
     dispatch(changeModalVisible(false));
   };
 
   const resetModal = () => {
     dispatch(changeModalVisible(false));
     dispatch(changeExerciseName(""));
+    dispatch(setEditModePlan(null));
     setValues({ ...values, sets: 0, reps: 0, weight: 0 });
   };
   return (
@@ -173,16 +185,10 @@ const AddExerciseModal = () => {
                 <Input title="weight" values={values} setValues={setValues} />
               </View>
               {/* done button */}
-              <Pressable
-                className="h-12 w-28 rounded-full justify-center items-center bg-primary mt-10"
+              <ModalDoneButton
+                isLoading={values.isLoading}
                 onPress={donePressed}
-              >
-                {values.isLoading ? (
-                  <ActivityIndicator size="small" color="#000000" />
-                ) : (
-                  <Text className="text-base font-interSemiBold">Done</Text>
-                )}
-              </Pressable>
+              />
             </BlurView>
           </View>
         </View>

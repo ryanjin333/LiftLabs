@@ -27,7 +27,7 @@ const Focus = ({ navigation }) => {
           {/* main title and exit button */}
           <View className="flex-row justify-between">
             {/* title  */}
-            <Text className="w-72 text-white text-primary font-interBold text-3xl">
+            <Text className="w-72 text-primary font-interBold text-3xl">
               {item.sets}
               <Text className="text-white font-interMedium text-2xl">
                 {" "}
@@ -50,13 +50,13 @@ const Focus = ({ navigation }) => {
           {/* other information */}
 
           {/* exercise reps */}
-          <Text className="text-white text-primary font-interBold text-3xl mt-10">
+          <Text className="text-primary  font-interBold text-3xl mt-10">
             {item.reps}
             <Text className="text-white font-interMedium text-2xl"> reps</Text>
           </Text>
 
           {/* exercise weight */}
-          <Text className="text-white text-primary font-interBold text-3xl ">
+          <Text className=" text-primary font-interBold text-3xl ">
             {item.weight}
             <Text className="text-white font-interMedium text-2xl"> lbs</Text>
           </Text>

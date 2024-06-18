@@ -1,13 +1,22 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
 
+// redux
+import { useDispatch } from "react-redux";
+import { setEditModePlan, changeModalVisible } from "../context/exerciseSlice";
+
 const ExerciseRow = ({ plan }) => {
   const { title, sets, weight, reps } = plan;
+
+  // redux
+  const dispatch = useDispatch();
+
   return (
     <Pressable
       className="w-full h-16 bg-[#151515] flex-row  items-center "
       onPress={() => {
-        console.log("bye");
+        dispatch(setEditModePlan(plan));
+        dispatch(changeModalVisible(true));
       }}
     >
       <View className="  ml-5 ">

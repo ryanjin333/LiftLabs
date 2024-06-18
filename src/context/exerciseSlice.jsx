@@ -29,6 +29,7 @@ const initialState = {
   alertText: "",
   alertType: "",
   modalVisible: false,
+  editModePlan: null,
   exerciseName: "",
   currentWorkout: null,
 };
@@ -109,6 +110,9 @@ export const exerciseSlice = createSlice({
     changeCurrentWorkout(state, action) {
       state.currentWorkout = action.payload;
     },
+    setEditModePlan(state, action) {
+      state.editModePlan = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // fetch plan
@@ -136,7 +140,11 @@ export const exerciseSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeModalVisible, changeExerciseName, changeCurrentWorkout } =
-  exerciseSlice.actions;
+export const {
+  changeModalVisible,
+  changeExerciseName,
+  changeCurrentWorkout,
+  setEditModePlan,
+} = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;

@@ -18,6 +18,7 @@ import { auth, db } from "../config/firebase";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { createNewWorkout, changeModalVisible } from "../context/workoutSlice";
+import ModalDoneButton from "./ModalDoneButton";
 
 const initialState = {
   title: "",
@@ -147,16 +148,10 @@ const AddWorkoutModal = () => {
                 </View>
               </View>
               {/* done button */}
-              <Pressable
-                className="h-12 w-28 rounded-full justify-center items-center bg-primary mt-16"
+              <ModalDoneButton
+                isLoading={values.isLoading}
                 onPress={donePressed}
-              >
-                {values.isLoading ? (
-                  <ActivityIndicator size="small" color="#000000" />
-                ) : (
-                  <Text className="text-base font-interSemiBold">Done</Text>
-                )}
-              </Pressable>
+              />
             </BlurView>
           </View>
         </View>

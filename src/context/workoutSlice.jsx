@@ -14,6 +14,7 @@ const initialState = {
   sharedWorkouts: [],
   dropdownTitle: "All",
   modalVisible: false,
+  modalMode: "add",
 };
 
 export const fetchWorkouts = createAsyncThunk(
@@ -57,6 +58,9 @@ export const workoutSlice = createSlice({
     },
     setIsLoading(state, action) {
       state.isLoading = action;
+    },
+    setModalMode(state, action) {
+      state.modalMode = action;
     },
   },
   extraReducers: (builder) => {
