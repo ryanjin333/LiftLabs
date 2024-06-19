@@ -97,6 +97,38 @@ export const createNewExercise = createAsyncThunk(
   }
 );
 
+export const editExercise = createAsyncThunk(
+  "exercise/editExercise",
+  async (newExercise, { getState }) => {
+    try {
+      const currentWorkout = getState().exercise.currentWorkout;
+      const workouts = getState().workout.workouts;
+      const localWorkout = {
+        ...currentWorkout,
+        plan: [...currentWorkout.plan, newExercise],
+      };
+      const newExerciseFirestore = {
+        workouts: workouts.map((workout) => {
+          if (workout.id === currentWorkout.id) {
+            return {
+              ...workout,
+              plan: [...workout.plan, newExercise],
+            };
+          }
+          return workout;
+        }),
+      };
+      await updateDoc(
+        doc(db, "users", auth.currentUser.uid),
+        newExerciseFirestore
+      );
+      return localWorkout;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 export const exerciseSlice = createSlice({
   name: "exercise",
   initialState,

@@ -41,7 +41,7 @@ const FocusStartButton = () => {
   return (
     <AnimatedPressable
       style={animatedStyle}
-      className="bg-primary rounded-full h-20 w-20 justify-center items-center"
+      className="bg-primary rounded-full h-20 w-20 justify-center items-center absolute bottom-16 right-3"
       onPress={buttonPressed}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}

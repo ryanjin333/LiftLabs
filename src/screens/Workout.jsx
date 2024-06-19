@@ -102,9 +102,8 @@ const Workout = ({ route, navigation }) => {
           <AddExerciseModal />
         </SafeAreaView>
       </Animated.ScrollView>
-      <View className=" absolute bottom-16 items-end right-3 w-full">
-        <FocusStartButton />
-      </View>
+
+      <FocusStartButton />
     </>
   );
 };

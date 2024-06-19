@@ -99,14 +99,19 @@ const AddExerciseModal = () => {
     }
     setValues({ ...values, isLoading: true });
     try {
-      const newExercise = {
-        id: uuid.v4(),
-        title: exerciseName,
-        sets: values.sets,
-        reps: values.reps,
-        weight: values.weight,
-      };
-      dispatch(createNewExercise(newExercise));
+      if (editModePlan !== null) {
+        // edit exercise
+      } else {
+        // new exercise
+        const newExercise = {
+          id: uuid.v4(),
+          title: exerciseName,
+          sets: values.sets,
+          reps: values.reps,
+          weight: values.weight,
+        };
+        dispatch(createNewExercise(newExercise));
+      }
     } catch (error) {
       console.log(error);
     } finally {
