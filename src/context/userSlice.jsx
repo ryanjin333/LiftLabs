@@ -22,7 +22,8 @@ export const registerUser = createAsyncThunk(
       const { username, email, password } = currentUser;
       await createUserWithEmailAndPassword(auth, email, password);
       await setDoc(doc(db, "users", auth.currentUser.uid), {
-        username: username,
+        username: username.toLowerCase(),
+        fullName: "John Smith",
         email: email,
         workouts: [],
         sharedWorkouts: [],

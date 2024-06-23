@@ -59,10 +59,13 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    // if user successfully signs up, also set loading of the workouts list to true
-    dispatch(setIsLoading(true));
     if (user.uid) {
-      navigation.navigate("TabNavigator");
+      // if user successfully signs up, also set loading of the workouts list to true
+      dispatch(setIsLoading(true));
+      setValues({ ...values, signupScreenVisible: false });
+      setTimeout(() => {
+        navigation.navigate("TabNavigator");
+      }, 1000);
     }
   }, [user.uid]);
 

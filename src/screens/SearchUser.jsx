@@ -42,8 +42,8 @@ const SearchUser = ({ navigation }) => {
 
   // query users
   const handleSearch = async (prompt) => {
-    const formattedPrompt = prompt.toLowerCase();
-    const usersCollectionRef = collection(db, "users");
+    const formattedPrompt = prompt.toLowerCase(); // what the user is searching for
+    const usersCollectionRef = collection(db, "users"); // entire collection of users
 
     if (prompt === "") {
       setValues({ ...values, prompt: prompt, data: [] });
@@ -59,17 +59,21 @@ const SearchUser = ({ navigation }) => {
         orderBy("username"),
         startAt(formattedPrompt),
         endAt(formattedPrompt + "\uf8ff"),
-        limit(10)
+        limit(10) // return up to 10 users
       );
 
       // Execute the query
       const querySnapshot = await getDocs(q);
 
       // Process the results
-      const filteredData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const filteredData = querySnapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          username: doc.data().username,
+          fullName: doc.data().fullName,
+          pfp: doc.data().pfp,
+        }))
+        .filter((user) => user.id !== auth.currentUser.uid);
       console.log(filteredData);
 
       setValues({
