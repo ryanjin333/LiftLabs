@@ -132,18 +132,18 @@ const AddWorkoutModal = () => {
                 {/* title textfield */}
                 <View className="items-end">
                   <TextInput
-                    className="border-b border-[#2C2C2C] w-72 h-11 bg-transparent text-white px-4 mt-3 mb-2 font-inter"
+                    className="border-b border-[#2C2C2C] w-64 h-11 bg-transparent text-white px-4 mt-3 mb-2 font-inter"
                     placeholderTextColor="#7C7C7C"
                     placeholder="Title"
                     keyboardAppearance="dark"
-                    maxLength={20}
+                    maxLength={15}
                     onChangeText={(value) =>
                       setValues({ ...values, title: value })
                     }
                     value={values.title}
                   />
                   <Text className="text-[#7C7C7C] text-xs font-inter">
-                    Limit: {values.title.length}/20
+                    Limit: {values.title.length}/15
                   </Text>
                 </View>
               </View>

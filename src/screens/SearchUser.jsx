@@ -8,7 +8,7 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import filter from "lodash.filter";
 
@@ -28,6 +28,21 @@ import {
   getDocs,
 } from "firebase/firestore";
 
+import debounce from "lodash.debounce";
+
+import Animated, {
+  FadeInUp,
+  FadeInDown,
+  FadeOutUp,
+  FadeOutDown,
+  ZoomIn,
+  ZoomOut,
+  useSharedValue,
+  useScrollViewOffset,
+  useAnimatedRef,
+  useDerivedValue,
+} from "react-native-reanimated";
+
 const initialState = {
   prompt: "",
   data: [],
@@ -40,52 +55,65 @@ const SearchUser = ({ navigation }) => {
   // redux
   const dispatch = useDispatch();
 
-  // query users
-  const handleSearch = async (prompt) => {
-    const formattedPrompt = prompt.toLowerCase(); // what the user is searching for
-    const usersCollectionRef = collection(db, "users"); // entire collection of users
+  const debouncedSearch = useRef(
+    debounce(async (searchPrompt) => {
+      if (searchPrompt === "") {
+        setValues((prevValues) => ({
+          ...prevValues,
+          data: [],
+          isLoading: false,
+        }));
+        return;
+      }
 
-    if (prompt === "") {
-      setValues({ ...values, prompt: prompt, data: [] });
-      return;
-    }
+      setValues((prevValues) => ({
+        ...prevValues,
+        isLoading: true,
+      }));
 
-    setValues({ ...values, isLoading: true });
+      try {
+        const formattedPrompt = searchPrompt.toLowerCase();
+        const usersCollectionRef = collection(db, "users");
 
-    try {
-      // Create a query with the specified prefix search and limit
-      const q = query(
-        usersCollectionRef,
-        orderBy("username"),
-        startAt(formattedPrompt),
-        endAt(formattedPrompt + "\uf8ff"),
-        limit(10) // return up to 10 users
-      );
+        const q = query(
+          usersCollectionRef,
+          orderBy("username"),
+          startAt(formattedPrompt),
+          endAt(formattedPrompt + "\uf8ff"),
+          limit(10)
+        );
 
-      // Execute the query
-      const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(q);
+        const filteredData = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            username: doc.data().username,
+            fullName: doc.data().fullName,
+            pfp: doc.data().pfp,
+          }))
+          .filter((user) => user.id !== auth.currentUser.uid);
 
-      // Process the results
-      const filteredData = querySnapshot.docs
-        .map((doc) => ({
-          id: doc.id,
-          username: doc.data().username,
-          fullName: doc.data().fullName,
-          pfp: doc.data().pfp,
-        }))
-        .filter((user) => user.id !== auth.currentUser.uid);
-      console.log(filteredData);
+        setValues((prevValues) => ({
+          ...prevValues,
+          data: filteredData,
+          isLoading: false,
+        }));
+      } catch (error) {
+        console.error("Error querying collection: ", error);
+        setValues((prevValues) => ({
+          ...prevValues,
+          isLoading: false,
+        }));
+      }
+    }, 500)
+  ).current;
 
-      setValues({
-        ...values,
-        prompt: prompt,
-        data: filteredData,
-        isLoading: false,
-      });
-    } catch (error) {
-      console.error("Error querying collection: ", error);
-      setValues({ ...values, isLoading: false });
-    }
+  const handleSearch = (value) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      prompt: value,
+    }));
+    debouncedSearch(value);
   };
 
   // functions
@@ -102,24 +130,30 @@ const SearchUser = ({ navigation }) => {
       <View className="flex-row justify-center items-center space-x-4 mx-6 mt-6">
         {/* search textfield */}
         <TouchableWithoutFeedback onPress={() => {}}>
-          <TextInput
-            className="border rounded-[18px] border-[#2C2C2C] w-full h-11 bg-transparent text-white px-4 font-inter"
-            placeholderTextColor="#7C7C7C"
-            placeholder="Search username"
-            onChangeText={(value) => handleSearch(value)}
-            value={values.prompt}
-            onSubmitEditing={submit}
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoFocus={true}
-            focusable={false}
-            keyboardAppearance="dark"
-            returnKeyType="done"
-          />
+          <View className="w-full">
+            <TextInput
+              className="border rounded-[18px] border-[#2C2C2C] w-full h-11 bg-transparent text-white px-4 font-inter"
+              placeholderTextColor="#7C7C7C"
+              placeholder="Search username"
+              onChangeText={handleSearch}
+              value={values.prompt}
+              onSubmitEditing={submit}
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoFocus={true}
+              focusable={false}
+              keyboardAppearance="dark"
+              returnKeyType="done"
+            />
+            {values.isLoading && (
+              <ActivityIndicator
+                className="ml-4 absolute right-4 top-3"
+                size={"small"}
+                color="white"
+              />
+            )}
+          </View>
         </TouchableWithoutFeedback>
-        {values.isLoading && (
-          <ActivityIndicator className="ml-4" size={"small"} color="white" />
-        )}
         <Pressable onPress={goBack}>
           <Text className="text-white font-inter">Cancel</Text>
         </Pressable>

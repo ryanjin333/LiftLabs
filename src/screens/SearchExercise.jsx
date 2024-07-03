@@ -139,20 +139,29 @@ const SearchExercise = ({ navigation }) => {
       <View className="flex-row justify-center items-center space-x-4 mx-6 mt-6">
         {/* search textfield */}
         <TouchableWithoutFeedback onPress={() => {}}>
-          <TextInput
-            className="border rounded-[18px] border-[#2C2C2C] w-full h-11 bg-transparent text-white px-4 font-inter"
-            placeholderTextColor="#7C7C7C"
-            placeholder="Search exercise"
-            onChangeText={(value) => handleSearch(value)}
-            value={values.prompt}
-            onSubmitEditing={submit}
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoFocus={true}
-            focusable={false}
-            keyboardAppearance="dark"
-            returnKeyType="done"
-          />
+          <View className="w-full">
+            <TextInput
+              className="border rounded-[18px] border-[#2C2C2C] w-full h-11 bg-transparent text-white px-4 font-inter"
+              placeholderTextColor="#7C7C7C"
+              placeholder="Search username"
+              onChangeText={handleSearch}
+              value={values.prompt}
+              onSubmitEditing={submit}
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoFocus={true}
+              focusable={false}
+              keyboardAppearance="dark"
+              returnKeyType="done"
+            />
+            {values.isLoading && (
+              <ActivityIndicator
+                className="ml-4 absolute right-4 top-3"
+                size={"small"}
+                color="white"
+              />
+            )}
+          </View>
         </TouchableWithoutFeedback>
         {values.isLoading && (
           <ActivityIndicator className="ml-4" size={"small"} color="white" />
