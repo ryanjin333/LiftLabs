@@ -173,13 +173,18 @@ const SearchUser = ({ navigation }) => {
             }}
           >
             <Image
-              className="h-12 w-12 overflow-hidden rounded-[12px]"
-              // source={{ uri: item.gif }}
+              className="h-10 w-10 overflow-hidden rounded-[30px]"
+              source={{ uri: item.pfp }}
             />
             <View className="h-16 justify-center">
               <Text className="text-white font-interSemiBold ">
                 {item.username}
               </Text>
+              {item.fullName !== "" && (
+                <Text className="text-[#8f8f8f] font-inter text-xs">
+                  {item.fullName}
+                </Text>
+              )}
             </View>
           </Pressable>
         )}

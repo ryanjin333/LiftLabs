@@ -23,7 +23,11 @@ export const registerUser = createAsyncThunk(
       await createUserWithEmailAndPassword(auth, email, password);
       await setDoc(doc(db, "users", auth.currentUser.uid), {
         username: username.toLowerCase(),
-        fullName: "John Smith",
+        fullName: "",
+        pfp: "https://firebasestorage.googleapis.com/v0/b/gym-app-cf517.appspot.com/o/images%2Fpfp.jpg?alt=media&token=6864f471-9ca4-434d-a2c6-adc46f7f0b2c",
+        bio: "",
+        followers: [],
+        following: [],
         email: email,
         workouts: [],
         sharedWorkouts: [],

@@ -1,7 +1,15 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db, storage } from "../config/firebase";
+import * as ImagePicker from "expo-image-picker";
 
 import Animated, {
   FadeInUp,
@@ -27,21 +35,87 @@ const User = () => {
   // storage
   const [imageUrl, setImageUrl] = useState(null);
   useEffect(() => {
-    // storage
-    const storage = getStorage();
-
-    // reference to the profile picture
-    const pfpRef = ref(storage, "images/pfp.jpg");
-
-    // get the download URL
-    getDownloadURL(pfpRef)
-      .then((url) => {
+    const fetchImageUrl = async () => {
+      try {
+        const storage = getStorage();
+        const pfpLinkSnap = await getDoc(
+          doc(db, "users", auth.currentUser.uid)
+        );
+        const pfpRef = ref(storage, pfpLinkSnap.data().pfp);
+        const url = await getDownloadURL(pfpRef);
         setImageUrl(url);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error getting the image URL:", error);
-      });
+      }
+    };
+
+    fetchImageUrl();
   }, []);
+
+  const pickImage = async () => {
+    // Request permission to access the media library
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+      return;
+    }
+
+    // Let user pick an image from the media library
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      allowsMultipleSelection: false,
+    });
+
+    if (!result.canceled) {
+      uploadImage(result.assets[0].uri);
+    }
+  };
+
+  const uploadImage = async (uri) => {
+    try {
+      // Create a reference to the file
+      const imageRef = ref(
+        storage,
+        `images/${auth.currentUser.uid}/${Date.now()}.jpg`
+      );
+
+      // Convert image to byte array
+      const response = await fetch(uri);
+      const blob = await response.blob();
+
+      // Send image to Storage
+      const uploadTask = uploadBytesResumable(imageRef, blob);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // checks the percentage done
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+        },
+        (error) => {
+          console.error("Error uploading the image:", error);
+          Alert.alert("Upload Error", error.message);
+        },
+        async () => {
+          // if successful, create a download url and set it both in firestore and locally
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          const userDoc = doc(db, "users", auth.currentUser.uid);
+          await setDoc(userDoc, { pfp: downloadURL }, { merge: true });
+
+          setImageUrl(downloadURL);
+        }
+      );
+    } catch (error) {
+      console.error("Error uploading the image:", error);
+    }
+  };
+
   return (
     <>
       <AnimatedHeader offsetY={offsetY} title="User" />
@@ -49,9 +123,14 @@ const User = () => {
         className="flex-1 bg-black"
         ref={scrollViewAnimatedRef}
       >
+        <View className="h-24" />
         <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center justify-center">
+          {/* pfp */}
+
           {imageUrl ? (
-            <Image source={{ uri: imageUrl }} className="h-24 w-24" />
+            <Pressable onPress={pickImage}>
+              <Image source={{ uri: imageUrl }} className="h-24 w-24" />
+            </Pressable>
           ) : (
             <Text>Loading...</Text>
           )}
