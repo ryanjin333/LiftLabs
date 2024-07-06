@@ -9,11 +9,14 @@ import {
   Platform,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BlurView } from "expo-blur";
 import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
-import { auth, db } from "../config/firebase";
+
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db, storage } from "../config/firebase";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -39,6 +42,24 @@ const AddWorkoutModal = () => {
     setValues({ ...values, title: "", image: null });
   };
 
+  // when editing get the image TODO
+  // useEffect(() => {
+  //   const fetchImageUrl = async () => {
+  //     try {
+  //       const imageLinkSnap = await getDoc(
+  //         doc(db, "users", auth.currentUser.uid)
+  //       );
+  //       const imageRef = ref(storage, imageLinkSnap.data().pfp); // get current workout
+  //       const url = await getDownloadURL(pfpRef);
+  //       setValues({ ...values, image: url });
+  //     } catch (error) {
+  //       console.error("Error getting the image URL:", error);
+  //     }
+  //   };
+
+  //   fetchImageUrl();
+  // }, []);
+
   const donePressed = async () => {
     // if the title is not empty, add to list otherwise warn users
     if (values.title == "") {
@@ -47,13 +68,14 @@ const AddWorkoutModal = () => {
       return;
     }
     setValues({ ...values, isLoading: true });
+
     try {
       const newWorkout = {
         id: uuid.v4(),
         title: values.title,
         image: values.image
           ? { uri: values.image }
-          : "../assets/React_Native_Logo.png",
+          : "../assets/React_Native_Logo.png", // use default image if custom image isn't provided
         plan: [],
         createdBy: auth.currentUser.uid,
       };
@@ -67,11 +89,15 @@ const AddWorkoutModal = () => {
   };
 
   const pickImage = async () => {
+    // Request permission to access the media library
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
       alert("Sorry, we need camera roll permissions to make this work!");
       return;
     }
+
+    // Let user pick an image from the media library
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -81,9 +107,48 @@ const AddWorkoutModal = () => {
     });
 
     if (!result.canceled) {
-      setValues({ ...values, image: result.assets[0].uri });
+      uploadImage(result.assets[0].uri);
     }
   };
+
+  const uploadImage = async (uri) => {
+    try {
+      // Create a reference to the file
+      const imageRef = ref(
+        storage,
+        `images/${auth.currentUser.uid}/workouts/${Date.now()}.jpg`
+      );
+
+      // Convert image to byte array
+      const response = await fetch(uri);
+      const blob = await response.blob();
+
+      // Send image to Storage
+      const uploadTask = uploadBytesResumable(imageRef, blob);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // checks the percentage done
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+        },
+        (error) => {
+          console.error("Error uploading the image:", error);
+          Alert.alert("Upload Error", error.message);
+        },
+        async () => {
+          // if successful, create a download url and set it both in firestore and locally
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          setValues({ ...values, image: downloadURL });
+        }
+      );
+    } catch (error) {
+      console.error("Error uploading the image:", error);
+    }
+  };
+
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
       <KeyboardAvoidingView

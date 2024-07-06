@@ -1,12 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, Image, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
-import {
-  getStorage,
-  ref,
-  getDownloadURL,
-  uploadBytesResumable,
-} from "firebase/storage";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "../config/firebase";
 import * as ImagePicker from "expo-image-picker";
@@ -37,7 +32,6 @@ const User = () => {
   useEffect(() => {
     const fetchImageUrl = async () => {
       try {
-        const storage = getStorage();
         const pfpLinkSnap = await getDoc(
           doc(db, "users", auth.currentUser.uid)
         );
@@ -80,7 +74,7 @@ const User = () => {
       // Create a reference to the file
       const imageRef = ref(
         storage,
-        `images/${auth.currentUser.uid}/${Date.now()}.jpg`
+        `images/${auth.currentUser.uid}/profiles/${Date.now()}.jpg`
       );
 
       // Convert image to byte array
@@ -125,14 +119,22 @@ const User = () => {
       >
         <View className="h-24" />
         <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center justify-center">
-          {/* pfp */}
-
+          {/* pfp - TODO: ADD ANIMATIONS WHEN TAPPED */}
           {imageUrl ? (
             <Pressable onPress={pickImage}>
-              <Image source={{ uri: imageUrl }} className="h-24 w-24" />
+              <View className="absolute h-7 w-7 top-0 right-0 bg-[#515151a8] z-10 rounded-full justify-center items-center">
+                <Image
+                  className="h-4 w-4"
+                  source={require("../assets/edit_icon.png")}
+                />
+              </View>
+              <Image
+                source={{ uri: imageUrl }}
+                className="h-24 w-24 overflow-hidden rounded-full"
+              />
             </Pressable>
           ) : (
-            <Text>Loading...</Text>
+            <Text className="text-white">Loading...</Text>
           )}
         </SafeAreaView>
       </Animated.ScrollView>

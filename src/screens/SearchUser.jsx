@@ -173,7 +173,7 @@ const SearchUser = ({ navigation }) => {
             }}
           >
             <Image
-              className="h-10 w-10 overflow-hidden rounded-[30px]"
+              className="h-10 w-10 overflow-hidden rounded-full"
               source={{ uri: item.pfp }}
             />
             <View className="h-16 justify-center">
