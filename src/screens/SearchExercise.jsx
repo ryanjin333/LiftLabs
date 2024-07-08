@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -5,24 +6,24 @@ import {
   TextInput,
   ActivityIndicator,
   FlatList,
-  Image,
   TouchableWithoutFeedback,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import { Image } from "@rneui/themed";
 import { SafeAreaView } from "react-native-safe-area-context";
 import filter from "lodash.filter";
-
-// redux
 import { useDispatch } from "react-redux";
 import {
   changeModalVisible,
   changeExerciseName,
   addAllExercisesToFirestore,
 } from "../context/exerciseSlice";
-
-// firebase
-import { auth, db } from "../config/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import Animated, {
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../config/firebase";
 
 const initialState = {
   prompt: "",
@@ -124,6 +125,16 @@ const SearchExercise = ({ navigation }) => {
     return false;
   };
 
+  // loading animations for gif images
+  const loadingOpacity = useSharedValue(1);
+  useEffect(() => {
+    loadingOpacity.value = withRepeat(
+      withTiming(0.6, { duration: 700 }),
+      -1,
+      true
+    );
+  }, []);
+
   // functions
   const goBack = () => {
     navigation.goBack();
@@ -185,9 +196,27 @@ const SearchExercise = ({ navigation }) => {
             }}
           >
             <Image
-              className="h-12 w-12 overflow-hidden rounded-[12px]"
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 12,
+                overflow: "hidden",
+              }}
               source={{ uri: item.gif }}
+              PlaceholderContent={
+                <Animated.View
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 12,
+                    overflow: "hidden",
+                    backgroundColor: "#3d3d3d",
+                    opacity: loadingOpacity,
+                  }}
+                />
+              }
             />
+
             <View className="h-16 justify-center">
               <Text className="text-white font-interSemiBold ">
                 {item.name}

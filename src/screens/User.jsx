@@ -120,6 +120,7 @@ const User = () => {
         <View className="h-24" />
         <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center justify-center">
           {/* pfp - TODO: ADD ANIMATIONS WHEN TAPPED */}
+
           {imageUrl ? (
             <Pressable onPress={pickImage}>
               <View className="absolute h-7 w-7 top-0 right-0 bg-[#515151a8] z-10 rounded-full justify-center items-center">
