@@ -39,6 +39,7 @@ const initialState = {
   prompt: "",
   data: [],
   isLoading: false,
+  showNoResult: false,
 };
 
 const SearchUser = ({ navigation }) => {
@@ -54,6 +55,7 @@ const SearchUser = ({ navigation }) => {
           ...prevValues,
           data: [],
           isLoading: false,
+          showNoResult: false,
         }));
         return;
       }
@@ -61,6 +63,7 @@ const SearchUser = ({ navigation }) => {
       setValues((prevValues) => ({
         ...prevValues,
         isLoading: true,
+        showNoResult: false,
       }));
 
       try {
@@ -89,6 +92,7 @@ const SearchUser = ({ navigation }) => {
           ...prevValues,
           data: filteredData,
           isLoading: false,
+          showNoResult: true,
         }));
       } catch (error) {
         console.error("Error querying collection: ", error);
@@ -161,53 +165,65 @@ const SearchUser = ({ navigation }) => {
         </Pressable>
       </View>
       {/* results */}
-      <FlatList
-        data={values.data}
-        keyExtractor={(item) => item.id}
-        keyboardShouldPersistTaps="always"
-        ListFooterComponent={<View className=" h-96 w-full" />}
-        renderItem={({ item }) => (
-          // result item
-          <Pressable
-            className="flex-row items-center space-x-4"
-            onPress={() => {
-              submit(item.id); // submit current workout
-            }}
-          >
-            <Image
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 99,
-                overflow: "hidden",
+      {values.data.length !== 0 || values.prompt == "" ? (
+        <FlatList
+          data={values.data}
+          keyExtractor={(item) => item.id}
+          keyboardShouldPersistTaps="always"
+          ListFooterComponent={<View className=" h-96 w-full" />}
+          renderItem={({ item }) => (
+            // result item
+            <Pressable
+              className="flex-row items-center space-x-4"
+              onPress={() => {
+                submit(item.id); // submit current workout
               }}
-              source={{ uri: item.pfp }}
-              PlaceholderContent={
-                <Animated.View
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 12,
-                    overflow: "hidden",
-                    backgroundColor: "#3d3d3d",
-                    opacity: loadingOpacity,
-                  }}
-                />
-              }
-            />
-            <View className="h-16 justify-center">
-              <Text className="text-white font-interSemiBold ">
-                {item.username}
-              </Text>
-              {item.fullName !== "" && (
-                <Text className="text-[#8f8f8f] font-inter text-xs">
-                  {item.fullName}
+            >
+              <Image
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 99,
+                  overflow: "hidden",
+                }}
+                source={{ uri: item.pfp }}
+                PlaceholderContent={
+                  <Animated.View
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 12,
+                      overflow: "hidden",
+                      backgroundColor: "#3d3d3d",
+                      opacity: loadingOpacity,
+                    }}
+                  />
+                }
+              />
+              <View className="h-16 justify-center">
+                <Text className="text-white font-interSemiBold ">
+                  {item.username}
                 </Text>
-              )}
+                {item.fullName !== "" && (
+                  <Text className="text-[#8f8f8f] font-inter text-xs">
+                    {item.fullName}
+                  </Text>
+                )}
+              </View>
+            </Pressable>
+          )}
+        />
+      ) : (
+        <>
+          {values.showNoResult && (
+            <View className="flex-1 p-12 items-center">
+              <Text className="text-white font-interSemiBold">
+                No results for "{values.prompt}"
+              </Text>
             </View>
-          </Pressable>
-        )}
-      />
+          )}
+        </>
+      )}
     </SafeAreaView>
   );
 };
