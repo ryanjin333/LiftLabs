@@ -5,12 +5,11 @@ import {
   TextInput,
   ActivityIndicator,
   FlatList,
-  Image,
   TouchableWithoutFeedback,
 } from "react-native";
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import filter from "lodash.filter";
+import { Image } from "@rneui/themed";
 
 // redux
 import { useDispatch } from "react-redux";
@@ -31,16 +30,9 @@ import {
 import debounce from "lodash.debounce";
 
 import Animated, {
-  FadeInUp,
-  FadeInDown,
-  FadeOutUp,
-  FadeOutDown,
-  ZoomIn,
-  ZoomOut,
   useSharedValue,
-  useScrollViewOffset,
-  useAnimatedRef,
-  useDerivedValue,
+  withRepeat,
+  withTiming,
 } from "react-native-reanimated";
 
 const initialState = {
@@ -116,6 +108,16 @@ const SearchUser = ({ navigation }) => {
     debouncedSearch(value);
   };
 
+  // loading animations for pfp images
+  const loadingOpacity = useSharedValue(1);
+  useEffect(() => {
+    loadingOpacity.value = withRepeat(
+      withTiming(0.6, { duration: 700 }),
+      -1,
+      true
+    );
+  }, []);
+
   // functions
   const goBack = () => {
     navigation.goBack();
@@ -173,8 +175,25 @@ const SearchUser = ({ navigation }) => {
             }}
           >
             <Image
-              className="h-10 w-10 overflow-hidden rounded-full"
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 99,
+                overflow: "hidden",
+              }}
               source={{ uri: item.pfp }}
+              PlaceholderContent={
+                <Animated.View
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 12,
+                    overflow: "hidden",
+                    backgroundColor: "#3d3d3d",
+                    opacity: loadingOpacity,
+                  }}
+                />
+              }
             />
             <View className="h-16 justify-center">
               <Text className="text-white font-interSemiBold ">

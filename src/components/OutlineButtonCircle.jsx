@@ -39,7 +39,7 @@ const OutlineButtonCircle = ({ image, onPress }) => {
   return (
     <AnimatedPressable
       style={animatedStyle}
-      className="w-8 h-8 bg-[#fff] rounded-full items-center justify-center"
+      className="w-8 h-8 bg-[#ffffff] rounded-full items-center justify-center"
       onPress={btnTapped}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}

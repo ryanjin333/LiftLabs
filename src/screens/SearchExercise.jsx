@@ -154,7 +154,7 @@ const SearchExercise = ({ navigation }) => {
             <TextInput
               className="border rounded-[18px] border-[#2C2C2C] w-full h-11 bg-transparent text-white px-4 font-inter"
               placeholderTextColor="#7C7C7C"
-              placeholder="Search username"
+              placeholder="Search exercise"
               onChangeText={handleSearch}
               value={values.prompt}
               onSubmitEditing={submit}
@@ -174,9 +174,6 @@ const SearchExercise = ({ navigation }) => {
             )}
           </View>
         </TouchableWithoutFeedback>
-        {values.isLoading && (
-          <ActivityIndicator className="ml-4" size={"small"} color="white" />
-        )}
         <Pressable onPress={goBack}>
           <Text className="text-white font-inter">Cancel</Text>
         </Pressable>
