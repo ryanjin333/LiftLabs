@@ -46,6 +46,20 @@ export const createNewWorkout = createAsyncThunk(
   }
 );
 
+export const sendWorkout = createAsyncThunk(
+  "workout/sendWorkout",
+  async ({ newWorkout, uid }) => {
+    try {
+      const sendWorkoutFirestore = {
+        pendingWorkouts: arrayUnion(newWorkout),
+      };
+      await updateDoc(doc(db, "users", uid), sendWorkoutFirestore);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 export const workoutSlice = createSlice({
   name: "workout",
   initialState,
@@ -84,6 +98,16 @@ export const workoutSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(createNewWorkout.rejected, (state, action) => {
+      state.isLoading = false;
+    });
+    // send workout
+    builder.addCase(sendWorkout.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(sendWorkout.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(sendWorkout.rejected, (state, action) => {
       state.isLoading = false;
     });
   },

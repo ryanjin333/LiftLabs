@@ -31,6 +31,7 @@ export const registerUser = createAsyncThunk(
         email: email,
         workouts: [],
         sharedWorkouts: [],
+        pendingWorkouts: [],
       });
       return auth.currentUser.uid;
     } catch (error) {
