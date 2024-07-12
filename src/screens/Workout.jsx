@@ -40,6 +40,7 @@ const Workout = ({ route, navigation }) => {
   // redux
   const dispatch = useDispatch();
   const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
+
   // animations
   const scrollViewAnimatedRef = useAnimatedRef();
   const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);

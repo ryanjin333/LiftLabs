@@ -79,7 +79,7 @@ const AnimatedHeader = ({ offsetY, title }) => {
 
   return (
     <AnimatedBlurView
-      className=" w-screen items-start justify-end h-36 absolute top-0 left-0 right-0 z-10 pl-6"
+      className=" w-screen items-start justify-end h-36 absolute top-0 left-0 right-0 z-10 px-6"
       tint="dark"
       intensity={blurIntensity}
       style={blurViewAnimatedStyle}
@@ -91,6 +91,8 @@ const AnimatedHeader = ({ offsetY, title }) => {
           onLayout={handleTextLayout}
           entering={FadeInUp.duration(1000).springify()}
           exiting={FadeOutUp.delay(300).duration(1000).springify()}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
           {title}
         </Animated.Text>
