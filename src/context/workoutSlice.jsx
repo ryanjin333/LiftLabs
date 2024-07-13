@@ -12,6 +12,7 @@ const initialState = {
   alertType: "",
   workouts: [],
   sharedWorkouts: [],
+  pendingWorkouts: [],
   dropdownTitle: "All",
   modalVisible: false,
   modalMode: "add",
@@ -85,6 +86,7 @@ export const workoutSlice = createSlice({
     builder.addCase(fetchWorkouts.fulfilled, (state, action) => {
       state.workouts = action.payload.workouts;
       state.sharedWorkouts = action.payload.sharedWorkouts;
+      state.pendingWorkouts = action.payload.pendingWorkouts;
       state.isLoading = false;
     });
     builder.addCase(fetchWorkouts.rejected, (state, action) => {

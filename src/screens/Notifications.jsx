@@ -1,6 +1,9 @@
-import { View, Text } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
+
+// redux imports
+import { useSelector, useDispatch } from "react-redux";
 
 // reanimated imports
 import Animated, {
@@ -13,9 +16,12 @@ import Animated, {
   useAnimatedRef,
   useDerivedValue,
 } from "react-native-reanimated";
-import { AnimatedHeader } from "../components";
+import { AnimatedHeader, WorkoutRow } from "../components";
 
 const Notifications = () => {
+  // redux
+  const workout = useSelector((state) => state.workout);
+
   // animations
   const scrollViewAnimatedRef = useAnimatedRef();
   const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);
@@ -23,6 +29,7 @@ const Notifications = () => {
   const offsetY = useDerivedValue(() =>
     parseInt(scrollViewOffsetY.value.toFixed(1))
   );
+  console.log(workout.pendingWorkouts);
 
   return (
     <>
@@ -31,7 +38,27 @@ const Notifications = () => {
         className="flex-1 bg-black"
         ref={scrollViewAnimatedRef}
       >
-        <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center"></SafeAreaView>
+        <View className="h-24" />
+        <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
+          {/* pending workouts */}
+          {workout.pendingWorkouts.length == 0 ? (
+            <View className="flex-1 items-center mt-20">
+              <Text className="text-center text-white w-44 font-inter">
+                {"Nothing to see here :)"}
+              </Text>
+            </View>
+          ) : (
+            <View className="w-full mt-7">
+              <FlatList
+                scrollEnabled={false}
+                showsVerticalScrollIndicator={false}
+                data={workout.pendingWorkouts}
+                renderItem={({ item }) => <WorkoutRow currentWorkout={item} />}
+                keyExtractor={(item) => `${item.id}-${workout.dropdownTitle}`}
+              />
+            </View>
+          )}
+        </SafeAreaView>
       </Animated.ScrollView>
     </>
   );
