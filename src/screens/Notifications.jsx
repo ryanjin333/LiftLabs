@@ -29,7 +29,6 @@ const Notifications = () => {
   const offsetY = useDerivedValue(() =>
     parseInt(scrollViewOffsetY.value.toFixed(1))
   );
-  console.log(workout.pendingWorkouts);
 
   return (
     <>
@@ -43,8 +42,8 @@ const Notifications = () => {
           {/* pending workouts */}
           {workout.pendingWorkouts.length == 0 ? (
             <View className="flex-1 items-center mt-20">
-              <Text className="text-center text-white w-44 font-inter">
-                {"Nothing to see here :)"}
+              <Text className="text-center text-white w-44 font-inter text-lg">
+                {"No new notifications"}
               </Text>
             </View>
           ) : (
@@ -53,7 +52,9 @@ const Notifications = () => {
                 scrollEnabled={false}
                 showsVerticalScrollIndicator={false}
                 data={workout.pendingWorkouts}
-                renderItem={({ item }) => <WorkoutRow currentWorkout={item} />}
+                renderItem={({ item }) => (
+                  <WorkoutRow currentWorkout={item} isNotification={true} />
+                )}
                 keyExtractor={(item) => `${item.id}-${workout.dropdownTitle}`}
               />
             </View>

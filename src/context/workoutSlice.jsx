@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Firebase
-import { updateDoc, arrayUnion } from "firebase/firestore";
+import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
 const initialState = {
   isLoading: false,
@@ -34,18 +36,55 @@ export const createNewWorkout = createAsyncThunk(
   "workout/createNewWorkout",
   async (newWorkout) => {
     try {
-      const newWorkoutFirestore = {
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
         workouts: arrayUnion(newWorkout),
-      };
-      await updateDoc(
-        doc(db, "users", auth.currentUser.uid),
-        newWorkoutFirestore
-      );
+      });
     } catch (error) {
       console.error(error);
     }
   }
 );
+// adds a pending workout to a shared workout
+export const addWorkout = createAsyncThunk(
+  "workout/addWorkout",
+  async (workout) => {
+    try {
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        sharedWorkouts: arrayUnion(workout),
+      });
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        pendingWorkouts: arrayRemove(workout),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
+export const deleteWorkout = createAsyncThunk(
+  "workout/deleteWorkout",
+  async (workout) => {
+    try {
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        pendingWorkouts: arrayRemove(workout),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
+// export const getUsername = createAsyncThunk(
+//   "workout/getUsername",
+//   async (uid) => {
+//     try {
+//       const usernameSnap = await getDoc(doc(db, "users", uid));
+//       return usernameSnap.data().username;
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   }
+// );
 
 export const sendWorkout = createAsyncThunk(
   "workout/sendWorkout",
@@ -102,6 +141,26 @@ export const workoutSlice = createSlice({
     builder.addCase(createNewWorkout.rejected, (state, action) => {
       state.isLoading = false;
     });
+    // // get username
+    // builder.addCase(getUsername.pending, (state, action) => {
+    //   state.isLoading = true;
+    // });
+    // builder.addCase(getUsername.fulfilled, (state, action) => {
+    //   state.isLoading = false;
+    // });
+    // builder.addCase(getUsername.rejected, (state, action) => {
+    //   state.isLoading = false;
+    // });
+    // delete workout
+    builder.addCase(deleteWorkout.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteWorkout.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(deleteWorkout.rejected, (state, action) => {
+      state.isLoading = false;
+    });
     // send workout
     builder.addCase(sendWorkout.pending, (state, action) => {
       state.isLoading = true;
@@ -110,6 +169,16 @@ export const workoutSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(sendWorkout.rejected, (state, action) => {
+      state.isLoading = false;
+    });
+    // add workout
+    builder.addCase(addWorkout.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(addWorkout.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(addWorkout.rejected, (state, action) => {
       state.isLoading = false;
     });
   },
