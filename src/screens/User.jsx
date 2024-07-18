@@ -6,6 +6,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 
+import { Image as LoadingImage } from "@rneui/themed";
 import Animated, {
   FadeInUp,
   FadeInDown,
@@ -15,6 +16,10 @@ import Animated, {
   useScrollViewOffset,
   useAnimatedRef,
   useDerivedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+  withRepeat,
 } from "react-native-reanimated";
 import { AnimatedHeader } from "../components";
 
@@ -26,6 +31,15 @@ const User = () => {
   const offsetY = useDerivedValue(() =>
     parseInt(scrollViewOffsetY.value.toFixed(1))
   );
+
+  const loadingOpacity = useSharedValue(1);
+  useEffect(() => {
+    loadingOpacity.value = withRepeat(
+      withTiming(0.6, { duration: 700 }),
+      -1,
+      true
+    );
+  }, []);
 
   // storage
   const [imageUrl, setImageUrl] = useState(null);
@@ -129,9 +143,26 @@ const User = () => {
                   source={require("../assets/edit_icon.png")}
                 />
               </View>
-              <Image
+              <LoadingImage
+                style={{
+                  width: 96,
+                  height: 96,
+                  borderRadius: 99,
+                  overflow: "hidden",
+                }}
                 source={{ uri: imageUrl }}
-                className="h-24 w-24 overflow-hidden rounded-full"
+                PlaceholderContent={
+                  <Animated.View
+                    style={{
+                      width: 96,
+                      height: 96,
+                      borderRadius: 99,
+                      overflow: "hidden",
+                      backgroundColor: "#3d3d3d",
+                      opacity: loadingOpacity,
+                    }}
+                  />
+                }
               />
             </Pressable>
           ) : (

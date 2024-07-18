@@ -99,32 +99,37 @@ export const createNewExercise = createAsyncThunk(
 
 export const editExercise = createAsyncThunk(
   "exercise/editExercise",
-  async (newExercise, { getState }) => {
+  async (updatedExercise, { getState }) => {
     try {
       const currentWorkout = getState().exercise.currentWorkout;
       const workouts = getState().workout.workouts;
+
       const localWorkout = {
         ...currentWorkout,
-        plan: [...currentWorkout.plan, newExercise],
+        plan: currentWorkout.plan.map((exercise) =>
+          exercise.id === updatedExercise.id ? updatedExercise : exercise
+        ),
       };
-      const newExerciseFirestore = {
-        workouts: workouts.map((workout) => {
-          if (workout.id === currentWorkout.id) {
-            return {
-              ...workout,
-              plan: [...workout.plan, newExercise],
-            };
-          }
-          return workout;
-        }),
-      };
-      await updateDoc(
-        doc(db, "users", auth.currentUser.uid),
-        newExerciseFirestore
-      );
+
+      const updatedWorkouts = workouts.map((workout) => {
+        if (workout.id === currentWorkout.id) {
+          return {
+            ...workout,
+            plan: workout.plan.map((exercise) =>
+              exercise.id === updatedExercise.id ? updatedExercise : exercise
+            ),
+          };
+        }
+        return workout;
+      });
+
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        workouts: updatedWorkouts,
+      });
+
       return localWorkout;
     } catch (error) {
-      console.error(error);
+      console.error("Error editing exercise: ", error);
     }
   }
 );
@@ -166,6 +171,17 @@ export const exerciseSlice = createSlice({
       state.currentWorkout = action.payload;
     });
     builder.addCase(createNewExercise.rejected, (state, action) => {
+      state.isLoading = false;
+    });
+    // current exercise
+    builder.addCase(editExercise.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(editExercise.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentWorkout = action.payload;
+    });
+    builder.addCase(editExercise.rejected, (state, action) => {
       state.isLoading = false;
     });
   },

@@ -2,25 +2,36 @@ import {
   View,
   Text,
   Pressable,
-  Image,
   Modal,
   TextInput,
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { BlurView } from "expo-blur";
 import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
 
+import { Image as LoadingImage } from "@rneui/themed";
+
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "../config/firebase";
 
-// redux
+import Animated, {
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
+
 import { useDispatch, useSelector } from "react-redux";
-import { createNewWorkout, changeModalVisible } from "../context/workoutSlice";
+import {
+  createNewWorkout,
+  changeModalVisible,
+  editWorkout,
+} from "../context/workoutSlice";
 import ModalDoneButton from "./ModalDoneButton";
 
 const initialState = {
@@ -35,12 +46,35 @@ const AddWorkoutModal = () => {
   // redux
   const dispatch = useDispatch();
   const modalVisible = useSelector((state) => state.workout.modalVisible);
+  const editModeWorkout = useSelector((state) => state.workout.editModeWorkout);
+
+  useEffect(() => {
+    if (editModeWorkout !== null) {
+      // the current modal is in edit mode
+      const { title, image } = editModeWorkout;
+      setValues({
+        ...values,
+        title: title,
+        image: image.uri,
+      });
+    }
+  }, [editModeWorkout, editModeWorkout]);
 
   // functions
   const resetModal = () => {
     dispatch(changeModalVisible(false));
     setValues({ ...values, title: "", image: null });
   };
+  // animations
+
+  const loadingOpacity = useSharedValue(1);
+  useEffect(() => {
+    loadingOpacity.value = withRepeat(
+      withTiming(0.6, { duration: 700 }),
+      -1,
+      true
+    );
+  }, []);
 
   // when editing get the image TODO
   // useEffect(() => {
@@ -70,16 +104,31 @@ const AddWorkoutModal = () => {
     setValues({ ...values, isLoading: true });
 
     try {
-      const newWorkout = {
-        id: uuid.v4(),
-        title: values.title,
-        image: values.image
-          ? { uri: values.image }
-          : "../assets/React_Native_Logo.png", // use default image if custom image isn't provided
-        plan: [],
-        createdBy: auth.currentUser.uid,
-      };
-      dispatch(createNewWorkout(newWorkout));
+      if (editModeWorkout !== null) {
+        // edit workout
+        const updatedWorkout = {
+          id: editModeWorkout.id,
+          title: values.title,
+          image: values.image
+            ? { uri: values.image }
+            : "../assets/React_Native_Logo.png", // use default image if custom image isn't provided
+          plan: [],
+          createdBy: auth.currentUser.uid,
+        };
+        dispatch(editWorkout(updatedWorkout));
+      } else {
+        // add workout
+        const newWorkout = {
+          id: uuid.v4(),
+          title: values.title,
+          image: values.image
+            ? { uri: values.image }
+            : "../assets/React_Native_Logo.png", // use default image if custom image isn't provided
+          plan: [],
+          createdBy: auth.currentUser.uid,
+        };
+        dispatch(createNewWorkout(newWorkout));
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -191,12 +240,30 @@ const AddWorkoutModal = () => {
                       source={require("../assets/edit_icon.png")}
                     />
                   </View>
-                  <Image
-                    className="h-16 w-16 rounded-[18px] mt-2 mr-2 overflow-hidden"
+                  <LoadingImage
+                    style={{
+                      width: 64,
+                      height: 64,
+                      borderRadius: 18,
+                      overflow: "hidden",
+                      marginHorizontal: 8,
+                    }}
                     source={
                       values.image
                         ? { uri: values.image }
                         : require("../assets/React_Native_Logo.png")
+                    }
+                    PlaceholderContent={
+                      <Animated.View
+                        style={{
+                          width: 64,
+                          height: 64,
+                          borderRadius: 18,
+                          overflow: "hidden",
+                          backgroundColor: "#3d3d3d",
+                          opacity: loadingOpacity,
+                        }}
+                      />
                     }
                   />
                 </Pressable>

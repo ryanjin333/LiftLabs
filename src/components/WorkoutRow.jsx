@@ -10,7 +10,12 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
+  withRepeat,
 } from "react-native-reanimated";
+
+import { Image as LoadingImage } from "@rneui/themed";
+
+import WorkoutRowDropdown from "./WorkoutRowDropdown";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -40,6 +45,15 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
     scale.value = withSpring(1, { damping: 50, stiffness: 100 });
   };
 
+  const loadingOpacity = useSharedValue(1);
+  useEffect(() => {
+    loadingOpacity.value = withRepeat(
+      withTiming(0.6, { duration: 700 }),
+      -1,
+      true
+    );
+  }, []);
+
   // redux
   const dispatch = useDispatch();
 
@@ -61,12 +75,32 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
       onPressOut={handlePressOut}
     >
       <View className="flex-row">
-        <Image
-          className="h-16 w-16 rounded-[18px] overflow-hidden my-2 mr-6 bg-primary"
+        {/* optional image */}
+        <LoadingImage
+          style={{
+            width: 64,
+            height: 64,
+            borderRadius: 18,
+            overflow: "hidden",
+            marginVertical: 8,
+            marginRight: 24,
+          }}
           source={
             typeof image == "string"
               ? require("../assets/React_Native_Logo.png")
               : image
+          }
+          PlaceholderContent={
+            <Animated.View
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: 18,
+                overflow: "hidden",
+                backgroundColor: "#3d3d3d",
+                opacity: loadingOpacity,
+              }}
+            />
           }
         />
         <View className="justify-between py-2">
@@ -82,8 +116,8 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
           </Text>
         </View>
       </View>
-      {isNotification && (
-        <View className="flex-row space-x-6 z-10">
+      {isNotification ? (
+        <View className="flex-row space-x-6">
           <Pressable
             className="h-10 w-10 justify-center items-center"
             onPress={() => {
@@ -97,12 +131,19 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
             className="h-10 w-10 justify-center items-center"
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-              dispatch(deleteWorkout(currentWorkout));
+              dispatch(
+                deleteWorkout({
+                  workout: currentWorkout,
+                  type: "pendingWorkouts",
+                })
+              );
             }}
           >
             <Image className="h-5 w-5" source={require("../assets/no.png")} />
           </Pressable>
         </View>
+      ) : (
+        <WorkoutRowDropdown currentWorkout={currentWorkout} />
       )}
     </AnimatedPressable>
   );

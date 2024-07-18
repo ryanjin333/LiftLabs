@@ -9,6 +9,7 @@ import AddWorkoutModal from "./AddWorkoutModal";
 import AddExerciseModal from "./AddExerciseModal";
 import LoadingGenericButton from "./LoadingGenericButton";
 import Dropdown from "./Dropdown";
+import WorkoutRowDropdown from "./WorkoutRowDropdown";
 import FocusStartButton from "./FocusStartButton";
 import AnimatedHeader from "./AnimatedHeader";
 import OutlineButtonCircle from "./OutlineButtonCircle";
@@ -26,6 +27,7 @@ export {
   AddExerciseModal,
   LoadingGenericButton,
   Dropdown,
+  WorkoutRowDropdown,
   FocusStartButton,
   AnimatedHeader,
   OutlineButtonCircle,

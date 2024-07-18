@@ -18,6 +18,7 @@ const initialState = {
   dropdownTitle: "All",
   modalVisible: false,
   modalMode: "add",
+  editModeWorkout: null,
 };
 
 export const fetchWorkouts = createAsyncThunk(
@@ -61,12 +62,31 @@ export const addWorkout = createAsyncThunk(
   }
 );
 
+export const editWorkout = createAsyncThunk(
+  "workout/editWorkout",
+  async (updatedWorkout) => {
+    try {
+      const userDocRef = doc(db, "users", auth.currentUser.uid);
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+
+      const updatedWorkouts = userData.workouts.map((workout) =>
+        workout.id === updatedWorkout.id ? updatedWorkout : workout
+      );
+
+      await updateDoc(userDocRef, { workouts: updatedWorkouts });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 export const deleteWorkout = createAsyncThunk(
   "workout/deleteWorkout",
-  async (workout) => {
+  async ({ workout, type }) => {
     try {
       await updateDoc(doc(db, "users", auth.currentUser.uid), {
-        pendingWorkouts: arrayRemove(workout),
+        [type]: arrayRemove(workout),
       });
     } catch (error) {
       console.error(error);
@@ -115,6 +135,9 @@ export const workoutSlice = createSlice({
     },
     setModalMode(state, action) {
       state.modalMode = action;
+    },
+    setEditModeWorkout(state, action) {
+      state.editModeWorkout = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -185,7 +208,11 @@ export const workoutSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeDropdownTitle, changeModalVisible, setIsLoading } =
-  workoutSlice.actions;
+export const {
+  changeDropdownTitle,
+  changeModalVisible,
+  setIsLoading,
+  setEditModeWorkout,
+} = workoutSlice.actions;
 
 export default workoutSlice.reducer;

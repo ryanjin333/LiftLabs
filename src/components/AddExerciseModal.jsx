@@ -23,6 +23,7 @@ import {
   changeExerciseName,
   createNewExercise,
   setEditModePlan,
+  editExercise,
 } from "../context/exerciseSlice";
 import ModalDoneButton from "./ModalDoneButton";
 
@@ -31,6 +32,7 @@ const initialState = {
   reps: 0,
   weight: 0,
   isLoading: false,
+  firstEditLoad: true,
 };
 
 // Secondary components
@@ -80,7 +82,10 @@ const AddExerciseModal = () => {
     if (editModePlan !== null) {
       // the current modal is in edit mode
       const { sets, weight, reps, title } = editModePlan;
-      dispatch(changeExerciseName(title));
+      if (values.firstEditLoad) {
+        dispatch(changeExerciseName(title));
+        setValues({ ...values, firstEditLoad: false });
+      }
       setValues({
         ...values,
         sets: sets,
@@ -88,7 +93,7 @@ const AddExerciseModal = () => {
         reps: reps,
       });
     }
-  }, [editModePlan]);
+  }, [editModePlan, modalVisible]);
 
   const donePressed = async () => {
     // if the title is not empty, add to list otherwise warn users
@@ -101,6 +106,14 @@ const AddExerciseModal = () => {
     try {
       if (editModePlan !== null) {
         // edit exercise
+        const updatedExercise = {
+          id: editModePlan.id,
+          title: exerciseName,
+          sets: values.sets,
+          reps: values.reps,
+          weight: values.weight,
+        };
+        dispatch(editExercise(updatedExercise));
       } else {
         // new exercise
         const newExercise = {
@@ -130,7 +143,7 @@ const AddExerciseModal = () => {
     dispatch(changeModalVisible(false));
     dispatch(changeExerciseName(""));
     dispatch(setEditModePlan(null));
-    setValues({ ...values, sets: 0, reps: 0, weight: 0 });
+    setValues({ ...values, sets: 0, reps: 0, weight: 0, firstEditLoad: true });
   };
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>

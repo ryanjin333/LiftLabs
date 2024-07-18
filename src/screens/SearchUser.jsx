@@ -217,9 +217,9 @@ const SearchUser = ({ navigation }) => {
                 PlaceholderContent={
                   <Animated.View
                     style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 12,
+                      width: 40,
+                      height: 40,
+                      borderRadius: 99,
                       overflow: "hidden",
                       backgroundColor: "#3d3d3d",
                       opacity: loadingOpacity,
