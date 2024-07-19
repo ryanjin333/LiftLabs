@@ -24,6 +24,7 @@ import {
   createNewExercise,
   setEditModePlan,
   editExercise,
+  deleteExercise,
 } from "../context/exerciseSlice";
 import ModalDoneButton from "./ModalDoneButton";
 
@@ -139,6 +140,12 @@ const AddExerciseModal = () => {
     dispatch(changeModalVisible(false));
   };
 
+  const deletePressed = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+    resetModal();
+    dispatch(deleteExercise(editModePlan.id));
+  };
+
   const resetModal = () => {
     dispatch(changeModalVisible(false));
     dispatch(changeExerciseName(""));
@@ -166,21 +173,35 @@ const AddExerciseModal = () => {
               tint="dark"
               className="h-80 w-full items-center px-5"
             >
-              {/* exit button */}
-              <View className=" w-full h-6 mt-5 justify-center items-end">
+              <View className="flex-row w-full h-6 mt-5 justify-between items-center">
+                {/* delete button */}
+                {editModePlan ? (
+                  <Pressable
+                    className="w-10 h-10 flex justify-center items-center mt-5 rounded-full bg-[#292929]"
+                    onPress={deletePressed}
+                  >
+                    <Image
+                      className="h-6 w-6"
+                      source={require("../assets/delete.png")}
+                    />
+                  </Pressable>
+                ) : (
+                  <View className="w-10 h-10 flex justify-center items-center mt-5 rounded-full bg-opacity-0" />
+                )}
+                {/* exit button */}
                 <Pressable
-                  className="w-11 h-11 flex justify-start items-end mt-5"
+                  className="w-10 h-10 flex justify-center items-center mt-5 rounded-full bg-[#292929]"
                   onPress={resetModal}
                 >
                   <Image
-                    className="h-6 w-6"
+                    className="h-5 w-5"
                     source={require("../assets/exit.png")}
                   />
                 </Pressable>
               </View>
               {/* choose exercise */}
               <Pressable onPress={pickExercise}>
-                <View className="h-12 w-80 bg-[#292929] rounded-[25px] justify-center items-center flex-row space-x-2 mt-6 px-10">
+                <View className="h-12 w-80 bg-[#292929] rounded-[25px] justify-center items-center flex-row space-x-2 mt-8 px-10">
                   <Text
                     className="text-white font-interSemiBold "
                     numberOfLines={1}

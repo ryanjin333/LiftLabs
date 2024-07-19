@@ -31,7 +31,7 @@ const initialState = {
   modalVisible: false,
   editModePlan: null,
   exerciseName: "",
-  currentWorkout: null,
+  currentWorkout: { createdBy: "", id: "", image: "", plan: [], title: "" },
 };
 
 export const fetchPlan = createAsyncThunk("exercise/fetchPlan", async () => {
@@ -134,6 +134,31 @@ export const editExercise = createAsyncThunk(
   }
 );
 
+export const deleteExercise = createAsyncThunk(
+  "exercise/deleteExercise",
+  async (exerciseId, { getState }) => {
+    try {
+      const currentWorkout = getState().exercise.currentWorkout;
+      const workouts = getState().workout.workouts;
+      const updatedWorkouts = workouts.map((workout) => {
+        if (workout.id === currentWorkout.id) {
+          return {
+            ...workout,
+            plan: workout.plan.filter((exercise) => exercise.id !== exerciseId),
+          };
+        }
+        return workout;
+      });
+
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        workouts: updatedWorkouts,
+      });
+    } catch (error) {
+      console.error("Error deleting exercise: ", error);
+    }
+  }
+);
+
 export const exerciseSlice = createSlice({
   name: "exercise",
   initialState,
@@ -173,7 +198,7 @@ export const exerciseSlice = createSlice({
     builder.addCase(createNewExercise.rejected, (state, action) => {
       state.isLoading = false;
     });
-    // current exercise
+    // edit exercise
     builder.addCase(editExercise.pending, (state, action) => {
       state.isLoading = true;
     });
@@ -182,6 +207,23 @@ export const exerciseSlice = createSlice({
       state.currentWorkout = action.payload;
     });
     builder.addCase(editExercise.rejected, (state, action) => {
+      state.isLoading = false;
+    });
+    // delete exercise
+    builder.addCase(deleteExercise.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteExercise.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentWorkout = {
+        createdBy: "",
+        id: "",
+        image: "",
+        plan: [],
+        title: "",
+      };
+    });
+    builder.addCase(deleteExercise.rejected, (state, action) => {
       state.isLoading = false;
     });
   },

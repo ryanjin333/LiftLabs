@@ -13,6 +13,7 @@ import React, { useState, useEffect } from "react";
 import { BlurView } from "expo-blur";
 import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
+import * as Haptics from "expo-haptics";
 
 import { Image as LoadingImage } from "@rneui/themed";
 
@@ -31,6 +32,7 @@ import {
   createNewWorkout,
   changeModalVisible,
   editWorkout,
+  deleteWorkout,
 } from "../context/workoutSlice";
 import ModalDoneButton from "./ModalDoneButton";
 
@@ -137,6 +139,17 @@ const AddWorkoutModal = () => {
     }
   };
 
+  const deletePressed = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+    resetModal();
+    dispatch(
+      deleteWorkout({
+        workout: editModeWorkout,
+        type: "workouts",
+      })
+    );
+  };
+
   const pickImage = async () => {
     // Request permission to access the media library
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -219,18 +232,33 @@ const AddWorkoutModal = () => {
               tint="dark"
               className="h-72 w-full items-center px-5"
             >
-              {/* exit button */}
-              <View className=" w-full h-6 mt-5 justify-center items-end">
+              <View className="flex-row w-full h-6 mt-5 justify-between items-center">
+                {/* delete button */}
+                {editModeWorkout ? (
+                  <Pressable
+                    className="w-10 h-10 flex justify-center items-center mt-5 rounded-full bg-[#292929]"
+                    onPress={deletePressed}
+                  >
+                    <Image
+                      className="h-6 w-6"
+                      source={require("../assets/delete.png")}
+                    />
+                  </Pressable>
+                ) : (
+                  <View className="w-10 h-10 flex justify-center items-center mt-5 rounded-full bg-opacity-0" />
+                )}
+                {/* exit button */}
                 <Pressable
-                  className="w-11 h-11 flex justify-start items-end mt-5"
+                  className="w-10 h-10 flex justify-center items-center mt-5 rounded-full bg-[#292929]"
                   onPress={resetModal}
                 >
                   <Image
-                    className="h-6 w-6"
+                    className="h-5 w-5"
                     source={require("../assets/exit.png")}
                   />
                 </Pressable>
               </View>
+
               <View className="flex-row justify-between w-full">
                 {/* optional image */}
                 <Pressable onPress={pickImage}>
