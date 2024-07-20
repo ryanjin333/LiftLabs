@@ -53,14 +53,6 @@ const Login = () => {
     return unsubscribe;
   }, [navigation, isFocused]);
 
-  // animations
-  const scrollViewAnimatedRef = useAnimatedRef();
-  const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);
-
-  const offsetY = useDerivedValue(() =>
-    parseInt(scrollViewOffsetY.value.toFixed(1))
-  );
-
   // functions
 
   const onSubmit = async () => {
@@ -95,17 +87,21 @@ const Login = () => {
 
   return (
     <>
-      {/* changes visibility of screen */}
-      {values.loginScreenVisible && (
-        <>
-          <AnimatedHeader offsetY={offsetY} title="Login" />
-          <Animated.ScrollView
-            className="flex-1 bg-black"
-            ref={scrollViewAnimatedRef}
-          >
-            <View className=" h-40" />
-
-            <SafeAreaView className="flex-1 bg-black px-6 items-center">
+      <ScrollView className="flex-1 bg-black">
+        <SafeAreaView className="flex-1 bg-black px-6 items-center">
+          {/* changes visibility of screen */}
+          {values.loginScreenVisible && (
+            <>
+              {/* login text */}
+              <View className="items-start w-full">
+                <Animated.Text
+                  className="text-white text-5xl mt-24 mb-16 font-interBold"
+                  entering={FadeInUp.duration(1000).springify()}
+                  exiting={FadeOutUp.delay(500).duration(1000).springify()}
+                >
+                  Login
+                </Animated.Text>
+              </View>
               {/* form layout */}
               <View className="mt-32 mb-7 gap-7 w-full items-center">
                 <Animated.View
@@ -167,10 +163,10 @@ const Login = () => {
                   />
                 </Animated.View>
               </View>
-            </SafeAreaView>
-          </Animated.ScrollView>
-        </>
-      )}
+            </>
+          )}
+        </SafeAreaView>
+      </ScrollView>
     </>
   );
 };

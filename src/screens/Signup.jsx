@@ -1,4 +1,11 @@
-import { View, Text, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  Platform,
+  KeyboardAvoidingView,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -7,7 +14,6 @@ import {
   LoginSignupSwitcher,
   GoogleAppleAuth,
   LoadingGenericButton,
-  AnimatedHeader,
 } from "../components";
 
 import { useNavigation } from "@react-navigation/native";
@@ -74,29 +80,26 @@ const Signup = () => {
     }
   }, [user.uid]);
 
-  // animations
-  const scrollViewAnimatedRef = useAnimatedRef();
-  const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);
-
-  const offsetY = useDerivedValue(() =>
-    parseInt(scrollViewOffsetY.value.toFixed(1))
-  );
-
   // functions
   const handleChange = (value, name) => {
     setValues({ ...values, [name]: value });
   };
   return (
     <>
-      {values.signupScreenVisible && (
-        <>
-          <AnimatedHeader offsetY={offsetY} title="Sign up" />
-          <Animated.ScrollView
-            className="flex-1 bg-black"
-            ref={scrollViewAnimatedRef}
-          >
-            <View className=" h-40" />
-            <SafeAreaView className="flex-1 bg-black px-6 items-center">
+      <ScrollView className="flex-1 bg-black">
+        <SafeAreaView className="flex-1 bg-black px-6 items-center">
+          {values.signupScreenVisible && (
+            <>
+              {/* sign up text */}
+              <View className="items-start w-full">
+                <Animated.Text
+                  className="text-white text-5xl mt-24 mb-16 font-interBold"
+                  entering={FadeInUp.duration(1000).springify()}
+                  exiting={FadeOutUp.delay(500).duration(1000).springify()}
+                >
+                  Sign up
+                </Animated.Text>
+              </View>
               {/* form layout */}
               <View className="mt-32 mb-7 gap-7 w-full items-center">
                 <Animated.View
@@ -170,10 +173,10 @@ const Signup = () => {
                   />
                 </Animated.View>
               </View>
-            </SafeAreaView>
-          </Animated.ScrollView>
-        </>
-      )}
+            </>
+          )}
+        </SafeAreaView>
+      </ScrollView>
     </>
   );
 };

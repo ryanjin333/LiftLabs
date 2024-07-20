@@ -7,7 +7,7 @@ import {
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
@@ -16,11 +16,27 @@ const Focus = ({ navigation }) => {
   // redux
   const dispatch = useDispatch();
   const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
+
+  const [fullPlan, setFullPlan] = useState({});
+  useEffect(() => {
+    const fullPlanAlgorithm = currentWorkout.plan.flatMap((exercise) => {
+      // Create an array of sets for each exercise
+      return Array.from(
+        { length: parseInt(exercise.sets, 10) },
+        (_, index) => ({
+          ...exercise,
+          set: index + 1,
+          uniqueId: `${exercise.id}-${index + 1}`,
+        })
+      );
+    });
+    setFullPlan(fullPlanAlgorithm);
+  }, []);
   return (
     <FlatList
       className="bg-black"
-      data={currentWorkout.plan}
-      keyExtractor={(item) => item.id}
+      data={fullPlan}
+      keyExtractor={(item) => item.uniqueId}
       renderItem={({ item }) => (
         // actual screen
         <SafeAreaView className="h-screen w-screen p-6 bg-black">
@@ -28,7 +44,7 @@ const Focus = ({ navigation }) => {
           <View className="flex-row justify-between">
             {/* title  */}
             <Text className="w-72 text-primary font-interBold text-3xl">
-              {item.sets}
+              {item.set} of {item.sets}
               <Text className="text-white font-interMedium text-2xl">
                 {" "}
                 sets of{"\n"}
@@ -59,6 +75,10 @@ const Focus = ({ navigation }) => {
           <Text className=" text-primary font-interBold text-3xl ">
             {item.weight}
             <Text className="text-white font-interMedium text-2xl"> lbs</Text>
+          </Text>
+          {/* swipe down message */}
+          <Text className=" text-primary font-interBold text-3xl absolute bottom-0 right-0">
+            swipe down
           </Text>
         </SafeAreaView>
       )}

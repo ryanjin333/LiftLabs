@@ -4,6 +4,8 @@ import * as Haptics from "expo-haptics";
 
 import { useNavigation } from "@react-navigation/native";
 
+import { useDispatch, useSelector } from "react-redux";
+
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -16,6 +18,9 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const FocusStartButton = () => {
   // navigation
   const navigation = useNavigation();
+
+  // redux
+  const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
   // animations
   const scale = useSharedValue(1);
 
@@ -26,7 +31,6 @@ const FocusStartButton = () => {
   });
 
   const handlePressIn = () => {
-    console.log("pressed");
     scale.value = withSpring(0.85, { damping: 20, stiffness: 200 });
   };
   const handlePressOut = () => {
@@ -36,7 +40,12 @@ const FocusStartButton = () => {
   // functions
   const buttonPressed = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-    navigation.navigate("Focus");
+    if (currentWorkout.plan.length > 0) {
+      navigation.navigate("Focus");
+    } else {
+      // ADD WARNING UI
+      console.log("No workouts");
+    }
   };
   return (
     <AnimatedPressable
