@@ -83,10 +83,11 @@ export const editWorkout = createAsyncThunk(
 
 export const deleteWorkout = createAsyncThunk(
   "workout/deleteWorkout",
-  async ({ workout, type }) => {
+  async (workout) => {
     try {
       await updateDoc(doc(db, "users", auth.currentUser.uid), {
-        [type]: arrayRemove(workout),
+        workouts: arrayRemove(workout),
+        sharedWorkouts: arrayRemove(workout),
       });
     } catch (error) {
       console.error(error);

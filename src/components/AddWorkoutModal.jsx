@@ -33,6 +33,7 @@ import {
   changeModalVisible,
   editWorkout,
   deleteWorkout,
+  setEditModeWorkout,
 } from "../context/workoutSlice";
 import ModalDoneButton from "./ModalDoneButton";
 
@@ -60,11 +61,12 @@ const AddWorkoutModal = () => {
         image: image.uri,
       });
     }
-  }, [editModeWorkout, editModeWorkout]);
+  }, [editModeWorkout, modalVisible]);
 
   // functions
   const resetModal = () => {
     dispatch(changeModalVisible(false));
+    dispatch(setEditModeWorkout(null));
     setValues({ ...values, title: "", image: null });
   };
   // animations
@@ -226,13 +228,13 @@ const AddWorkoutModal = () => {
             />
           )}
           {/* modal view */}
-          <View className="rounded-[18px] overflow-hidden h-72 w-full justify-center items-center">
+          <View className="rounded-[18px] overflow-hidden h-80 w-full justify-center items-center">
             <BlurView
               intensity={60}
               tint="dark"
-              className="h-72 w-full items-center px-5"
+              className="h-80 w-full items-center px-5"
             >
-              <View className="flex-row w-full h-6 mt-5 justify-between items-center">
+              <View className="flex-row w-full h-6 mt-5 justify-between items-center mb-10">
                 {/* delete button */}
                 {editModeWorkout ? (
                   <Pressable
