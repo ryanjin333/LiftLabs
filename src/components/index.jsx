@@ -14,6 +14,7 @@ import FocusStartButton from "./FocusStartButton";
 import AnimatedHeader from "./AnimatedHeader";
 import OutlineButtonCircle from "./OutlineButtonCircle";
 import ModalDoneButton from "./ModalDoneButton";
+import SettingsList from "./SettingsList";
 
 export {
   FormRow,
@@ -32,4 +33,5 @@ export {
   AnimatedHeader,
   OutlineButtonCircle,
   ModalDoneButton,
+  SettingsList,
 };

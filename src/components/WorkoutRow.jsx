@@ -97,7 +97,7 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
                 height: 64,
                 borderRadius: 18,
                 overflow: "hidden",
-                backgroundColor: "#3d3d3d",
+                backgroundColor: "#2b2b2b",
                 opacity: loadingOpacity,
               }}
             />
