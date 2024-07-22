@@ -8,6 +8,7 @@ import TabNavigator from "./TabNavigator";
 import SearchExercise from "./SearchExercise";
 import Focus from "./Focus";
 import Notifications from "./Notifications";
+import Loader from "./Loader";
 
 export {
   Login,
@@ -20,4 +21,5 @@ export {
   SearchExercise,
   Focus,
   Notifications,
+  Loader,
 };

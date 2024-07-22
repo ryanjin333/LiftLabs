@@ -2,7 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import React from "react";
 
 // redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setEditModePlan, changeModalVisible } from "../context/exerciseSlice";
 
 const ExerciseRow = ({ plan }) => {
@@ -10,6 +10,7 @@ const ExerciseRow = ({ plan }) => {
 
   // redux
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   return (
     <Pressable
@@ -22,7 +23,7 @@ const ExerciseRow = ({ plan }) => {
       <View className="  ml-5 ">
         <Text className="text-white text-base font-interSemiBold">{title}</Text>
         <Text className="text-[#848484] text-xs font-interSemiBold">
-          {sets}x{reps} · {weight} lbs
+          {sets}x{reps} · {weight} {user.weight}
         </Text>
       </View>
     </Pressable>

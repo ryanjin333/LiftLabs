@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 const Focus = ({ navigation }) => {
   // redux
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
 
   const [fullPlan, setFullPlan] = useState({});
@@ -74,7 +75,9 @@ const Focus = ({ navigation }) => {
           {/* exercise weight */}
           <Text className=" text-primary font-interBold text-3xl ">
             {item.weight}
-            <Text className="text-white font-interMedium text-2xl"> lbs</Text>
+            <Text className="text-white font-interMedium text-2xl">
+              {` ${user.weight}`}
+            </Text>
           </Text>
           {/* swipe down message */}
           <Text className=" text-primary font-interBold text-3xl absolute bottom-0 right-0">

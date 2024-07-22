@@ -1,10 +1,15 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, Image, Pressable, FlatList } from "react-native";
+import { View, Text, Image, Pressable, Linking } from "react-native";
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "../config/firebase";
 import * as ImagePicker from "expo-image-picker";
+
+import { useSelector, useDispatch } from "react-redux";
+import { loadInfo } from "../context/userSlice";
+
+import Modal from "react-native-modal";
 
 import { Image as LoadingImage } from "@rneui/themed";
 import Animated, {
@@ -28,26 +33,63 @@ import {
   SettingsList,
 } from "../components";
 
-const SECTIONS = [
-  {
-    title: "Personal",
-    data: [{ title: "Email" }, { title: "Username" }, { title: "Full name" }],
-  },
-  {
-    title: "Units",
-    data: [{ title: "Weight" }],
-  },
-  {
-    title: "Legal",
-    data: [{ title: "Privacy policy" }, { title: "Terms and conditions" }],
-  },
-  {
-    title: "App Info",
-    data: [{ title: "App version" }],
-  },
-];
+const User = ({ navigation }) => {
+  // redux
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
-const User = () => {
+  // initial load
+  useEffect(() => {
+    dispatch(loadInfo());
+  }, []);
+
+  // CONSTANTS
+  const SECTIONS = [
+    {
+      title: "Personal",
+      data: [
+        { title: "Email", action: () => {}, text: auth.currentUser.email },
+        {
+          title: "Username",
+          action: () => console.log("hihi"),
+          text: user.username,
+        },
+        {
+          title: "Full name",
+          action: () => console.log("hihi"),
+          text: user.fullName,
+        },
+      ],
+    },
+    {
+      title: "Units",
+      data: [{ title: "Weight", action: () => {}, value: user.weight }],
+    },
+    {
+      title: "Legal",
+      data: [
+        {
+          title: "Privacy policy",
+          action: () =>
+            Linking.openURL(
+              "https://daytrackernwss.github.io/index.html"
+            ).catch((err) => console.error("Couldn't load page", err)),
+        },
+        {
+          title: "Terms and conditions",
+          action: () =>
+            Linking.openURL(
+              "https://daytrackernwss.github.io/termsAndConditions.html"
+            ).catch((err) => console.error("Couldn't load page", err)),
+        },
+      ],
+    },
+    {
+      title: "App Info",
+      data: [{ title: "App version", action: () => {}, text: "v1.0" }],
+    },
+  ];
+
   // animations
   const scrollViewAnimatedRef = useAnimatedRef();
   const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);
@@ -149,6 +191,15 @@ const User = () => {
     }
   };
 
+  const logout = async () => {
+    try {
+      await auth.signOut();
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
+
   return (
     <>
       <AnimatedHeader offsetY={offsetY} title="User" />
@@ -161,7 +212,7 @@ const User = () => {
           {/* pfp - TODO: ADD ANIMATIONS WHEN TAPPED */}
           <View className="w-full flex-row justify-start">
             <Pressable onPress={pickImage}>
-              <View className="absolute h-7 w-7 top-0 right-0 bg-[#515151a8] z-10 rounded-full justify-center items-center bf">
+              <View className="absolute h-7 w-7 top-0 right-0 bg-[#515151a8] z-10 rounded-full justify-center items-center ">
                 <Image
                   className="h-4 w-4"
                   source={require("../assets/edit_icon.png")}
@@ -204,13 +255,21 @@ const User = () => {
           </View>
 
           <GenericButton
-            onPress={() => console.log("Works")} // CHANGE THIS
+            onPress={logout}
             title="Logout"
             color="#212121"
             textColor="#ff1e1e"
           />
         </SafeAreaView>
       </Animated.ScrollView>
+      <Modal
+        className="w-full flex-1 justify-center items-center pr-6"
+        isVisible={false}
+      >
+        <View className="w-24 h-24 bg-primary">
+          <Text>I am the modal content!</Text>
+        </View>
+      </Modal>
     </>
   );
 };

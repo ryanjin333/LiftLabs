@@ -39,6 +39,7 @@ const initialState = {
 // Secondary components
 
 const Input = ({ title, values, setValues }) => {
+  const user = useSelector((state) => state.user);
   return (
     <View className="space-x-2 flex-row mt-6 items-center ">
       <TextInput
@@ -57,7 +58,7 @@ const Input = ({ title, values, setValues }) => {
         }
       />
       <Text className="text-white font-interMedium mr-2">
-        {title === "weight" ? "lbs" : title}
+        {title === "weight" ? user.weight : title}
       </Text>
     </View>
   );

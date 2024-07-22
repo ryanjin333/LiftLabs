@@ -12,6 +12,7 @@ import {
   SearchExercise,
   Focus,
   SearchUser,
+  Loader,
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
@@ -22,12 +23,17 @@ function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="Login"
+            initialRouteName="Loader"
             screenOptions={{
               headerShown: false,
               gestureEnabled: false,
             }}
           >
+            <Stack.Screen
+              name="Loader"
+              component={Loader}
+              options={{ animation: "none" }}
+            />
             <Stack.Screen
               name="Login"
               component={Login}
