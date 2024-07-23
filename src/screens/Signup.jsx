@@ -69,16 +69,16 @@ const Signup = () => {
     }
   };
 
-  useEffect(() => {
-    if (user.uid) {
-      // if user successfully signs up, also set loading of the workouts list to true
-      dispatch(setIsLoading(true));
-      setValues({ ...values, signupScreenVisible: false });
-      setTimeout(() => {
-        navigation.navigate("TabNavigator");
-      }, 1000);
-    }
-  }, [user.uid]);
+  // useEffect(() => {
+  //   if (user.uid) {
+  //     // if user successfully signs up, also set loading of the workouts list to true
+  //     dispatch(setIsLoading(true));
+  //     setValues({ ...values, signupScreenVisible: false });
+  //     setTimeout(() => {
+  //       navigation.navigate("TabNavigator");
+  //     }, 1000);
+  //   }
+  // }, [user.uid]);
 
   // functions
   const handleChange = (value, name) => {

@@ -15,6 +15,7 @@ import AnimatedHeader from "./AnimatedHeader";
 import OutlineButtonCircle from "./OutlineButtonCircle";
 import ModalDoneButton from "./ModalDoneButton";
 import SettingsList from "./SettingsList";
+import ChangeInfoModal from "./ChangeInfoModal";
 
 export {
   FormRow,
@@ -34,4 +35,5 @@ export {
   OutlineButtonCircle,
   ModalDoneButton,
   SettingsList,
+  ChangeInfoModal,
 };

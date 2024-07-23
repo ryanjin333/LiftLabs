@@ -24,6 +24,7 @@ import Animated, {
   useDerivedValue,
 } from "react-native-reanimated";
 import { loginUser } from "../context/userSlice";
+import { auth } from "../config/firebase";
 
 const initialState = {
   email: "",
@@ -71,15 +72,17 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (user.uid) {
-      // if user successfully logs in, also set loading of the workouts list to true
-      dispatch(setIsLoading(true));
-      setValues({ ...values, loginScreenVisible: false });
-      setTimeout(() => {
-        navigation.navigate("TabNavigator");
-      }, 1000);
-    }
-  }, [user.uid]);
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(setIsLoading(true));
+        setValues({ ...values, loginScreenVisible: false });
+        setTimeout(() => {
+          navigation.replace("TabNavigator");
+        }, 1000);
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   const handleChange = (value, name) => {
     setValues({ ...values, [name]: value });

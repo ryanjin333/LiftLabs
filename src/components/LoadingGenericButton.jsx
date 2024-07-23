@@ -35,7 +35,7 @@ const LoadingGenericButton = ({ onPress, title, isLoading }) => {
   return (
     <AnimatedPressable
       style={animatedStyle}
-      className="h-16 w-full rounded-2xl justify-center items-center bg-primary"
+      className="h-14 w-full rounded-2xl justify-center items-center bg-primary"
       onPress={btnTapped}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}

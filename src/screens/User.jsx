@@ -2,12 +2,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, Image, Pressable, Linking } from "react-native";
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, getDocs, query, where } from "firebase/firestore";
 import { auth, db, storage } from "../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 
 import { useSelector, useDispatch } from "react-redux";
-import { loadInfo } from "../context/userSlice";
+import {
+  loadInfo,
+  setFullNameSubmitBlocked,
+  setInfo,
+} from "../context/userSlice";
 
 import Modal from "react-native-modal";
 
@@ -28,10 +32,24 @@ import Animated, {
 } from "react-native-reanimated";
 import {
   AnimatedHeader,
+  ChangeInfoModal,
+  FormRow,
   GenericButton,
   LoadingGenericButton,
+  ModalDoneButton,
   SettingsList,
 } from "../components";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+const initialState = {
+  usernameModalVisible: false,
+  fullNameModalVisible: false,
+  username: "",
+  fullName: "",
+  email: "",
+  userScreenVisible: true,
+};
 
 const User = ({ navigation }) => {
   // redux
@@ -41,22 +59,29 @@ const User = ({ navigation }) => {
   // initial load
   useEffect(() => {
     dispatch(loadInfo());
+    setValues({
+      ...values,
+      email: auth.currentUser.email,
+    });
   }, []);
+
+  // variables
+  const [values, setValues] = useState(initialState);
 
   // CONSTANTS
   const SECTIONS = [
     {
       title: "Personal",
       data: [
-        { title: "Email", action: () => {}, text: auth.currentUser.email },
+        { title: "Email", action: () => {}, text: values.email },
         {
           title: "Username",
-          action: () => console.log("hihi"),
+          action: () => setValues({ ...values, usernameModalVisible: true }),
           text: user.username,
         },
         {
           title: "Full name",
-          action: () => console.log("hihi"),
+          action: () => setValues({ ...values, fullNameModalVisible: true }),
           text: user.fullName,
         },
       ],
@@ -193,8 +218,12 @@ const User = ({ navigation }) => {
 
   const logout = async () => {
     try {
-      await auth.signOut();
-      navigation.navigate("Login");
+      await auth.signOut().then(() => {
+        setValues({ ...values, userScreenVisible: false });
+        setTimeout(() => {
+          navigation.replace("Login");
+        }, 1000);
+      });
     } catch (error) {
       console.error("Error signing out: ", error);
     }
@@ -202,74 +231,142 @@ const User = ({ navigation }) => {
 
   return (
     <>
-      <AnimatedHeader offsetY={offsetY} title="User" />
+      {values.userScreenVisible && (
+        <AnimatedHeader offsetY={offsetY} title="User" delay={600} />
+      )}
       <Animated.ScrollView
         className="flex-1 bg-black"
         ref={scrollViewAnimatedRef}
       >
         <View className="h-24" />
         <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center justify-center">
-          {/* pfp - TODO: ADD ANIMATIONS WHEN TAPPED */}
-          <View className="w-full flex-row justify-start">
-            <Pressable onPress={pickImage}>
-              <View className="absolute h-7 w-7 top-0 right-0 bg-[#515151a8] z-10 rounded-full justify-center items-center ">
-                <Image
-                  className="h-4 w-4"
-                  source={require("../assets/edit_icon.png")}
-                />
-              </View>
-              <LoadingImage
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 99,
-                  overflow: "hidden",
-                }}
-                source={{ uri: imageUrl }}
-                PlaceholderContent={
-                  <Animated.View
+          {values.userScreenVisible && (
+            <>
+              <View className="w-full flex-row justify-start">
+                {/* pfp */}
+                <AnimatedPressable
+                  onPress={pickImage}
+                  entering={FadeInUp.delay(100).duration(1000).springify()}
+                  exiting={FadeOutUp.delay(500).duration(1000).springify()}
+                >
+                  <View className="absolute h-7 w-7 top-0 right-0 bg-[#515151a8] z-10 rounded-full justify-center items-center ">
+                    <Image
+                      className="h-4 w-4"
+                      source={require("../assets/edit_icon.png")}
+                    />
+                  </View>
+                  <LoadingImage
                     style={{
                       width: 80,
                       height: 80,
                       borderRadius: 99,
                       overflow: "hidden",
-                      backgroundColor: "#2b2b2b",
-                      opacity: loadingOpacity,
                     }}
+                    source={{ uri: imageUrl }}
+                    PlaceholderContent={
+                      <Animated.View
+                        style={{
+                          width: 80,
+                          height: 80,
+                          borderRadius: 99,
+                          overflow: "hidden",
+                          backgroundColor: "#2b2b2b",
+                          opacity: loadingOpacity,
+                        }}
+                      />
+                    }
                   />
-                }
-              />
-            </Pressable>
-          </View>
+                </AnimatedPressable>
+              </View>
+              <View className="w-full">
+                {/* Personal info section */}
+                <Animated.View
+                  entering={FadeInUp.delay(200).duration(1000).springify()}
+                  exiting={FadeOutUp.delay(400).duration(1000).springify()}
+                >
+                  <SettingsList data={SECTIONS[0]} />
+                </Animated.View>
 
-          <View className="w-full mb-6">
-            {/* Personal info section */}
-            <SettingsList data={SECTIONS[0]} />
-            {/* Units section */}
-            <SettingsList data={SECTIONS[1]} />
-            {/* Legal section */}
-            <SettingsList data={SECTIONS[2]} />
-            {/* App info */}
-            <SettingsList data={SECTIONS[3]} />
-            {/* logout button */}
-          </View>
+                {/* Units section */}
+                <Animated.View
+                  entering={FadeInUp.delay(300).duration(1000).springify()}
+                  exiting={FadeOutUp.delay(300).duration(1000).springify()}
+                >
+                  <SettingsList data={SECTIONS[1]} />
+                </Animated.View>
 
-          <GenericButton
-            onPress={logout}
-            title="Logout"
-            color="#212121"
-            textColor="#ff1e1e"
-          />
+                {/* Legal section */}
+                <Animated.View
+                  entering={FadeInUp.delay(400).duration(1000).springify()}
+                  exiting={FadeOutUp.delay(200).duration(1000).springify()}
+                >
+                  <SettingsList data={SECTIONS[2]} />
+                </Animated.View>
+
+                {/* App info */}
+                <Animated.View
+                  entering={FadeInUp.delay(500).duration(1000).springify()}
+                  exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                >
+                  <SettingsList data={SECTIONS[3]} />
+                </Animated.View>
+                {/* logout button */}
+                <Animated.View
+                  className="w-full mt-6"
+                  entering={FadeInUp.delay(600).duration(1000).springify()}
+                  exiting={FadeOutUp.duration(1000).springify()}
+                >
+                  <GenericButton
+                    onPress={logout}
+                    title="Logout"
+                    color="#212121"
+                    textColor="#ff1e1e"
+                  />
+                </Animated.View>
+              </View>
+            </>
+          )}
         </SafeAreaView>
       </Animated.ScrollView>
-      <Modal
-        className="w-full flex-1 justify-center items-center pr-6"
-        isVisible={false}
-      >
-        <View className="w-24 h-24 bg-primary">
-          <Text>I am the modal content!</Text>
-        </View>
-      </Modal>
+
+      {/* individual modals */}
+      <ChangeInfoModal
+        values={values}
+        setValues={setValues}
+        name={"Username"}
+        placeholder={user.username}
+        isVisible={values.usernameModalVisible}
+        value={values.username}
+        modalValueType={"usernameModalVisible"}
+        onPress={async () => {
+          // INTEGRATE INTO REDUX
+          // try {
+          //   const userRef = doc(db, "users", auth.currentUser.uid);
+          //   //const q = query(userRef, where("username", "==", values.username));
+          //   const usernameExists = await getDocs(q);
+          //   if (!usernameExists) {
+          //     dispatch(setInfo({ key: "username", value: values.username }));
+          //     console.log("username changed!");
+          //   } else {
+          //     console.log("username already exists");
+          //   }
+          // } catch (error) {
+          //   console.error(error);
+          // }
+        }}
+      />
+      <ChangeInfoModal
+        values={values}
+        setValues={setValues}
+        name={"Full name"}
+        placeholder={user.fullName}
+        isVisible={values.fullNameModalVisible}
+        value={values.fullName}
+        modalValueType={"fullNameModalVisible"}
+        onPress={() => {
+          dispatch(setInfo({ key: "fullName", value: values.fullName }));
+        }}
+      />
     </>
   );
 };

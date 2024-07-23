@@ -1,21 +1,19 @@
 import { View, ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
 import { auth } from "../config/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Loader = ({ navigation }) => {
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      console.log("ran");
+    const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
-        navigation.replace("TabNavigator"); // User is logged in, navigate to TabNavigator
+        navigation.replace("TabNavigator");
       } else {
-        navigation.replace("Login"); // User is not logged in, navigate to Login
+        navigation.replace("Login");
       }
     });
-
-    // Clean up the subscription on unmount
-    return () => unsubscribe();
-  }, [navigation]);
+    return unsub;
+  }, [auth]);
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ActivityIndicator size="large" color="#0000ff" />
