@@ -31,6 +31,7 @@ const initialState = {
   modalVisible: false,
   editModePlan: null,
   exerciseName: "",
+  exerciseGIF: "",
   currentWorkout: { createdBy: "", id: "", image: "", plan: [], title: "" },
 };
 
@@ -169,6 +170,9 @@ export const exerciseSlice = createSlice({
     changeExerciseName(state, action) {
       state.exerciseName = action.payload;
     },
+    setExerciseGIF(state, action) {
+      state.exerciseGIF = action.payload;
+    },
     changeCurrentWorkout(state, action) {
       state.currentWorkout = action.payload;
     },
@@ -235,6 +239,7 @@ export const {
   changeExerciseName,
   changeCurrentWorkout,
   setEditModePlan,
+  setExerciseGIF,
 } = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;

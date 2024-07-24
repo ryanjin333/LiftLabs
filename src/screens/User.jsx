@@ -2,7 +2,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, Image, Pressable, Linking } from "react-native";
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { doc, getDoc, setDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  getDocs,
+  query,
+  where,
+  collection,
+} from "firebase/firestore";
 import { auth, db, storage } from "../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 
@@ -340,19 +348,21 @@ const User = ({ navigation }) => {
         modalValueType={"usernameModalVisible"}
         onPress={async () => {
           // INTEGRATE INTO REDUX
-          // try {
-          //   const userRef = doc(db, "users", auth.currentUser.uid);
-          //   //const q = query(userRef, where("username", "==", values.username));
-          //   const usernameExists = await getDocs(q);
-          //   if (!usernameExists) {
-          //     dispatch(setInfo({ key: "username", value: values.username }));
-          //     console.log("username changed!");
-          //   } else {
-          //     console.log("username already exists");
-          //   }
-          // } catch (error) {
-          //   console.error(error);
-          // }
+          try {
+            const q = query(
+              collection(db, "users"),
+              where("username", "==", values.username)
+            );
+            const usernameExists = await getDocs(q);
+            if (usernameExists.empty) {
+              dispatch(setInfo({ key: "username", value: values.username }));
+              console.log("username changed!");
+            } else {
+              console.log("username already exists");
+            }
+          } catch (error) {
+            console.error(error);
+          }
         }}
       />
       <ChangeInfoModal

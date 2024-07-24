@@ -73,6 +73,7 @@ const AddExerciseModal = () => {
   const dispatch = useDispatch();
   const modalVisible = useSelector((state) => state.exercise.modalVisible);
   const exerciseName = useSelector((state) => state.exercise.exerciseName);
+  const exerciseGIF = useSelector((state) => state.exercise.exerciseGIF);
   const editModePlan = useSelector((state) => state.exercise.editModePlan);
 
   // navigation
@@ -111,6 +112,7 @@ const AddExerciseModal = () => {
         const updatedExercise = {
           id: editModePlan.id,
           title: exerciseName,
+          gif: exerciseGIF,
           sets: values.sets,
           reps: values.reps,
           weight: values.weight,
@@ -121,6 +123,7 @@ const AddExerciseModal = () => {
         const newExercise = {
           id: uuid.v4(),
           title: exerciseName,
+          gif: exerciseGIF,
           sets: values.sets,
           reps: values.reps,
           weight: values.weight,

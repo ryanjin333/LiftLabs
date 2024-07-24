@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import {
   changeModalVisible,
   changeExerciseName,
+  setExerciseGIF,
   addAllExercisesToFirestore,
 } from "../context/exerciseSlice";
 import Animated, {
@@ -141,8 +142,9 @@ const SearchExercise = ({ navigation }) => {
     dispatch(changeModalVisible(true));
   };
 
-  const submit = (name = values.prompt) => {
+  const submit = (name = values.prompt, gif = "") => {
     dispatch(changeExerciseName(name));
+    dispatch(setExerciseGIF(gif));
     goBack();
   };
   return (
@@ -189,7 +191,7 @@ const SearchExercise = ({ navigation }) => {
           <Pressable
             className="flex-row items-center space-x-4"
             onPress={() => {
-              submit(item.name);
+              submit(item.name, item.gif);
             }}
           >
             <Image

@@ -43,7 +43,7 @@ const ModalDoneButton = ({ isLoading, onPress, value }) => {
   };
   return (
     <AnimatedPressable
-      className="h-12 w-28 rounded-full justify-center items-center mt-10"
+      className="h-12 w-28 rounded-full justify-center items-center mt-6"
       onPress={() => {
         if (!blocked) {
           onPress();
@@ -120,11 +120,11 @@ const ChangeInfoModal = ({
       animationOut={"fadeOut"}
     >
       <View className="w-full px-8">
-        <View className="w-full h-56  rounded-[18px] overflow-hidden">
+        <View className="w-full h-52  rounded-[18px] overflow-hidden">
           <BlurView
             intensity={60}
             tint="dark"
-            className=" w-full h-56 items-center px-6 "
+            className=" w-full h-52 items-center px-6 "
           >
             <Text className="text-white font-interMedium text-lg mt-3 mb-3">
               Change {name}
