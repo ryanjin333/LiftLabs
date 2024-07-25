@@ -39,11 +39,6 @@ const SearchExercise = ({ navigation }) => {
   // redux
   const dispatch = useDispatch();
 
-  // fetch exercises
-  useEffect(() => {
-    dispatch(addAllExercisesToFirestore());
-  }, []);
-
   // query exercise
 
   useEffect(() => {

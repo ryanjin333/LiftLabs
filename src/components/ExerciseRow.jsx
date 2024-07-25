@@ -20,8 +20,14 @@ const ExerciseRow = ({ plan }) => {
         dispatch(changeModalVisible(true));
       }}
     >
-      <View className="  ml-5 ">
-        <Text className="text-white text-base font-interSemiBold">{title}</Text>
+      <View className="  mx-5 ">
+        <Text
+          className="text-white text-base font-interSemiBold"
+          ellipsizeMode="tail"
+          numberOfLines={1}
+        >
+          {title}
+        </Text>
         <Text className="text-[#848484] text-xs font-interSemiBold">
           {sets}x{reps} · {weight} {user.weight}
         </Text>

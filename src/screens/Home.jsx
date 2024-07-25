@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { fetchWorkouts, changeModalVisible } from "../context/workoutSlice";
+import { addAllExercisesToFirestore } from "../context/exerciseSlice";
 
 // Firebase imports
 import { auth, db } from "../config/firebase";
@@ -40,6 +41,12 @@ import Animated, {
 } from "react-native-reanimated";
 
 const Home = () => {
+  // initial load
+
+  // useEffect(() => {
+  //   dispatch(addAllExercisesToFirestore()); // fetch exercises
+  // }, []);
+
   // redux
   const dispatch = useDispatch();
   const workout = useSelector((state) => state.workout);

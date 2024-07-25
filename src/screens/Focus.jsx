@@ -93,32 +93,37 @@ const Focus = ({ navigation }) => {
       keyExtractor={(item) => item.uniqueId}
       renderItem={({ item }) => (
         // actual screen
-        <SafeAreaView className="h-screen w-screen p-6 bg-black justify-between items-center">
-          <View className="w-full">
+        <SafeAreaView className="h-screen w-screen px-6 py-3 bg-black justify-between items-center">
+          <View className="w-full items-end">
             {/* main title and exit button */}
-            <View className="flex-row justify-between mb-10">
+            {/* exit button */}
+            <Pressable
+              className="w-10 h-10 flex justify-center items-center rounded-full bg-[#292929]"
+              onPress={() => navigation.goBack()}
+            >
+              <Image
+                className="h-5 w-5"
+                source={require("../assets/exit.png")}
+              />
+            </Pressable>
+            <View className="flex-row justify-between mb-10 w-full mt-3 px-3">
               {/* title  */}
-              <Text className="w-72 text-primary font-interBold text-3xl ml-6">
+              <Text
+                className="w-56 text-primary font-interBold text-3xl"
+                ellipsizeMode="tail"
+                numberOfLines={3}
+              >
                 {item.title}
               </Text>
-              {/* exit button */}
-              <Pressable
-                className="w-11 h-11 flex justify-start items-end "
-                onPress={() => navigation.goBack()}
-              >
-                <Image
-                  className="h-6 w-6"
-                  source={require("../assets/exit.png")}
-                />
-              </Pressable>
-            </View>
-            {/* exercise weight */}
-            <Text className=" text-primary font-interBold text-3xl mx-6 mb-6">
-              {item.weight}
-              <Text className="text-white font-interMedium text-2xl">
-                {` ${user.weight}`}
+              {/* exercise weight */}
+              <Text className=" text-primary font-interBold text-3xl ">
+                {item.weight}
+                <Text className="text-white font-interMedium text-2xl">
+                  {` ${user.weight}`}
+                </Text>
               </Text>
-            </Text>
+            </View>
+
             {/* gif */}
             <RNEImage
               style={{
@@ -154,8 +159,6 @@ const Focus = ({ navigation }) => {
                   sets
                 </Text>
               </Text>
-
-              <Text className=" text-white font-interBold text-3xl ">·</Text>
 
               {/* exercise reps */}
               <Text className="text-primary  font-interBold text-3xl">

@@ -11,15 +11,10 @@ import axios from "axios";
 //ExerciseDB API options
 const EXERCISE_DB_OPTIONS = {
   method: "GET",
-  url: "https://exercisedb.p.rapidapi.com/exercises",
-  params: {
-    limit: "9999",
-    offset: "0",
-  },
+  url: "https://workoutdb1.p.rapidapi.com/exercise/all",
   headers: {
     "x-rapidapi-key": "a31298262cmsh4165cf285213c1ep185e0bjsnc72489d39be3",
-    "x-rapidapi-host": "exercisedb.p.rapidapi.com",
-    "Content-Type": "application/json",
+    "x-rapidapi-host": "workoutdb1.p.rapidapi.com",
   },
 };
 
@@ -49,6 +44,7 @@ export const addAllExercisesToFirestore = createAsyncThunk(
   async (_, { getState }) => {
     try {
       const response = await axios.request(EXERCISE_DB_OPTIONS);
+
       const exerciseProperties = response.data.map((item) => {
         return {
           name: item.name,
