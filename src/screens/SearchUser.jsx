@@ -147,7 +147,7 @@ const SearchUser = ({ navigation }) => {
             id: uuid.v4(),
             title: currentWorkout.title,
             image: currentWorkout.image
-              ? { uri: currentWorkout.image }
+              ? currentWorkout.image
               : "../assets/React_Native_Logo.png", // use default image if custom image isn't provided
             plan: currentWorkout.plan,
             createdBy: currentWorkout.createdBy,

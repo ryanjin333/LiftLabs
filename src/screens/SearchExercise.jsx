@@ -154,7 +154,6 @@ const SearchExercise = ({ navigation }) => {
               placeholder="Search exercise"
               onChangeText={handleSearch}
               value={values.prompt}
-              onSubmitEditing={submit}
               autoCapitalize="none"
               autoCorrect={false}
               autoFocus={true}

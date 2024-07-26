@@ -52,7 +52,9 @@ const DropdownRow = ({ item, values, setValues, currentWorkout }) => {
         {
           text: "OK",
           onPress: () => {
-            dispatch(deleteWorkout(currentWorkout));
+            dispatch(
+              deleteWorkout({ workout: currentWorkout, type: "workouts" })
+            );
           },
         },
       ]);

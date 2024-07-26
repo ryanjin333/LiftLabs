@@ -56,12 +56,17 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
 
   // redux
   const dispatch = useDispatch();
-
   // get creators username
   // const [creatorUsername, setCreatorUsername] = useState("");
   // useEffect(() => {
   //   setCreatorUsername(dispatch(getUsername(createdBy)));
   // }, []);
+
+  // functions
+  const isUrl = (str) => {
+    const pattern = new RegExp("^(https?:\\/\\/)", "i");
+    return pattern.test(str);
+  };
 
   return (
     <AnimatedPressable
@@ -86,9 +91,9 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
             marginRight: 24,
           }}
           source={
-            typeof image == "string"
-              ? require("../assets/React_Native_Logo.png")
-              : image
+            typeof image === "string" && isUrl(image)
+              ? { url: image }
+              : require("../assets/React_Native_Logo.png")
           }
           PlaceholderContent={
             <Animated.View
@@ -134,7 +139,7 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
               dispatch(
                 deleteWorkout({
                   workout: currentWorkout,
-                  type: "pendingWorkouts",
+                  type: "notifications",
                 })
               );
             }}

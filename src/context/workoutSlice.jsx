@@ -83,12 +83,18 @@ export const editWorkout = createAsyncThunk(
 
 export const deleteWorkout = createAsyncThunk(
   "workout/deleteWorkout",
-  async (workout) => {
+  async ({ workout, type }) => {
     try {
-      await updateDoc(doc(db, "users", auth.currentUser.uid), {
-        workouts: arrayRemove(workout),
-        sharedWorkouts: arrayRemove(workout),
-      });
+      if (type === "workouts") {
+        await updateDoc(doc(db, "users", auth.currentUser.uid), {
+          workouts: arrayRemove(workout),
+          sharedWorkouts: arrayRemove(workout),
+        });
+      } else if (type === "notifications") {
+        await updateDoc(doc(db, "users", auth.currentUser.uid), {
+          pendingWorkouts: arrayRemove(workout),
+        });
+      }
     } catch (error) {
       console.error(error);
     }

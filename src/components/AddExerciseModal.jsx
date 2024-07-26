@@ -87,16 +87,17 @@ const AddExerciseModal = () => {
       const { sets, weight, reps, title } = editModePlan;
       if (values.firstEditLoad) {
         dispatch(changeExerciseName(title));
-        setValues({ ...values, firstEditLoad: false });
+
+        setValues({
+          ...values,
+          sets: sets,
+          weight: weight,
+          reps: reps,
+          firstEditLoad: false,
+        });
       }
-      setValues({
-        ...values,
-        sets: sets,
-        weight: weight,
-        reps: reps,
-      });
     }
-  }, [editModePlan, modalVisible]);
+  }, [modalVisible]);
 
   const donePressed = async () => {
     // if the title is not empty, add to list otherwise warn users

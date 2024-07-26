@@ -58,7 +58,7 @@ const AddWorkoutModal = () => {
       setValues({
         ...values,
         title: title,
-        image: image.uri,
+        image: image,
       });
     }
   }, [editModeWorkout, modalVisible]);
@@ -114,9 +114,9 @@ const AddWorkoutModal = () => {
           id: editModeWorkout.id,
           title: values.title,
           image: values.image
-            ? { uri: values.image }
+            ? values.image
             : "../assets/React_Native_Logo.png", // use default image if custom image isn't provided
-          plan: [],
+          plan: editModeWorkout.plan,
           createdBy: auth.currentUser.uid,
         };
         dispatch(editWorkout(updatedWorkout));
@@ -126,7 +126,7 @@ const AddWorkoutModal = () => {
           id: uuid.v4(),
           title: values.title,
           image: values.image
-            ? { uri: values.image }
+            ? values.image
             : "../assets/React_Native_Logo.png", // use default image if custom image isn't provided
           plan: [],
           createdBy: auth.currentUser.uid,
