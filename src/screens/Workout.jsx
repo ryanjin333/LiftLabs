@@ -5,13 +5,15 @@ import {
   Pressable,
   Image,
   ScrollView,
+  ViewToken,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React from "react";
+import React, { useEffect } from "react";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
 import { changeModalVisible } from "../context/exerciseSlice";
+import { workoutToHomeScreenTransition } from "../context/animationSlice";
 
 // reanimated imports
 import Animated, {
@@ -20,8 +22,7 @@ import Animated, {
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
-  useScrollViewOffset,
-  useAnimatedRef,
+  useAnimatedScrollHandler,
   useDerivedValue,
 } from "react-native-reanimated";
 
@@ -40,71 +41,107 @@ const Workout = ({ route, navigation }) => {
   // redux
   const dispatch = useDispatch();
   const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
+  const workoutScreenVisible = useSelector(
+    (state) => state.animation.workoutScreenVisible
+  );
 
   // animations
-  const scrollViewAnimatedRef = useAnimatedRef();
-  const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);
+  const offsetY = useSharedValue(0); // scroll
 
-  const offsetY = useDerivedValue(() =>
-    parseInt(scrollViewOffsetY.value.toFixed(1))
-  );
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    offsetY.value = event.contentOffset.y;
+  });
+
+  //const viewableItems = useSharedValue<ViewToken[]>([])
+
   return (
-    <>
-      <AnimatedHeader offsetY={offsetY} title={title} />
-      <Animated.ScrollView
-        className="flex-1 bg-black"
-        ref={scrollViewAnimatedRef}
-      >
-        <View className="h-24" />
-        <SafeAreaView className="flex-1 bg-black px-6 pb-40 items-center">
-          {/* button bar */}
-          <View className="w-full flex-row justify-between mt-6">
-            <View className="flex-row space-x-1">
-              <View>
-                <OutlineButtonCircle
-                  image={"back_chevron"}
-                  onPress={() => navigation.goBack()}
-                />
+    <View className="bg-black w-full h-full">
+      {workoutScreenVisible && (
+        <>
+          <AnimatedHeader offsetY={offsetY} title={title} />
+          <Animated.ScrollView
+            className="flex-1 bg-black"
+            onScroll={scrollHandler}
+          >
+            <View className="h-24" />
+            <SafeAreaView className="flex-1 bg-black px-6 pb-40 items-center">
+              {/* button bar */}
+              <View className="w-full flex-row justify-between mt-6">
+                <View className="flex-row space-x-1">
+                  <Animated.View
+                    entering={FadeInUp.delay(100).duration(1000).springify()}
+                    exiting={FadeOutUp.delay(200).duration(1000).springify()}
+                  >
+                    <OutlineButtonCircle
+                      image={"back_chevron"}
+                      onPress={() => {
+                        dispatch(workoutToHomeScreenTransition());
+                        setTimeout(() => {
+                          navigation.goBack();
+                        }, 1000);
+                      }}
+                    />
+                  </Animated.View>
+                  <Animated.View
+                    entering={FadeInUp.delay(200).duration(1000).springify()}
+                    exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                  >
+                    <OutlineButton
+                      title="Share"
+                      onPress={() => navigation.navigate("SearchUser")}
+                    />
+                  </Animated.View>
+                </View>
+                <Animated.View
+                  entering={FadeInUp.delay(300).duration(1000).springify()}
+                  exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                >
+                  <OutlineButton
+                    title="+ Add"
+                    onPress={() => dispatch(changeModalVisible(true))}
+                  />
+                </Animated.View>
               </View>
-              <View>
-                <OutlineButton
-                  title="Share"
-                  onPress={() => navigation.navigate("SearchUser")}
-                />
+              <View className="w-full items-center">
+                <Animated.View
+                  className="w-full"
+                  entering={FadeInUp.delay(400).duration(1000).springify()}
+                  exiting={FadeOutUp.delay(200).duration(1000).springify()}
+                >
+                  {/* exercise list */}
+                  {currentWorkout.plan.length == 0 ? (
+                    <View className="flex-1 justify-center mt-20">
+                      <Text className="text-center text-white w-44 font-inter">
+                        Tap <Text className="font-interBold">Add</Text> to
+                        create a new exercise
+                      </Text>
+                    </View>
+                  ) : (
+                    <View className="w-full mt-6 rounded-[18px]">
+                      <FlatList
+                        scrollEnabled={false}
+                        className="rounded-[18px] "
+                        data={currentWorkout.plan ? currentWorkout.plan : plan}
+                        renderItem={({ item }) => <ExerciseRow plan={item} />}
+                        keyExtractor={(item) => item.id}
+                      />
+                    </View>
+                  )}
+                </Animated.View>
               </View>
-            </View>
 
-            <OutlineButton
-              title="+ Add"
-              onPress={() => dispatch(changeModalVisible(true))}
-            />
-          </View>
-
-          {/* exercise list */}
-          {currentWorkout.plan.length == 0 ? (
-            <View className="flex-1 justify-center mt-20">
-              <Text className="text-center text-white w-44 font-inter">
-                Tap <Text className="font-interBold">Add</Text> to create a new
-                exercise
-              </Text>
-            </View>
-          ) : (
-            <View className="w-full mt-6 rounded-[18px]">
-              <FlatList
-                scrollEnabled={false}
-                className="rounded-[18px] "
-                data={currentWorkout.plan ? currentWorkout.plan : plan}
-                renderItem={({ item }) => <ExerciseRow plan={item} />}
-                keyExtractor={(item) => item.id}
-              />
-            </View>
-          )}
-          <AddExerciseModal />
-        </SafeAreaView>
-      </Animated.ScrollView>
-
-      <FocusStartButton />
-    </>
+              <AddExerciseModal />
+            </SafeAreaView>
+          </Animated.ScrollView>
+          <Animated.View
+            entering={FadeInUp.delay(500).duration(1000).springify()}
+            exiting={FadeOutUp.delay(200).duration(1000).springify()}
+          >
+            <FocusStartButton />
+          </Animated.View>
+        </>
+      )}
+    </View>
   );
 };
 

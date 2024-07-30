@@ -35,8 +35,7 @@ import Animated, {
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
-  useScrollViewOffset,
-  useAnimatedRef,
+  useAnimatedScrollHandler,
   useDerivedValue,
 } from "react-native-reanimated";
 
@@ -50,6 +49,9 @@ const Home = () => {
   // redux
   const dispatch = useDispatch();
   const workout = useSelector((state) => state.workout);
+  const homeScreenVisible = useSelector(
+    (state) => state.animation.homeScreenVisible
+  );
 
   // firebase
 
@@ -67,24 +69,25 @@ const Home = () => {
   }, [dispatch]);
 
   // animations
-  const scrollViewAnimatedRef = useAnimatedRef();
-  const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);
+  const offsetY = useSharedValue(0);
 
-  const offsetY = useDerivedValue(() =>
-    parseInt(scrollViewOffsetY.value.toFixed(1))
-  );
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    offsetY.value = event.contentOffset.y;
+  });
+
   return (
-    <>
-      <AnimatedHeader offsetY={offsetY} title="Workouts" />
-      <Animated.ScrollView
-        className="flex-1 bg-black"
-        ref={scrollViewAnimatedRef}
-      >
-        <View className="h-24" />
-        <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
-          {/* changes visibility of screen */}
-          {!workout.isLoading && (
-            <>
+    <View className="w-full h-full bg-black">
+      {homeScreenVisible && (
+        <>
+          <AnimatedHeader offsetY={offsetY} title="Workouts" />
+          <Animated.ScrollView
+            className="flex-1 bg-black"
+            onScroll={scrollHandler}
+          >
+            <View className="h-24" />
+            <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
+              {/* changes visibility of screen */}
+
               {/* button bar */}
               <View className="w-full flex-row justify-between mt-6 z-10">
                 <Animated.View
@@ -103,46 +106,49 @@ const Home = () => {
                   />
                 </Animated.View>
               </View>
-              <Animated.View
-                className="w-full"
-                entering={FadeInUp.delay(300).duration(1000).springify()}
-                exiting={FadeOutUp.duration(1000).springify()}
-              >
-                {workout.workouts.length == 0 ? (
-                  <View className="flex-1 items-center mt-20">
-                    <Text className="text-center text-white w-44 font-inter">
-                      Tap <Text className="font-interBold">Add</Text> to create
-                      a new workout
-                    </Text>
-                  </View>
-                ) : (
-                  <View className="w-full mt-7">
-                    <FlatList
-                      scrollEnabled={false}
-                      showsVerticalScrollIndicator={false}
-                      data={
-                        workout.dropdownTitle === "All"
-                          ? [...workout.workouts, ...workout.sharedWorkouts]
-                          : workout.dropdownTitle === "Shared"
-                          ? workout.sharedWorkouts
-                          : workout.workouts
-                      }
-                      renderItem={({ item }) => (
-                        <WorkoutRow currentWorkout={item} />
-                      )}
-                      keyExtractor={(item) =>
-                        `${item.id}-${workout.dropdownTitle}`
-                      }
-                    />
-                  </View>
-                )}
-              </Animated.View>
+              <View className="">
+                <Animated.View
+                  className="w-full"
+                  entering={FadeInUp.delay(300).duration(1000).springify()}
+                  exiting={FadeOutUp.duration(1000).springify()}
+                >
+                  {workout.workouts.length == 0 ? (
+                    <View className="flex-1 items-center mt-20">
+                      <Text className="text-center text-white w-44 font-inter">
+                        Tap <Text className="font-interBold">Add</Text> to
+                        create a new workout
+                      </Text>
+                    </View>
+                  ) : (
+                    <View className="w-full mt-7">
+                      <FlatList
+                        scrollEnabled={false}
+                        showsVerticalScrollIndicator={false}
+                        data={
+                          workout.dropdownTitle === "All"
+                            ? [...workout.workouts, ...workout.sharedWorkouts]
+                            : workout.dropdownTitle === "Shared"
+                            ? workout.sharedWorkouts
+                            : workout.workouts
+                        }
+                        renderItem={({ item }) => (
+                          <WorkoutRow currentWorkout={item} />
+                        )}
+                        keyExtractor={(item) =>
+                          `${item.id}-${workout.dropdownTitle}`
+                        }
+                      />
+                    </View>
+                  )}
+                </Animated.View>
+              </View>
+
               <AddWorkoutModal />
-            </>
-          )}
-        </SafeAreaView>
-      </Animated.ScrollView>
-    </>
+            </SafeAreaView>
+          </Animated.ScrollView>
+        </>
+      )}
+    </View>
   );
 };
 

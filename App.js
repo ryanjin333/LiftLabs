@@ -49,9 +49,17 @@ function App() {
               component={TabNavigator}
               options={{ animation: "none" }}
             />
-            <Stack.Screen name="Workout" component={Workout} />
+            <Stack.Screen
+              name="Workout"
+              component={Workout}
+              options={{ animation: "none" }}
+            />
             <Stack.Screen name="SearchExercise" component={SearchExercise} />
-            <Stack.Screen name="Focus" component={Focus} />
+            <Stack.Screen
+              name="Focus"
+              component={Focus}
+              options={{ animation: "none" }}
+            />
             <Stack.Screen name="SearchUser" component={SearchUser} />
           </Stack.Navigator>
         </NavigationContainer>

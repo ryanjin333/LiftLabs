@@ -147,6 +147,7 @@ const AddExerciseModal = () => {
 
   const deletePressed = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+
     resetModal();
     dispatch(deleteExercise(editModePlan.id));
   };

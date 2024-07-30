@@ -2,6 +2,7 @@ import { View, Text, Image, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
+import { homeToWorkoutScreenTransition } from "../context/animationSlice";
 import { changeCurrentWorkout } from "../context/exerciseSlice";
 import { addWorkout, deleteWorkout } from "../context/workoutSlice";
 import * as Haptics from "expo-haptics";
@@ -41,6 +42,7 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
       stiffness: 100,
     });
   };
+
   const handlePressOut = () => {
     scale.value = withSpring(1, { damping: 50, stiffness: 100 });
   };
@@ -73,8 +75,14 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
       style={animatedStyle}
       className="w-full h-20 bg-[#151515] flex-row rounded-[18px] pl-2 pr-6 items-center justify-between mb-3.5"
       onPress={() => {
-        navigation.navigate("Workout", { title, plan });
-        dispatch(changeCurrentWorkout(currentWorkout));
+        if (!isNotification) {
+          // ERROR HERE
+          dispatch(homeToWorkoutScreenTransition());
+          setTimeout(() => {
+            navigation.navigate("Workout", { title, plan });
+            dispatch(changeCurrentWorkout(currentWorkout));
+          }, 1000);
+        }
       }}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}

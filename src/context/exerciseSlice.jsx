@@ -150,6 +150,11 @@ export const deleteExercise = createAsyncThunk(
       await updateDoc(doc(db, "users", auth.currentUser.uid), {
         workouts: updatedWorkouts,
       });
+
+      const updatedCurrentWorkout = updatedWorkouts.find(
+        (workout) => workout.id === currentWorkout.id
+      );
+      return updatedCurrentWorkout;
     } catch (error) {
       console.error("Error deleting exercise: ", error);
     }
@@ -215,13 +220,8 @@ export const exerciseSlice = createSlice({
     });
     builder.addCase(deleteExercise.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.currentWorkout = {
-        createdBy: "",
-        id: "",
-        image: "",
-        plan: [],
-        title: "",
-      };
+
+      state.currentWorkout = action.payload;
     });
     builder.addCase(deleteExercise.rejected, (state, action) => {
       state.isLoading = false;

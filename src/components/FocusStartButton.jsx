@@ -12,6 +12,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
+import { workoutToFocusScreenTransition } from "../context/animationSlice";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -20,6 +21,7 @@ const FocusStartButton = () => {
   const navigation = useNavigation();
 
   // redux
+  const dispatch = useDispatch();
   const currentWorkout = useSelector((state) => state.exercise.currentWorkout);
   // animations
   const scale = useSharedValue(1);
@@ -41,7 +43,10 @@ const FocusStartButton = () => {
   const buttonPressed = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     if (currentWorkout.plan.length > 0) {
-      navigation.navigate("Focus");
+      dispatch(workoutToFocusScreenTransition());
+      setTimeout(() => {
+        navigation.navigate("Focus");
+      }, 1000);
     } else {
       // ADD WARNING UI
       console.log("No workouts");

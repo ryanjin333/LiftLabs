@@ -25,11 +25,15 @@ import Animated, {
 } from "react-native-reanimated";
 import { loginUser } from "../context/userSlice";
 import { auth } from "../config/firebase";
+import {
+  loginToHomeScreenTransition,
+  loginToSignupScreenTransition,
+  signupToLoginScreenTransition,
+} from "../context/animationSlice";
 
 const initialState = {
   email: "",
   password: "",
-  loginScreenVisible: true,
 };
 
 const Login = () => {
@@ -38,21 +42,12 @@ const Login = () => {
 
   // redux
   const dispatch = useDispatch();
+  const loginScreenVisible = useSelector(
+    (state) => state.animation.loginScreenVisible
+  );
 
   // navigation
   const navigation = useNavigation();
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    // activates when transitioning to another screen and then back
-    const unsubscribe = navigation.addListener("transitionEnd", () => {
-      if (isFocused) {
-        setValues({ ...values, loginScreenVisible: true });
-      }
-    });
-
-    return unsubscribe;
-  }, [navigation, isFocused]);
 
   // functions
 
@@ -75,10 +70,10 @@ const Login = () => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         dispatch(setIsLoading(true));
-        setValues({ ...values, loginScreenVisible: false });
+        dispatch(loginToHomeScreenTransition());
         setTimeout(() => {
           navigation.replace("TabNavigator");
-        }, 1000);
+        }, 500);
       }
     });
     return unsubscribe;
@@ -93,14 +88,14 @@ const Login = () => {
       <ScrollView className="flex-1 bg-black">
         <SafeAreaView className="flex-1 bg-black px-6 items-center">
           {/* changes visibility of screen */}
-          {values.loginScreenVisible && (
+          {loginScreenVisible && (
             <>
               {/* login text */}
               <View className="items-start w-full">
                 <Animated.Text
                   className="text-white text-5xl mt-24 mb-16 font-interBold"
-                  entering={FadeInUp.duration(1000).springify()}
-                  exiting={FadeOutUp.delay(500).duration(1000).springify()}
+                  entering={FadeInUp.duration(500).springify()}
+                  exiting={FadeOutUp.delay(250).duration(500).springify()}
                 >
                   Login
                 </Animated.Text>
@@ -109,8 +104,8 @@ const Login = () => {
               <View className="mt-32 mb-7 gap-7 w-full items-center">
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(100).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(400).duration(1000).springify()}
+                  entering={FadeInUp.delay(50).duration(500).springify()}
+                  exiting={FadeOutUp.delay(200).duration(500).springify()}
                 >
                   <FormRow
                     name="Email"
@@ -121,8 +116,8 @@ const Login = () => {
                 </Animated.View>
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(200).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(300).duration(1000).springify()}
+                  entering={FadeInUp.delay(100).duration(500).springify()}
+                  exiting={FadeOutUp.delay(150).duration(500).springify()}
                 >
                   <FormRow
                     name="Password"
@@ -135,8 +130,8 @@ const Login = () => {
                 {/* login button */}
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(300).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(200).duration(1000).springify()}
+                  entering={FadeInUp.delay(150).duration(500).springify()}
+                  exiting={FadeOutUp.delay(100).duration(500).springify()}
                 >
                   <LoadingGenericButton
                     title="Login"
@@ -147,22 +142,20 @@ const Login = () => {
                 {/* Google or Apple sign in options */}
                 <Animated.View
                   className="w-full items-center"
-                  entering={FadeInUp.delay(400).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                  entering={FadeInUp.delay(200).duration(500).springify()}
+                  exiting={FadeOutUp.delay(50).duration(500).springify()}
                 >
                   <GoogleAppleAuth />
                 </Animated.View>
                 {/* switch between login and sign up screens */}
                 <Animated.View
                   className="w-full items-center"
-                  entering={FadeInUp.delay(500).duration(1000).springify()}
-                  exiting={FadeOutUp.duration(1000).springify()}
+                  entering={FadeInUp.delay(250).duration(500).springify()}
+                  exiting={FadeOutUp.duration(500).springify()}
                 >
                   <LoginSignupSwitcher
                     isLogin={true}
-                    onPress={() =>
-                      setValues({ ...values, loginScreenVisible: false })
-                    }
+                    onPress={() => dispatch(loginToSignupScreenTransition())}
                   />
                 </Animated.View>
               </View>

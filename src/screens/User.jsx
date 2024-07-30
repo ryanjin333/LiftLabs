@@ -31,8 +31,7 @@ import Animated, {
   FadeOutDown,
   useSharedValue,
   useScrollViewOffset,
-  useAnimatedRef,
-  useDerivedValue,
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   withSpring,
   withTiming,
@@ -47,6 +46,7 @@ import {
   ModalDoneButton,
   SettingsList,
 } from "../components";
+import { userToLoginScreenTransition } from "../context/animationSlice";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -56,13 +56,15 @@ const initialState = {
   username: "",
   fullName: "",
   email: "",
-  userScreenVisible: true,
 };
 
 const User = ({ navigation }) => {
   // redux
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const userScreenVisible = useSelector(
+    (state) => state.animation.userScreenVisible
+  );
 
   // initial load
   useEffect(() => {
@@ -124,12 +126,11 @@ const User = ({ navigation }) => {
   ];
 
   // animations
-  const scrollViewAnimatedRef = useAnimatedRef();
-  const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);
+  const offsetY = useSharedValue(0);
 
-  const offsetY = useDerivedValue(() =>
-    parseInt(scrollViewOffsetY.value.toFixed(1))
-  );
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    offsetY.value = event.contentOffset.y;
+  });
 
   const loadingOpacity = useSharedValue(1);
   useEffect(() => {
@@ -227,7 +228,7 @@ const User = ({ navigation }) => {
   const logout = async () => {
     try {
       await auth.signOut().then(() => {
-        setValues({ ...values, userScreenVisible: false });
+        dispatch(userToLoginScreenTransition());
         setTimeout(() => {
           navigation.replace("Login");
         }, 1000);
@@ -239,17 +240,16 @@ const User = ({ navigation }) => {
 
   return (
     <>
-      {values.userScreenVisible && (
-        <AnimatedHeader offsetY={offsetY} title="User" delay={600} />
-      )}
-      <Animated.ScrollView
-        className="flex-1 bg-black"
-        ref={scrollViewAnimatedRef}
-      >
-        <View className="h-24" />
-        <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center justify-center">
-          {values.userScreenVisible && (
-            <>
+      {userScreenVisible && (
+        <>
+          <AnimatedHeader offsetY={offsetY} title="User" delay={600} />
+
+          <Animated.ScrollView
+            className="flex-1 bg-black"
+            onScroll={scrollHandler}
+          >
+            <View className="h-24" />
+            <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center justify-center">
               <View className="w-full flex-row justify-start">
                 {/* pfp */}
                 <AnimatedPressable
@@ -332,51 +332,53 @@ const User = ({ navigation }) => {
                   />
                 </Animated.View>
               </View>
-            </>
-          )}
-        </SafeAreaView>
-      </Animated.ScrollView>
+            </SafeAreaView>
+          </Animated.ScrollView>
 
-      {/* individual modals */}
-      <ChangeInfoModal
-        values={values}
-        setValues={setValues}
-        name={"Username"}
-        placeholder={user.username}
-        isVisible={values.usernameModalVisible}
-        value={values.username}
-        modalValueType={"usernameModalVisible"}
-        onPress={async () => {
-          // INTEGRATE INTO REDUX
-          try {
-            const q = query(
-              collection(db, "users"),
-              where("username", "==", values.username)
-            );
-            const usernameExists = await getDocs(q);
-            if (usernameExists.empty) {
-              dispatch(setInfo({ key: "username", value: values.username }));
-              console.log("username changed!");
-            } else {
-              console.log("username already exists");
-            }
-          } catch (error) {
-            console.error(error);
-          }
-        }}
-      />
-      <ChangeInfoModal
-        values={values}
-        setValues={setValues}
-        name={"Full name"}
-        placeholder={user.fullName}
-        isVisible={values.fullNameModalVisible}
-        value={values.fullName}
-        modalValueType={"fullNameModalVisible"}
-        onPress={() => {
-          dispatch(setInfo({ key: "fullName", value: values.fullName }));
-        }}
-      />
+          {/* individual modals */}
+          <ChangeInfoModal
+            values={values}
+            setValues={setValues}
+            name={"Username"}
+            placeholder={user.username}
+            isVisible={values.usernameModalVisible}
+            value={values.username}
+            modalValueType={"usernameModalVisible"}
+            onPress={async () => {
+              // INTEGRATE INTO REDUX
+              try {
+                const q = query(
+                  collection(db, "users"),
+                  where("username", "==", values.username)
+                );
+                const usernameExists = await getDocs(q);
+                if (usernameExists.empty) {
+                  dispatch(
+                    setInfo({ key: "username", value: values.username })
+                  );
+                  console.log("username changed!");
+                } else {
+                  console.log("username already exists");
+                }
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+          />
+          <ChangeInfoModal
+            values={values}
+            setValues={setValues}
+            name={"Full name"}
+            placeholder={user.fullName}
+            isVisible={values.fullNameModalVisible}
+            value={values.fullName}
+            modalValueType={"fullNameModalVisible"}
+            onPress={() => {
+              dispatch(setInfo({ key: "fullName", value: values.fullName }));
+            }}
+          />
+        </>
+      )}
     </>
   );
 };

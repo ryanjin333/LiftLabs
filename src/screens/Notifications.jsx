@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
 
@@ -12,9 +12,7 @@ import Animated, {
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
-  useScrollViewOffset,
-  useAnimatedRef,
-  useDerivedValue,
+  useAnimatedScrollHandler,
 } from "react-native-reanimated";
 import { AnimatedHeader, WorkoutRow } from "../components";
 
@@ -23,25 +21,22 @@ const Notifications = () => {
   const workout = useSelector((state) => state.workout);
 
   // animations
-  const scrollViewAnimatedRef = useAnimatedRef();
-  const scrollViewOffsetY = useScrollViewOffset(scrollViewAnimatedRef);
+  const offsetY = useSharedValue(0);
 
-  const offsetY = useDerivedValue(() =>
-    parseInt(scrollViewOffsetY.value.toFixed(1))
-  );
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    offsetY.value = event.contentOffset.y;
+  });
 
   return (
     <>
       <AnimatedHeader offsetY={offsetY} title="Notifications" />
-      <Animated.ScrollView
-        className="flex-1 bg-black"
-        ref={scrollViewAnimatedRef}
-      >
+      <Animated.ScrollView className="flex-1 bg-black" onScroll={scrollHandler}>
         <View className="h-24" />
         <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
           {/* pending workouts */}
           {workout.pendingWorkouts.length == 0 ? (
             <View className="flex-1 items-center mt-20">
+              <Image source="" />
               <Text className="text-center text-white w-44 font-inter text-lg">
                 {"No new notifications"}
               </Text>
