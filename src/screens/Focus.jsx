@@ -26,9 +26,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
-//const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const AnimatedText = Animated.createAnimatedComponent(Text);
-const AnimatedRNEImage = Animated.createAnimatedComponent(RNEImage);
 
 import { Image as RNEImage } from "@rneui/themed";
 
@@ -97,13 +95,17 @@ const Focus = ({ navigation }) => {
   // trigger when scrolled past the bottom
   const offsetY = useSharedValue(0);
   const deviceHeight = Dimensions.get("window").height;
+  const [triggered, setTriggered] = useState(false);
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
     offsetY.value = event.contentOffset.y;
     const totalHeight = event.contentSize.height;
-    if (offsetY.value > totalHeight - deviceHeight + 50) {
-      // NAVIGATE TO DONE HERE
-      //Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+    if (offsetY.value > totalHeight - deviceHeight + 50 && !triggered) {
+      // Trigger navigation only if not already triggered
+      setTriggered(true);
+      console.log("ok");
+      // navigation.navigate("Done");
+      // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     }
   });
   return (
@@ -122,8 +124,8 @@ const Focus = ({ navigation }) => {
                 {/* main title and exit button */}
                 {/* exit button */}
                 <Animated.View
-                  entering={FadeInUp.duration(1000).springify()}
-                  exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                  entering={FadeInUp.duration(500).springify()}
+                  exiting={FadeOutUp.delay(350).duration(500).springify()}
                 >
                   <Pressable
                     className="w-10 h-10 flex justify-center items-center rounded-full bg-[#292929]"
@@ -131,7 +133,7 @@ const Focus = ({ navigation }) => {
                       dispatch(focusToWorkoutScreenTransition());
                       setTimeout(() => {
                         navigation.goBack();
-                      }, 1000);
+                      }, 850);
                     }}
                   >
                     <Image
@@ -144,8 +146,8 @@ const Focus = ({ navigation }) => {
                 <View className="flex-row justify-between mb-10 w-full mt-3 px-3">
                   {/* title  */}
                   <AnimatedText
-                    entering={FadeInUp.delay(100).duration(1000).springify()}
-                    exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                    entering={FadeInUp.delay(50).duration(500).springify()}
+                    exiting={FadeOutUp.delay(300).duration(500).springify()}
                     className="w-56 text-primary font-interBold text-3xl"
                     ellipsizeMode="tail"
                     numberOfLines={3}
@@ -155,14 +157,14 @@ const Focus = ({ navigation }) => {
                   {/* exercise weight */}
                   <AnimatedText
                     className=" text-primary font-interBold text-3xl "
-                    entering={FadeInUp.delay(200).duration(1000).springify()}
-                    exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                    entering={FadeInUp.delay(100).duration(500).springify()}
+                    exiting={FadeOutUp.delay(250).duration(500).springify()}
                   >
                     {item.weight}
                     <AnimatedText
                       className="text-white font-interMedium text-2xl"
-                      entering={FadeInUp.delay(300).duration(1000).springify()}
-                      exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                      entering={FadeInUp.delay(150).duration(500).springify()}
+                      exiting={FadeOutUp.delay(200).duration(500).springify()}
                     >
                       {` ${user.weight}`}
                     </AnimatedText>
@@ -171,8 +173,8 @@ const Focus = ({ navigation }) => {
 
                 {/* gif */}
                 <Animated.View
-                  entering={FadeInUp.delay(400).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                  entering={FadeInUp.delay(200).duration(500).springify()}
+                  exiting={FadeOutUp.delay(150).duration(500).springify()}
                 >
                   <RNEImage
                     style={{
@@ -202,8 +204,8 @@ const Focus = ({ navigation }) => {
                 <View className="px-6 w-full flex-row mt-10 justify-between">
                   <AnimatedText
                     className=" text-primary font-interBold text-3xl "
-                    entering={FadeInUp.delay(500).duration(1000).springify()}
-                    exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                    entering={FadeInUp.delay(250).duration(500).springify()}
+                    exiting={FadeOutUp.delay(100).duration(500).springify()}
                   >
                     {item.set + " "}
                     of
@@ -217,8 +219,8 @@ const Focus = ({ navigation }) => {
                   {/* exercise reps */}
                   <AnimatedText
                     className="text-primary  font-interBold text-3xl"
-                    entering={FadeInUp.delay(600).duration(1000).springify()}
-                    exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                    entering={FadeInUp.delay(300).duration(500).springify()}
+                    exiting={FadeOutUp.delay(50).duration(500).springify()}
                   >
                     {item.reps}
                     <Text className="text-white font-interMedium text-2xl">
@@ -233,8 +235,8 @@ const Focus = ({ navigation }) => {
                 <Animated.View className="items-center mb-3">
                   <Text
                     className=" text-white font-interMedium "
-                    entering={FadeInUp.delay(700).duration(1000).springify()}
-                    exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                    entering={FadeInUp.delay(350).duration(500).springify()}
+                    exiting={FadeOutUp.duration(500).springify()}
                   >
                     scroll down to continue
                   </Text>

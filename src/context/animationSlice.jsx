@@ -58,7 +58,7 @@ export const homeToWorkoutScreenTransition = createAsyncThunk(
   "animation/homeToWorkoutScreenTransition",
   async (_, { dispatch }) => {
     dispatch(animationSlice.actions.hideHomeScreen());
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 650));
     dispatch(animationSlice.actions.showWorkoutScreen());
   }
 );
@@ -69,7 +69,7 @@ export const workoutToHomeScreenTransition = createAsyncThunk(
   "animation/workoutToHomeScreenTransition",
   async (_, { dispatch }) => {
     dispatch(animationSlice.actions.hideWorkoutScreen());
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 750));
     dispatch(animationSlice.actions.showHomeScreen());
   }
 );
@@ -78,7 +78,7 @@ export const workoutToFocusScreenTransition = createAsyncThunk(
   "animation/workoutToFocusScreenTransition",
   async (_, { dispatch }) => {
     dispatch(animationSlice.actions.hideWorkoutScreen());
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 750));
     dispatch(animationSlice.actions.showFocusScreen());
   }
 );
@@ -89,7 +89,7 @@ export const focusToWorkoutScreenTransition = createAsyncThunk(
   "animation/focusToWorkoutScreenTransition",
   async (_, { dispatch }) => {
     dispatch(animationSlice.actions.hideFocusScreen());
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 850));
     dispatch(animationSlice.actions.showWorkoutScreen());
   }
 );
@@ -102,7 +102,7 @@ export const userToLoginScreenTransition = createAsyncThunk(
   "animation/userToLoginScreenTransition",
   async (_, { dispatch }) => {
     dispatch(animationSlice.actions.hideUserScreen());
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 800));
     dispatch(animationSlice.actions.showLoginScreen());
   }
 );

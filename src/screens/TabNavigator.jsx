@@ -45,8 +45,8 @@ const TabNavigator = () => {
                   tint="dark"
                   intensity={70}
                   className="bg-transparent overflow-hidden w-full h-full"
-                  entering={FadeInDown.delay(600).duration(1000).springify()}
-                  exiting={FadeOutUp.duration(1000).springify()}
+                  entering={FadeInDown.delay(500).duration(500).springify()}
+                  exiting={FadeOutUp.duration(500).springify()}
                 />
               )}
             </>
@@ -73,8 +73,8 @@ const TabNavigator = () => {
                   <Animated.Image
                     source={iconName}
                     style={{ width: 25, height: 25 }}
-                    entering={FadeInDown.delay(600).duration(1000).springify()}
-                    exiting={FadeOutUp.duration(1000).springify()}
+                    entering={FadeInDown.delay(500).duration(500).springify()}
+                    exiting={FadeOutUp.duration(500).springify()}
                   />
                 )}
               </>

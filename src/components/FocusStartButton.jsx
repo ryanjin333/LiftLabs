@@ -46,7 +46,7 @@ const FocusStartButton = () => {
       dispatch(workoutToFocusScreenTransition());
       setTimeout(() => {
         navigation.navigate("Focus");
-      }, 1000);
+      }, 750);
     } else {
       // ADD WARNING UI
       console.log("No workouts");

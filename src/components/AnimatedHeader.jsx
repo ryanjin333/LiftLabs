@@ -89,8 +89,8 @@ const AnimatedHeader = ({ offsetY, title, delay = 300 }) => {
         <Animated.Text
           className="text-white text-4xl font-interBold mt-16 h-10"
           onLayout={handleTextLayout}
-          entering={FadeInUp.duration(1000).springify()}
-          exiting={FadeOutUp.delay(delay).duration(1000).springify()}
+          entering={FadeInUp.duration(500).springify()}
+          exiting={FadeOutUp.delay(delay).duration(500).springify()}
           numberOfLines={1}
           ellipsizeMode="tail"
         >

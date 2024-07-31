@@ -79,7 +79,7 @@ const Home = () => {
     <View className="w-full h-full bg-black">
       {homeScreenVisible && (
         <>
-          <AnimatedHeader offsetY={offsetY} title="Workouts" />
+          <AnimatedHeader offsetY={offsetY} title="Workouts" delay={150} />
           <Animated.ScrollView
             className="flex-1 bg-black"
             onScroll={scrollHandler}
@@ -91,14 +91,14 @@ const Home = () => {
               {/* button bar */}
               <View className="w-full flex-row justify-between mt-6 z-10">
                 <Animated.View
-                  entering={FadeInUp.delay(100).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(200).duration(1000).springify()}
+                  entering={FadeInUp.delay(50).duration(500).springify()}
+                  exiting={FadeOutUp.delay(100).duration(500).springify()}
                 >
                   <Dropdown />
                 </Animated.View>
                 <Animated.View
-                  entering={FadeInUp.delay(200).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                  entering={FadeInUp.delay(100).duration(500).springify()}
+                  exiting={FadeOutUp.delay(50).duration(500).springify()}
                 >
                   <OutlineButton
                     title="+ Add"
@@ -106,11 +106,11 @@ const Home = () => {
                   />
                 </Animated.View>
               </View>
-              <View className="">
+              <View className="w-full h-full">
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(300).duration(1000).springify()}
-                  exiting={FadeOutUp.duration(1000).springify()}
+                  entering={FadeInUp.delay(150).duration(500).springify()}
+                  exiting={FadeOutUp.duration(500).springify()}
                 >
                   {workout.workouts.length == 0 ? (
                     <View className="flex-1 items-center mt-20">

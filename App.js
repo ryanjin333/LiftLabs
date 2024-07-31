@@ -13,6 +13,7 @@ import {
   Focus,
   SearchUser,
   Loader,
+  Done,
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
@@ -58,6 +59,11 @@ function App() {
             <Stack.Screen
               name="Focus"
               component={Focus}
+              options={{ animation: "none" }}
+            />
+            <Stack.Screen
+              name="Done"
+              component={Done}
               options={{ animation: "none" }}
             />
             <Stack.Screen name="SearchUser" component={SearchUser} />

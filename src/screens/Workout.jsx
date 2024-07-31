@@ -58,7 +58,7 @@ const Workout = ({ route, navigation }) => {
     <View className="bg-black w-full h-full">
       {workoutScreenVisible && (
         <>
-          <AnimatedHeader offsetY={offsetY} title={title} />
+          <AnimatedHeader offsetY={offsetY} title={title} delay={250} />
           <Animated.ScrollView
             className="flex-1 bg-black"
             onScroll={scrollHandler}
@@ -69,8 +69,8 @@ const Workout = ({ route, navigation }) => {
               <View className="w-full flex-row justify-between mt-6">
                 <View className="flex-row space-x-1">
                   <Animated.View
-                    entering={FadeInUp.delay(100).duration(1000).springify()}
-                    exiting={FadeOutUp.delay(200).duration(1000).springify()}
+                    entering={FadeInUp.delay(50).duration(500).springify()}
+                    exiting={FadeOutUp.delay(200).duration(500).springify()}
                   >
                     <OutlineButtonCircle
                       image={"back_chevron"}
@@ -78,13 +78,13 @@ const Workout = ({ route, navigation }) => {
                         dispatch(workoutToHomeScreenTransition());
                         setTimeout(() => {
                           navigation.goBack();
-                        }, 1000);
+                        }, 750);
                       }}
                     />
                   </Animated.View>
                   <Animated.View
-                    entering={FadeInUp.delay(200).duration(1000).springify()}
-                    exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                    entering={FadeInUp.delay(100).duration(500).springify()}
+                    exiting={FadeOutUp.delay(150).duration(500).springify()}
                   >
                     <OutlineButton
                       title="Share"
@@ -93,8 +93,8 @@ const Workout = ({ route, navigation }) => {
                   </Animated.View>
                 </View>
                 <Animated.View
-                  entering={FadeInUp.delay(300).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                  entering={FadeInUp.delay(150).duration(500).springify()}
+                  exiting={FadeOutUp.delay(100).duration(500).springify()}
                 >
                   <OutlineButton
                     title="+ Add"
@@ -105,12 +105,12 @@ const Workout = ({ route, navigation }) => {
               <View className="w-full items-center">
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(400).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(200).duration(1000).springify()}
+                  entering={FadeInUp.delay(200).duration(500).springify()}
+                  exiting={FadeOutUp.delay(50).duration(500).springify()}
                 >
                   {/* exercise list */}
                   {currentWorkout.plan.length == 0 ? (
-                    <View className="flex-1 justify-center mt-20">
+                    <View className="flex-1 justify-center items-center mt-20">
                       <Text className="text-center text-white w-44 font-inter">
                         Tap <Text className="font-interBold">Add</Text> to
                         create a new exercise
@@ -133,9 +133,10 @@ const Workout = ({ route, navigation }) => {
               <AddExerciseModal />
             </SafeAreaView>
           </Animated.ScrollView>
+
           <Animated.View
-            entering={FadeInUp.delay(500).duration(1000).springify()}
-            exiting={FadeOutUp.delay(200).duration(1000).springify()}
+            entering={FadeInUp.delay(250).duration(500).springify()}
+            exiting={FadeOutDown.duration(500).springify()}
           >
             <FocusStartButton />
           </Animated.View>

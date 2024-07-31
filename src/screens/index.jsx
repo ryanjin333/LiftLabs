@@ -9,6 +9,7 @@ import SearchExercise from "./SearchExercise";
 import Focus from "./Focus";
 import Notifications from "./Notifications";
 import Loader from "./Loader";
+import Done from "./Done";
 
 export {
   Login,
@@ -22,4 +23,5 @@ export {
   Focus,
   Notifications,
   Loader,
+  Done,
 };

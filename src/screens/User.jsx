@@ -231,7 +231,7 @@ const User = ({ navigation }) => {
         dispatch(userToLoginScreenTransition());
         setTimeout(() => {
           navigation.replace("Login");
-        }, 1000);
+        }, 800);
       });
     } catch (error) {
       console.error("Error signing out: ", error);
@@ -242,7 +242,7 @@ const User = ({ navigation }) => {
     <>
       {userScreenVisible && (
         <>
-          <AnimatedHeader offsetY={offsetY} title="User" delay={600} />
+          <AnimatedHeader offsetY={offsetY} title="User" />
 
           <Animated.ScrollView
             className="flex-1 bg-black"
@@ -254,8 +254,8 @@ const User = ({ navigation }) => {
                 {/* pfp */}
                 <AnimatedPressable
                   onPress={pickImage}
-                  entering={FadeInUp.delay(100).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(500).duration(1000).springify()}
+                  entering={FadeInUp.delay(50).duration(500).springify()}
+                  exiting={FadeOutUp.delay(250).duration(500).springify()}
                 >
                   <View className="absolute h-7 w-7 top-0 right-0 bg-[#515151a8] z-10 rounded-full justify-center items-center ">
                     <Image
@@ -289,40 +289,40 @@ const User = ({ navigation }) => {
               <View className="w-full">
                 {/* Personal info section */}
                 <Animated.View
-                  entering={FadeInUp.delay(200).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(400).duration(1000).springify()}
+                  entering={FadeInUp.delay(100).duration(500).springify()}
+                  exiting={FadeOutUp.delay(200).duration(500).springify()}
                 >
                   <SettingsList data={SECTIONS[0]} />
                 </Animated.View>
 
                 {/* Units section */}
                 <Animated.View
-                  entering={FadeInUp.delay(300).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(300).duration(1000).springify()}
+                  entering={FadeInUp.delay(150).duration(500).springify()}
+                  exiting={FadeOutUp.delay(150).duration(500).springify()}
                 >
                   <SettingsList data={SECTIONS[1]} />
                 </Animated.View>
 
                 {/* Legal section */}
                 <Animated.View
-                  entering={FadeInUp.delay(400).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(200).duration(1000).springify()}
+                  entering={FadeInUp.delay(200).duration(500).springify()}
+                  exiting={FadeOutUp.delay(100).duration(500).springify()}
                 >
                   <SettingsList data={SECTIONS[2]} />
                 </Animated.View>
 
                 {/* App info */}
                 <Animated.View
-                  entering={FadeInUp.delay(500).duration(1000).springify()}
-                  exiting={FadeOutUp.delay(100).duration(1000).springify()}
+                  entering={FadeInUp.delay(250).duration(500).springify()}
+                  exiting={FadeOutUp.delay(50).duration(500).springify()}
                 >
                   <SettingsList data={SECTIONS[3]} />
                 </Animated.View>
                 {/* logout button */}
                 <Animated.View
                   className="w-full mt-6"
-                  entering={FadeInUp.delay(600).duration(1000).springify()}
-                  exiting={FadeOutUp.duration(1000).springify()}
+                  entering={FadeInUp.delay(300).duration(500).springify()}
+                  exiting={FadeOutUp.duration(500).springify()}
                 >
                   <GenericButton
                     onPress={logout}

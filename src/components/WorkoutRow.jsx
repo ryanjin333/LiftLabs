@@ -81,7 +81,7 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
           setTimeout(() => {
             navigation.navigate("Workout", { title, plan });
             dispatch(changeCurrentWorkout(currentWorkout));
-          }, 1000);
+          }, 650);
         }
       }}
       onPressIn={handlePressIn}
