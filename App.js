@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import FlashMessage from "react-native-flash-message";
+
 import {
   Login,
   Signup,
@@ -69,6 +71,7 @@ function App() {
             <Stack.Screen name="SearchUser" component={SearchUser} />
           </Stack.Navigator>
         </NavigationContainer>
+        <FlashMessage position="top" />
       </Provider>
     </SafeAreaProvider>
   );

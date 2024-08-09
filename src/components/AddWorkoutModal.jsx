@@ -21,6 +21,8 @@ import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "../config/firebase";
 
+import FlashMessage, { showMessage } from "react-native-flash-message";
+
 import Animated, {
   useSharedValue,
   withRepeat,
@@ -102,7 +104,10 @@ const AddWorkoutModal = () => {
     // if the title is not empty, add to list otherwise warn users
     if (values.title == "") {
       // display alert
-      console.log("empty title");
+      showMessage({
+        message: "Missing title",
+        type: "danger",
+      });
       return;
     }
     setValues({ ...values, isLoading: true });
@@ -194,13 +199,20 @@ const AddWorkoutModal = () => {
         "state_changed",
         (snapshot) => {
           // checks the percentage done
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress}% done`);
+          const progress = int(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          // SHOW % FINISHED
+          showMessage({
+            message: "upload " + { progress } + "% complete",
+          });
         },
         (error) => {
-          console.error("Error uploading the image:", error);
-          Alert.alert("Upload Error", error.message);
+          // IMAGE UPLOAD ERROR
+          showMessage({
+            message: "Error uploading the image",
+            type: "danger",
+          });
         },
         async () => {
           // if successful, create a download url and set it both in firestore and locally
@@ -323,6 +335,7 @@ const AddWorkoutModal = () => {
             </BlurView>
           </View>
         </View>
+        <FlashMessage autoHide={false} />
       </KeyboardAvoidingView>
     </Modal>
   );

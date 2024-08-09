@@ -33,27 +33,37 @@ const Notifications = () => {
       <Animated.ScrollView className="flex-1 bg-black" onScroll={scrollHandler}>
         <View className="h-24" />
         <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
-          {/* pending workouts */}
-          {workout.pendingWorkouts.length == 0 ? (
-            <View className="flex-1 items-center mt-20">
-              <Image source="" />
-              <Text className="text-center text-white w-44 font-inter text-lg">
-                {"No new notifications"}
-              </Text>
-            </View>
-          ) : (
-            <View className="w-full mt-7">
-              <FlatList
-                scrollEnabled={false}
-                showsVerticalScrollIndicator={false}
-                data={workout.pendingWorkouts}
-                renderItem={({ item }) => (
-                  <WorkoutRow currentWorkout={item} isNotification={true} />
-                )}
-                keyExtractor={(item) => `${item.id}-${workout.dropdownTitle}`}
-              />
-            </View>
-          )}
+          <View className="w-full">
+            <Animated.View
+              className="w-full"
+              entering={FadeInUp.delay(50).duration(500).springify()}
+              exiting={FadeOutUp.duration(500).springify()}
+            >
+              {/* pending workouts */}
+              {workout.pendingWorkouts.length == 0 ? (
+                <View className="flex-1 items-center mt-20">
+                  <Image source="" />
+                  <Text className=" text-white  font-interMedium text-lg">
+                    {"Nothing to see here :)"}
+                  </Text>
+                </View>
+              ) : (
+                <View className="w-full mt-7">
+                  <FlatList
+                    scrollEnabled={false}
+                    showsVerticalScrollIndicator={false}
+                    data={workout.pendingWorkouts}
+                    renderItem={({ item }) => (
+                      <WorkoutRow currentWorkout={item} isNotification={true} />
+                    )}
+                    keyExtractor={(item) =>
+                      `${item.id}-${workout.dropdownTitle}`
+                    }
+                  />
+                </View>
+              )}
+            </Animated.View>
+          </View>
         </SafeAreaView>
       </Animated.ScrollView>
     </>

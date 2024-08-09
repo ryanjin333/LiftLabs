@@ -32,7 +32,10 @@ import { Image as RNEImage } from "@rneui/themed";
 
 // redux imports
 import { useDispatch, useSelector } from "react-redux";
-import { focusToWorkoutScreenTransition } from "../context/animationSlice";
+import {
+  focusToDoneScreenTransition,
+  focusToWorkoutScreenTransition,
+} from "../context/animationSlice";
 
 const Focus = ({ navigation }) => {
   // redux
@@ -93,27 +96,19 @@ const Focus = ({ navigation }) => {
   });
 
   // trigger when scrolled past the bottom
-  const offsetY = useSharedValue(0);
-  const deviceHeight = Dimensions.get("window").height;
-  const [triggered, setTriggered] = useState(false);
-
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    offsetY.value = event.contentOffset.y;
-    const totalHeight = event.contentSize.height;
-    if (offsetY.value > totalHeight - deviceHeight + 50 && !triggered) {
-      // Trigger navigation only if not already triggered
-      setTriggered(true);
-      console.log("ok");
-      // navigation.navigate("Done");
-      // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-    }
-  });
+  const endOfWorkoutReached = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    dispatch(focusToDoneScreenTransition());
+    setTimeout(() => {
+      navigation.navigate("Done");
+    }, 850);
+  };
   return (
     <Animated.FlatList
       className="bg-black"
       data={fullPlan}
       keyExtractor={(item) => item.uniqueId}
-      onScroll={scrollHandler}
+      showsVerticalScrollIndicator={false}
       renderItem={({ item }) => (
         // actual screen
         <SafeAreaView className="h-screen w-screen px-6 py-3 bg-black justify-between items-center">
@@ -230,15 +225,18 @@ const Focus = ({ navigation }) => {
                   </AnimatedText>
                 </View>
               </View>
-              {/* swipe down message (only show on first screen)*/}
-              {fullPlan[0].uniqueId == item.uniqueId && (
-                <Animated.View className="items-center mb-3">
+              {/* swipe down message (only show on first and last screen)*/}
+              {(fullPlan[0].uniqueId == item.uniqueId ||
+                fullPlan[fullPlan.length - 1].uniqueId == item.uniqueId) && (
+                <Animated.View className="items-center ">
                   <Text
                     className=" text-white font-interMedium "
                     entering={FadeInUp.delay(350).duration(500).springify()}
                     exiting={FadeOutUp.duration(500).springify()}
                   >
-                    scroll down to continue
+                    {fullPlan[0].uniqueId == item.uniqueId
+                      ? "swipe to continue"
+                      : "swipe to finish"}
                   </Text>
                   <AnimatedImage
                     className="h-7 w-7"
@@ -251,8 +249,10 @@ const Focus = ({ navigation }) => {
           )}
         </SafeAreaView>
       )}
-      snapToInterval={Dimensions.get("window").height}
+      snapToInterval={Dimensions.get("window").height - 0.1}
       decelerationRate="fast"
+      onEndReachedThreshold={0}
+      onEndReached={endOfWorkoutReached}
       showsHorizontalScrollIndicator={false}
     />
   );

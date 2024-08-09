@@ -11,6 +11,8 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
+import { showMessage } from "react-native-flash-message";
+
 import React, { useState, useRef, useEffect } from "react";
 import { BlurView } from "expo-blur";
 import { useNavigation } from "@react-navigation/native";
@@ -103,7 +105,18 @@ const AddExerciseModal = () => {
     // if the title is not empty, add to list otherwise warn users
     if (exerciseName == "") {
       // display alert
-      console.log("empty title");
+      showMessage({
+        message: "Missing title",
+        type: "danger",
+      });
+      return;
+    }
+    if (values.sets == 0 || values.reps == 0) {
+      // display alert
+      showMessage({
+        message: "Sets and reps must be at least 1",
+        type: "danger",
+      });
       return;
     }
     setValues({ ...values, isLoading: true });

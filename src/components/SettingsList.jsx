@@ -26,11 +26,12 @@ const TextAndNavigation = ({ text }) => {
 const SwitcherOnly = () => {
   // redux
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   return (
     <SwitchSelector
       className="w-48"
-      initial={0}
+      initial={user.weight == "lbs" ? 0 : 1}
       onPress={(value) => dispatch(setInfo({ key: "weight", value: value }))} // switches weight conversion
       textColor={"#fff"}
       selectedColor={"#ffffff"}

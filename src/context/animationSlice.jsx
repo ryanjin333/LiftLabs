@@ -8,6 +8,7 @@ const initialState = {
   tabScreenVisible: true,
   focusScreenVisible: true,
   userScreenVisible: true,
+  doneScreenVisible: true,
 };
 
 // LOGIN TRANSITIONS
@@ -94,7 +95,24 @@ export const focusToWorkoutScreenTransition = createAsyncThunk(
   }
 );
 
-// focus to home screen transition
+export const focusToDoneScreenTransition = createAsyncThunk(
+  "animation/focusToDoneScreenTransition",
+  async (_, { dispatch }) => {
+    dispatch(animationSlice.actions.hideFocusScreen());
+    await new Promise((resolve) => setTimeout(resolve, 850));
+    dispatch(animationSlice.actions.showDoneScreen());
+  }
+);
+
+// DONE TRANSITIONS
+export const doneToHomeScreenTransition = createAsyncThunk(
+  "animation/doneToHomeScreenTransition",
+  async (_, { dispatch }) => {
+    dispatch(animationSlice.actions.hideDoneScreen());
+    await new Promise((resolve) => setTimeout(resolve, 850));
+    dispatch(animationSlice.actions.showHomeScreen());
+  }
+);
 
 // USER TRANSITIONS
 
@@ -156,6 +174,13 @@ const animationSlice = createSlice({
     hideUserScreen(state) {
       state.tabScreenVisible = false;
       state.userScreenVisible = false;
+    },
+    // DONE
+    showDoneScreen(state) {
+      state.doneScreenVisible = true;
+    },
+    hideDoneScreen(state) {
+      state.doneScreenVisible = false;
     },
   },
 });

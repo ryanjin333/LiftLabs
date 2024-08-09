@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useIsFocused } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import { setIsLoading } from "../context/workoutSlice";
+import { showMessage, hideMessage } from "react-native-flash-message";
 import Animated, {
   FadeInUp,
   FadeInDown,
@@ -45,6 +46,10 @@ const Login = () => {
   const loginScreenVisible = useSelector(
     (state) => state.animation.loginScreenVisible
   );
+  const alertText = useSelector((state) => state.user.alertText);
+  useEffect(() => {
+    console.log(alertText);
+  }, [alertText]);
 
   // navigation
   const navigation = useNavigation();
@@ -54,15 +59,18 @@ const Login = () => {
   const onSubmit = async () => {
     const { email, password } = values;
     if (!email || !password) {
-      // display alert
-      console.log("missing email or password");
+      // display global alert
+      showMessage({
+        message: "Missing email or password",
+        type: "danger",
+      });
       return;
     }
     const currentUser = { email, password };
     try {
       dispatch(loginUser(currentUser));
     } catch (error) {
-      console.log("got error:", error);
+      //console.log("got error:", error);
     }
   };
 
@@ -72,7 +80,7 @@ const Login = () => {
         dispatch(setIsLoading(true));
         dispatch(loginToHomeScreenTransition());
         setTimeout(() => {
-          navigation.replace("TabNavigator");
+          navigation.replace("Loader");
         }, 500);
       }
     });

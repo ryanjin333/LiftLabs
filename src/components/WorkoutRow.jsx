@@ -14,6 +14,8 @@ import Animated, {
   withRepeat,
 } from "react-native-reanimated";
 
+import { showMessage } from "react-native-flash-message";
+
 import { Image as LoadingImage } from "@rneui/themed";
 
 import WorkoutRowDropdown from "./WorkoutRowDropdown";
@@ -76,7 +78,6 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
       className="w-full h-20 bg-[#151515] flex-row rounded-[18px] pl-2 pr-6 items-center justify-between mb-3.5"
       onPress={() => {
         if (!isNotification) {
-          // ERROR HERE
           dispatch(homeToWorkoutScreenTransition());
           setTimeout(() => {
             navigation.navigate("Workout", { title, plan });
@@ -136,6 +137,10 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
               dispatch(addWorkout(currentWorkout));
+              // add workout
+              showMessage({
+                message: "Workout successfully added!",
+              });
             }}
           >
             <Image className="h-5 w-5" source={require("../assets/yes.png")} />
@@ -150,6 +155,10 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
                   type: "notifications",
                 })
               );
+              // delete workout
+              showMessage({
+                message: "Workout successfully deleted!",
+              });
             }}
           >
             <Image className="h-5 w-5" source={require("../assets/no.png")} />

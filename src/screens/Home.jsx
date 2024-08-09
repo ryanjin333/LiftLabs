@@ -55,18 +55,18 @@ const Home = () => {
 
   // firebase
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      doc(db, "users", auth.currentUser.uid),
-      (docSnapshot) => {
-        if (docSnapshot.exists()) {
-          dispatch(fetchWorkouts(docSnapshot.data()));
-        }
-      }
-    );
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(
+  //     doc(db, "users", auth.currentUser.uid),
+  //     (docSnapshot) => {
+  //       if (docSnapshot.exists()) {
+  //         dispatch(fetchWorkouts(docSnapshot.data()));
+  //       }
+  //     }
+  //   );
 
-    return () => unsubscribe();
-  }, [dispatch]);
+  //   return () => unsubscribe();
+  // }, [dispatch]);
 
   // animations
   const offsetY = useSharedValue(0);

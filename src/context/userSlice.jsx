@@ -77,7 +77,7 @@ export const loginUser = createAsyncThunk(
       await signInWithEmailAndPassword(auth, email, password);
       return auth.currentUser.uid;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 );
@@ -115,6 +115,7 @@ export const userSlice = createSlice({
       state.username = action.payload.username;
       state.fullName = action.payload.fullName;
       state.weight = action.payload.weight;
+      console.log(state.weight);
       state.alertType = "success";
       state.alertText = "Data sent";
     });

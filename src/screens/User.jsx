@@ -37,6 +37,7 @@ import Animated, {
   withTiming,
   withRepeat,
 } from "react-native-reanimated";
+import { showMessage } from "react-native-flash-message";
 import {
   AnimatedHeader,
   ChangeInfoModal,
@@ -68,7 +69,6 @@ const User = ({ navigation }) => {
 
   // initial load
   useEffect(() => {
-    dispatch(loadInfo());
     setValues({
       ...values,
       email: auth.currentUser.email,
@@ -349,16 +349,26 @@ const User = ({ navigation }) => {
               try {
                 const q = query(
                   collection(db, "users"),
-                  where("username", "==", values.username)
+                  where("username", "==", values.username.toLowerCase())
                 );
                 const usernameExists = await getDocs(q);
                 if (usernameExists.empty) {
                   dispatch(
-                    setInfo({ key: "username", value: values.username })
+                    setInfo({
+                      key: "username",
+                      value: values.username.toLowerCase(),
+                    })
                   );
-                  console.log("username changed!");
+
+                  showMessage({
+                    message: "Username changed!",
+                  });
                 } else {
-                  console.log("username already exists");
+                  showMessage({
+                    message: "Username already exists",
+                    type: "danger",
+                  });
+                  return;
                 }
               } catch (error) {
                 console.error(error);
@@ -375,6 +385,9 @@ const User = ({ navigation }) => {
             modalValueType={"fullNameModalVisible"}
             onPress={() => {
               dispatch(setInfo({ key: "fullName", value: values.fullName }));
+              showMessage({
+                message: "Name changed!",
+              });
             }}
           />
         </>

@@ -80,7 +80,7 @@ const Signup = () => {
         dispatch(setIsLoading(true));
         dispatch(signupToLoginScreenTransition());
         setTimeout(() => {
-          navigation.replace("TabNavigator");
+          navigation.replace("Loader");
         }, 500);
       }
     });
