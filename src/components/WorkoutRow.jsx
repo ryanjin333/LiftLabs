@@ -78,6 +78,7 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
       className="w-full h-20 bg-[#151515] flex-row rounded-[18px] pl-2 pr-6 items-center justify-between mb-3.5"
       onPress={() => {
         if (!isNotification) {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
           dispatch(homeToWorkoutScreenTransition());
           setTimeout(() => {
             navigation.navigate("Workout", { title, plan });

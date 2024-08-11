@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
+import { showMessage } from "react-native-flash-message";
 
 const initialState = {
   isLoading: false,
@@ -64,7 +65,25 @@ export const registerUser = createAsyncThunk(
       });
       return auth.currentUser.uid;
     } catch (error) {
-      console.log("the error is:", error);
+      // display global alert
+      let errorMessage = "An unexpected error occurred. Please try again.";
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          errorMessage =
+            "The email address is already in use by another account.";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "The email address is badly formatted.";
+          break;
+        case "auth/weak-password":
+          errorMessage = "The password is too weak.";
+          break;
+      }
+
+      showMessage({
+        message: errorMessage,
+        type: "danger",
+      });
     }
   }
 );
@@ -77,7 +96,29 @@ export const loginUser = createAsyncThunk(
       await signInWithEmailAndPassword(auth, email, password);
       return auth.currentUser.uid;
     } catch (error) {
-      throw error;
+      // display global alert
+      let errorMessage = "An unexpected error occurred. Please try again.";
+      switch (error.code) {
+        case "auth/invalid-email":
+          errorMessage = "The email address is badly formatted.";
+          break;
+        case "auth/user-not-found":
+          errorMessage = "There is no user record corresponding to this email.";
+          break;
+        case "auth/wrong-password":
+          errorMessage = "The password is invalid.";
+          break;
+        case "auth/too-many-requests":
+          errorMessage =
+            "Access to this account has been temporarily disabled due to many failed login attempts.";
+          break;
+      }
+
+      showMessage({
+        message: errorMessage,
+        type: "danger",
+      });
+      return rejectWithValue(error.message);
     }
   }
 );

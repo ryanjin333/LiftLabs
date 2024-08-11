@@ -16,7 +16,17 @@ import {
   LoadingGenericButton,
 } from "../components";
 
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
+
+import {
+  doc,
+  getDoc,
+  setDoc,
+  getDocs,
+  query,
+  where,
+  collection,
+} from "firebase/firestore";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -35,6 +45,7 @@ import Animated, {
   useAnimatedRef,
   useDerivedValue,
 } from "react-native-reanimated";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 import { registerUser } from "../context/userSlice";
 import { signupToLoginScreenTransition } from "../context/animationSlice";
@@ -63,14 +74,31 @@ const Signup = () => {
     const { username, email, password } = values;
     if (!email || !password || !username) {
       // display alert
-      console.log("missing username, email, or alert");
+      showMessage({
+        message: "Missing username, email or password",
+        type: "danger",
+      });
       return;
     }
-    const currentUser = { username, email, password };
+    // IF USERNAME ALR EXISTS SHOW ERROR AND RETURN
     try {
+      const rawUsername = username.split(" ").join("").toLowerCase();
+      const q = query(
+        collection(db, "users"),
+        where("username", "==", rawUsername)
+      );
+      const usernameExists = await getDocs(q);
+      if (!usernameExists.empty) {
+        showMessage({
+          message: "Username already exists",
+          type: "danger",
+        });
+        return;
+      }
+      const currentUser = { rawUsername, email, password };
       dispatch(registerUser(currentUser));
     } catch (error) {
-      console.log("got error:", error);
+      console.error(error);
     }
   };
 

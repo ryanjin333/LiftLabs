@@ -121,7 +121,7 @@ const User = ({ navigation }) => {
     },
     {
       title: "App Info",
-      data: [{ title: "App version", action: () => {}, text: "v1.0" }],
+      data: [{ title: "App version", action: () => {}, text: "v1.0.0" }],
     },
   ];
 
@@ -206,6 +206,8 @@ const User = ({ navigation }) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log(`Upload is ${progress}% done`);
+          // use loading image
+          setImageUrl(null);
         },
         (error) => {
           console.error("Error uploading the image:", error);
@@ -263,6 +265,7 @@ const User = ({ navigation }) => {
                       source={require("../assets/edit_icon.png")}
                     />
                   </View>
+
                   <LoadingImage
                     style={{
                       width: 80,
@@ -270,6 +273,7 @@ const User = ({ navigation }) => {
                       borderRadius: 99,
                       overflow: "hidden",
                     }}
+                    key={imageUrl}
                     source={{ uri: imageUrl }}
                     PlaceholderContent={
                       <Animated.View
@@ -347,9 +351,13 @@ const User = ({ navigation }) => {
             onPress={async () => {
               // INTEGRATE INTO REDUX
               try {
+                const rawUsername = values.username
+                  .split(" ")
+                  .join("")
+                  .toLowerCase();
                 const q = query(
                   collection(db, "users"),
-                  where("username", "==", values.username.toLowerCase())
+                  where("username", "==", rawUsername)
                 );
                 const usernameExists = await getDocs(q);
                 if (usernameExists.empty) {

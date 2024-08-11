@@ -199,25 +199,23 @@ const AddWorkoutModal = () => {
         "state_changed",
         (snapshot) => {
           // checks the percentage done
-          const progress = int(
+          const progress = Math.floor(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
           // SHOW % FINISHED
-          showMessage({
-            message: "upload " + { progress } + "% complete",
-          });
+          setValues({ ...values, image: null });
         },
         (error) => {
-          // IMAGE UPLOAD ERROR
-          showMessage({
-            message: "Error uploading the image",
-            type: "danger",
-          });
+          console.log(error);
         },
         async () => {
-          // if successful, create a download url and set it both in firestore and locally
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          setValues({ ...values, image: downloadURL });
+          try {
+            // if successful, create a download url and set it both in firestore and locally
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            setValues({ ...values, image: downloadURL });
+          } catch (error) {
+            console.error("Error getting download URL:", error);
+          }
         }
       );
     } catch (error) {
@@ -290,6 +288,7 @@ const AddWorkoutModal = () => {
                       overflow: "hidden",
                       marginHorizontal: 8,
                     }}
+                    key={values.image}
                     source={
                       values.image
                         ? { uri: values.image }
