@@ -13,6 +13,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { workoutToFocusScreenTransition } from "../context/animationSlice";
+import { showMessage } from "react-native-flash-message";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -48,8 +49,9 @@ const FocusStartButton = () => {
         navigation.navigate("Focus");
       }, 750);
     } else {
-      // ADD WARNING UI
-      console.log("No workouts");
+      showMessage({
+        message: "Add exercises to continue",
+      });
     }
   };
   return (

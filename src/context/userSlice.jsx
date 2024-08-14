@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { Platform } from "react-native";
+import uuid from "react-native-uuid";
+
 // Firebase
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -48,9 +50,10 @@ export const registerUser = createAsyncThunk(
   async (currentUser) => {
     try {
       const { username, email, password } = currentUser;
+
       await createUserWithEmailAndPassword(auth, email, password);
       await setDoc(doc(db, "users", auth.currentUser.uid), {
-        username: username.toLowerCase(),
+        username: username,
         fullName: "",
         pfp: "https://firebasestorage.googleapis.com/v0/b/gym-app-cf517.appspot.com/o/images%2Fpfp.jpg?alt=media&token=6864f471-9ca4-434d-a2c6-adc46f7f0b2c",
         bio: "",
@@ -62,6 +65,7 @@ export const registerUser = createAsyncThunk(
         workouts: [],
         sharedWorkouts: [],
         pendingWorkouts: [],
+        more: uuid.v4(),
       });
       return auth.currentUser.uid;
     } catch (error) {
@@ -156,7 +160,6 @@ export const userSlice = createSlice({
       state.username = action.payload.username;
       state.fullName = action.payload.fullName;
       state.weight = action.payload.weight;
-      console.log(state.weight);
       state.alertType = "success";
       state.alertText = "Data sent";
     });

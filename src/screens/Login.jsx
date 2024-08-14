@@ -70,7 +70,7 @@ const Login = () => {
     try {
       dispatch(loginUser(currentUser));
     } catch (error) {
-      //console.log("got error:", error);
+      console.log("got error:", error);
     }
   };
 

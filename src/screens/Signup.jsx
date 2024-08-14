@@ -82,10 +82,9 @@ const Signup = () => {
     }
     // IF USERNAME ALR EXISTS SHOW ERROR AND RETURN
     try {
-      const rawUsername = username.split(" ").join("").toLowerCase();
       const q = query(
         collection(db, "users"),
-        where("username", "==", rawUsername)
+        where("username", "==", username)
       );
       const usernameExists = await getDocs(q);
       if (!usernameExists.empty) {
@@ -95,7 +94,8 @@ const Signup = () => {
         });
         return;
       }
-      const currentUser = { rawUsername, email, password };
+
+      const currentUser = { username, email, password };
       dispatch(registerUser(currentUser));
     } catch (error) {
       console.error(error);

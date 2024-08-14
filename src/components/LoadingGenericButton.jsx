@@ -10,7 +10,14 @@ import Animated, {
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const LoadingGenericButton = ({ onPress, title, isLoading }) => {
+const LoadingGenericButton = ({
+  onPress,
+  title,
+  isLoading,
+  color = "#F0F2A6",
+  textColor = "#000",
+  loadingIndicatorColor = "#000000",
+}) => {
   // animations
   const scale = useSharedValue(1);
 
@@ -34,16 +41,22 @@ const LoadingGenericButton = ({ onPress, title, isLoading }) => {
   };
   return (
     <AnimatedPressable
-      style={animatedStyle}
-      className="h-14 w-full rounded-2xl justify-center items-center bg-primary"
+      className="h-14 w-full rounded-2xl justify-center items-center"
+      style={[animatedStyle, { backgroundColor: color }]}
       onPress={btnTapped}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
+      disabled={isLoading}
     >
       {isLoading ? (
-        <ActivityIndicator size="small" color="#000000" />
+        <ActivityIndicator size="small" color={loadingIndicatorColor} />
       ) : (
-        <Text className="text-base font-interSemiBold">{title}</Text>
+        <Text
+          className="text-base font-interSemiBold"
+          style={{ color: textColor }}
+        >
+          {title}
+        </Text>
       )}
     </AnimatedPressable>
   );

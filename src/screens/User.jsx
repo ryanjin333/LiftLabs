@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, Image, Pressable, Linking } from "react-native";
+import { View, Text, Image, Pressable, Linking, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import {
@@ -10,7 +10,9 @@ import {
   query,
   where,
   collection,
+  deleteDoc,
 } from "firebase/firestore";
+import { deleteUser } from "firebase/auth";
 import { auth, db, storage } from "../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 
@@ -54,6 +56,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const initialState = {
   usernameModalVisible: false,
   fullNameModalVisible: false,
+  deleteAccountLoading: false,
   username: "",
   fullName: "",
   email: "",
@@ -211,7 +214,7 @@ const User = ({ navigation }) => {
         },
         (error) => {
           console.error("Error uploading the image:", error);
-          Alert.alert("Upload Error", error.message);
+          Alert.alert("Upload Error");
         },
         async () => {
           // if successful, create a download url and set it both in firestore and locally
@@ -238,6 +241,104 @@ const User = ({ navigation }) => {
     } catch (error) {
       console.error("Error signing out: ", error);
     }
+  };
+
+  async function deleteCollection(collectionRef) {
+    try {
+      const querySnapshot = await getDocs(collectionRef);
+
+      for (const docSnapshot of querySnapshot.docs) {
+        // Recursively delete subcollections
+        const subcollections = await docSnapshot.ref.listCollections();
+        for (const subcollectionRef of subcollections) {
+          await deleteCollection(subcollectionRef);
+        }
+
+        // Delete the document itself
+        await deleteDoc(docSnapshot.ref);
+      }
+    } catch (error) {
+      console.error("Error deleting collection:", error);
+    }
+  }
+
+  const deleteAccount = async () => {
+    Alert.alert("Delete account?", "", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: async () => {
+          const user = auth.currentUser;
+          if (!user) {
+            showMessage({
+              message: "No user is currently logged in.",
+              type: "danger",
+            });
+            return;
+          }
+          try {
+            // set loader for users to see
+            setValues({ ...values, deleteAccountLoading: true });
+            const userDocRef = doc(db, "users", auth.currentUser.uid);
+
+            // Manually specify subcollections if known
+            const subcollectionRefs = [
+              collection(userDocRef, "bio"),
+              collection(userDocRef, "email"),
+              collection(userDocRef, "followers"),
+              collection(userDocRef, "following"),
+              collection(userDocRef, "fullName"),
+              collection(userDocRef, "os"),
+              collection(userDocRef, "pendingWorkouts"),
+              collection(userDocRef, "pfp"),
+              collection(userDocRef, "sharedWorkouts"),
+              collection(userDocRef, "username"),
+              collection(userDocRef, "weight"),
+              collection(userDocRef, "workouts"),
+              collection(userDocRef, "more"),
+            ];
+
+            for (const subcollectionRef of subcollectionRefs) {
+              await deleteCollection(subcollectionRef);
+            }
+
+            // Delete the user document itself
+            await deleteDoc(userDocRef);
+
+            // Delete the user from Firebase Authentication
+            await deleteUser(user);
+
+            await auth.signOut();
+            setValues({ ...values, deleteAccountLoading: false });
+            dispatch(userToLoginScreenTransition());
+
+            setTimeout(() => {
+              navigation.replace("Login");
+            }, 800);
+
+            showMessage({
+              message: "Account successfully deleted.",
+            });
+          } catch (error) {
+            let errorMessage =
+              "An error occurred while deleting the account. Please try again.";
+            if (error.code === "auth/requires-recent-login") {
+              errorMessage =
+                "Please log in again before deleting your account.";
+            }
+            showMessage({
+              message: errorMessage,
+              type: "danger",
+            });
+            console.error("Error during account deletion:", error);
+          }
+        },
+      },
+    ]);
   };
 
   return (
@@ -333,6 +434,15 @@ const User = ({ navigation }) => {
                     title="Logout"
                     color="#212121"
                     textColor="#ff1e1e"
+                  />
+                  <View className="h-6" />
+                  <LoadingGenericButton
+                    onPress={deleteAccount}
+                    title="Delete Account"
+                    color="#212121"
+                    textColor="#ff1e1e"
+                    loadingIndicatorColor="#fff"
+                    isLoading={values.deleteAccountLoading}
                   />
                 </Animated.View>
               </View>
