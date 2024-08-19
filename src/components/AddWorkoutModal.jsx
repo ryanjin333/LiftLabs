@@ -41,7 +41,8 @@ import ModalDoneButton from "./ModalDoneButton";
 
 const initialState = {
   title: "",
-  image: null,
+  image:
+    "https://firebasestorage.googleapis.com/v0/b/gym-app-cf517.appspot.com/o/images%2Flogo.jpg?alt=media&token=8319f188-64f3-48dc-b94c-2c622f793a50",
   isLoading: false,
 };
 
@@ -118,9 +119,7 @@ const AddWorkoutModal = () => {
         const updatedWorkout = {
           id: editModeWorkout.id,
           title: values.title,
-          image: values.image
-            ? values.image
-            : "../assets/React_Native_Logo.png", // use default image if custom image isn't provided
+          image: values.image,
           plan: editModeWorkout.plan,
           createdBy: auth.currentUser.uid,
         };
@@ -130,9 +129,7 @@ const AddWorkoutModal = () => {
         const newWorkout = {
           id: uuid.v4(),
           title: values.title,
-          image: values.image
-            ? values.image
-            : "../assets/React_Native_Logo.png", // use default image if custom image isn't provided
+          image: values.image,
           plan: [],
           createdBy: auth.currentUser.uid,
         };
@@ -289,11 +286,7 @@ const AddWorkoutModal = () => {
                       marginHorizontal: 8,
                     }}
                     key={values.image}
-                    source={
-                      values.image
-                        ? { uri: values.image }
-                        : require("../assets/React_Native_Logo.png")
-                    }
+                    source={{ uri: values.image }}
                     PlaceholderContent={
                       <Animated.View
                         style={{

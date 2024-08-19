@@ -47,8 +47,11 @@ const Loader = ({ navigation }) => {
   }, [auth, dispatch, navigation]);
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator size="large" color="#0000ff" />
+    <View
+      className="bg-black"
+      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+    >
+      <ActivityIndicator size="large" color="#ffffff" />
     </View>
   );
 };

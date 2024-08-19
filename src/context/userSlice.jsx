@@ -55,7 +55,7 @@ export const registerUser = createAsyncThunk(
       await setDoc(doc(db, "users", auth.currentUser.uid), {
         username: username,
         fullName: "",
-        pfp: "https://firebasestorage.googleapis.com/v0/b/gym-app-cf517.appspot.com/o/images%2Fpfp.jpg?alt=media&token=6864f471-9ca4-434d-a2c6-adc46f7f0b2c",
+        pfp: "https://firebasestorage.googleapis.com/v0/b/gym-app-cf517.appspot.com/o/images%2Fpfp.png?alt=media&token=3e47b16b-99b0-43b6-ba18-d3b6370e783d",
         bio: "",
         os: Platform.OS,
         weight: "lbs",
@@ -122,7 +122,6 @@ export const loginUser = createAsyncThunk(
         message: errorMessage,
         type: "danger",
       });
-      return rejectWithValue(error.message);
     }
   }
 );
