@@ -83,6 +83,7 @@ const Home = () => {
           <Animated.ScrollView
             className="flex-1 bg-black"
             onScroll={scrollHandler}
+            keyboardShouldPersistTaps="always"
           >
             <View className="h-24" />
             <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">

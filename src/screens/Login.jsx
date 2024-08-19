@@ -93,7 +93,10 @@ const Login = () => {
 
   return (
     <>
-      <ScrollView className="flex-1 bg-black">
+      <ScrollView
+        className="flex-1 bg-black"
+        keyboardShouldPersistTaps="always"
+      >
         <SafeAreaView className="flex-1 bg-black px-6 items-center">
           {/* changes visibility of screen */}
           {loginScreenVisible && (
