@@ -109,7 +109,7 @@ export const doneToHomeScreenTransition = createAsyncThunk(
   "animation/doneToHomeScreenTransition",
   async (_, { dispatch }) => {
     dispatch(animationSlice.actions.hideDoneScreen());
-    await new Promise((resolve) => setTimeout(resolve, 850));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     dispatch(animationSlice.actions.showHomeScreen());
   }
 );

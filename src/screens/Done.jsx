@@ -33,7 +33,7 @@ const Done = ({ navigation }) => {
     setTimeout(() => {
       dispatch(doneToHomeScreenTransition());
       navigation.navigate("Home");
-    }, 850); // however long the animation is
+    }, 1000); // however long the animation is
   }, []);
 
   const dispatch = useDispatch();
@@ -41,11 +41,25 @@ const Done = ({ navigation }) => {
     (state) => state.animation.doneScreenVisible
   );
 
+  useEffect(() => {
+    console.log(doneScreenVisible);
+  }, [doneScreenVisible]);
+
   return (
     <View className="w-full h-full bg-black">
       {doneScreenVisible && (
-        <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center justify-center">
-          <Text className="text-white text-3xl">hi</Text>
+        <SafeAreaView className="flex-1 bg-black items-center justify-center">
+          <View>
+            <Animated.View
+              entering={FadeInUp.duration(500).springify()}
+              exiting={FadeOutUp.duration(500).springify()}
+            >
+              <Image
+                className="h-20 w-20 "
+                source={require("../assets/done.png")}
+              />
+            </Animated.View>
+          </View>
         </SafeAreaView>
       )}
     </View>
