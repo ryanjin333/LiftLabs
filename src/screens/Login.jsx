@@ -9,6 +9,7 @@ import {
   LoadingGenericButton,
   AnimatedHeader,
 } from "../components";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNavigation } from "@react-navigation/native";
 import { useIsFocused } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
@@ -93,7 +94,7 @@ const Login = () => {
 
   return (
     <>
-      <ScrollView
+      <KeyboardAwareScrollView
         className="flex-1 bg-black"
         keyboardShouldPersistTaps="always"
       >
@@ -102,6 +103,7 @@ const Login = () => {
           {loginScreenVisible && (
             <>
               {/* login text */}
+
               <View className="items-start w-full">
                 <Animated.Text
                   className="text-white text-5xl mt-24 mb-16 font-interBold"
@@ -156,7 +158,7 @@ const Login = () => {
                   entering={FadeInUp.delay(200).duration(500).springify()}
                   exiting={FadeOutUp.delay(50).duration(500).springify()}
                 >
-                  <GoogleAppleAuth />
+                  {/* <GoogleAppleAuth /> */}
                 </Animated.View>
                 {/* switch between login and sign up screens */}
                 <Animated.View
@@ -173,7 +175,7 @@ const Login = () => {
             </>
           )}
         </SafeAreaView>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </>
   );
 };

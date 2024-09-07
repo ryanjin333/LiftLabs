@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   GenericButton,
   FormRow,
@@ -121,7 +122,7 @@ const Signup = () => {
   };
   return (
     <>
-      <ScrollView
+      <KeyboardAwareScrollView
         className="flex-1 bg-black"
         keyboardShouldPersistTaps="always"
       >
@@ -195,7 +196,7 @@ const Signup = () => {
                   entering={FadeInUp.delay(250).duration(500).springify()}
                   exiting={FadeOutUp.delay(50).duration(500).springify()}
                 >
-                  <GoogleAppleAuth />
+                  {/* <GoogleAppleAuth /> */}
                 </Animated.View>
                 {/* switch between login and sign up screens */}
                 <Animated.View
@@ -212,7 +213,7 @@ const Signup = () => {
             </>
           )}
         </SafeAreaView>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </>
   );
 };

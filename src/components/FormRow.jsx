@@ -19,7 +19,7 @@ const FormRow = ({
         keyboardAppearance="dark"
         selectionColor="white"
         autoCapitalize="none"
-        autoFocus={true}
+        autoFocus={false}
         focusable={false}
         onChangeText={(value) => {
           handleChange(
