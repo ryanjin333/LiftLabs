@@ -1,7 +1,6 @@
 import { View, Text, FlatList, Pressable, Image, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
-import OutlineButton from "./OutlineButton";
-import { BlurView } from "expo-blur";
+
 import * as Haptics from "expo-haptics";
 import Animated, {
   useSharedValue,

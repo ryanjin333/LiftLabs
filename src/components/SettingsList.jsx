@@ -60,10 +60,10 @@ const NavigationOnly = () => {
 const SettingsList = ({ data }) => {
   return (
     <View className="w-full">
-      <View className="w-full mt-6 rounded-[18px]">
+      <View className="w-full mt-6 rounded-[18px] overflow-hidden ">
         <FlatList
           scrollEnabled={false}
-          className="rounded-[18px] "
+          className="rounded-[18px]"
           data={data.data}
           renderItem={({ item }) => (
             <Pressable

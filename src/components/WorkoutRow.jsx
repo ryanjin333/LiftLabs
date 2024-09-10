@@ -75,7 +75,7 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
   return (
     <AnimatedPressable
       style={animatedStyle}
-      className="w-full h-20 bg-[#151515] flex-row rounded-[18px] pl-2 pr-6 items-center justify-between mb-3.5"
+      className="w-full h-20 bg-[#151515] flex-row rounded-[18px] overflow-hidden pl-2 pr-6 items-center justify-between mb-3.5"
       onPress={() => {
         if (!isNotification) {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
@@ -102,7 +102,7 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
           }}
           source={
             typeof image === "string" && isUrl(image)
-              ? { url: image }
+              ? { uri: image }
               : require("../assets/React_Native_Logo.png")
           }
           PlaceholderContent={

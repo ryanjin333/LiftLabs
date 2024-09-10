@@ -76,7 +76,11 @@ const Dropdown = () => {
           entering={FadeInUp.duration(1000).springify()}
           exiting={FadeOutUp.duration(1000).springify()}
         >
-          <BlurView intensity={60} tint="dark">
+          <BlurView
+            intensity={60}
+            tint="dark"
+            experimentalBlurMethod="dimezisBlurView"
+          >
             <FlatList
               data={filters}
               scrollEnabled={false}

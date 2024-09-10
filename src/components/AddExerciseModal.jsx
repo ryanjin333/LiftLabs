@@ -188,6 +188,7 @@ const AddExerciseModal = () => {
           {/* modal view */}
           <View className="rounded-[18px] overflow-hidden h-80 w-full justify-center items-center">
             <BlurView
+              experimentalBlurMethod="dimezisBlurView"
               intensity={60}
               tint="dark"
               className="h-80 w-full items-center px-5"

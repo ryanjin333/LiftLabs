@@ -170,6 +170,7 @@ const Focus = ({ navigation }) => {
                 <Animated.View
                   entering={FadeInUp.delay(200).duration(500).springify()}
                   exiting={FadeOutUp.delay(150).duration(500).springify()}
+                  className="rounded-[30px] overflow-hidden"
                 >
                   <RNEImage
                     style={{
@@ -177,6 +178,7 @@ const Focus = ({ navigation }) => {
                       aspectRatio: 1,
                       borderRadius: 40,
                       overflow: "hidden",
+                      backgroundColor: "transparent",
                     }}
                     source={{ uri: item.gif }}
                     PlaceholderContent={

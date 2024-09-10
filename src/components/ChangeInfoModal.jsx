@@ -122,6 +122,7 @@ const ChangeInfoModal = ({
       <View className="w-full px-8">
         <View className="w-full h-52  rounded-[18px] overflow-hidden">
           <BlurView
+            experimentalBlurMethod="dimezisBlurView"
             intensity={60}
             tint="dark"
             className=" w-full h-52 items-center px-6 "

@@ -79,6 +79,7 @@ const AnimatedHeader = ({ offsetY, title, delay = 300 }) => {
 
   return (
     <AnimatedBlurView
+      experimentalBlurMethod="dimezisBlurView"
       className=" w-screen items-start justify-end h-36 absolute top-0 left-0 right-0 z-10 px-6"
       tint="dark"
       intensity={blurIntensity}

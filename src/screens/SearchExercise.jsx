@@ -149,7 +149,7 @@ const SearchExercise = ({ navigation }) => {
         <TouchableWithoutFeedback onPress={() => {}}>
           <View className="w-full">
             <TextInput
-              className="border rounded-[18px] border-[#2C2C2C] w-full h-11 bg-transparent text-white px-4 font-inter"
+              className="border rounded-[18px] overflow-hidden border-[#2C2C2C] w-full h-11 bg-transparent text-white px-4 font-inter"
               placeholderTextColor="#7C7C7C"
               placeholder="Search exercise"
               onChangeText={handleSearch}
@@ -188,27 +188,30 @@ const SearchExercise = ({ navigation }) => {
               submit(item.name, item.gif);
             }}
           >
-            <Image
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 12,
-                overflow: "hidden",
-              }}
-              source={{ uri: item.gif }}
-              PlaceholderContent={
-                <Animated.View
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 12,
-                    overflow: "hidden",
-                    backgroundColor: "#3d3d3d",
-                    opacity: loadingOpacity,
-                  }}
-                />
-              }
-            />
+            <View className="rounded-[12px] overflow-hidden">
+              <Image
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  backgroundColor: "transparent",
+                }}
+                source={{ uri: item.gif }}
+                PlaceholderContent={
+                  <Animated.View
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 12,
+                      overflow: "hidden",
+                      backgroundColor: "#3d3d3d",
+                      opacity: loadingOpacity,
+                    }}
+                  />
+                }
+              />
+            </View>
 
             <View className="h-16 justify-center">
               <Text className="text-white font-interSemiBold ">

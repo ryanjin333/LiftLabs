@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FlashMessage from "react-native-flash-message";
+import { useFonts } from "expo-font";
 
 import {
   Login,
@@ -21,6 +22,21 @@ import {
 const Stack = createNativeStackNavigator();
 
 function App() {
+  const [fontsLoaded] = useFonts({
+    "Inter-Thin": require("./assets/Fonts/Inter-Thin.ttf"),
+    Inter_ExtraLight: require("./assets/Fonts/Inter-ExtraLight.ttf"),
+    Inter_Light: require("./assets/Fonts/Inter-Light.ttf"),
+    "Inter-Regular": require("./assets/Fonts/Inter-Regular.ttf"),
+    "Inter-Medium": require("./assets/Fonts/Inter-Medium.ttf"),
+    "Inter-SemiBold": require("./assets/Fonts/Inter-SemiBold.ttf"),
+    "Inter-Bold": require("./assets/Fonts/Inter-Bold.ttf"),
+    "Inter-ExtraBold": require("./assets/Fonts/Inter-ExtraBold.ttf"),
+    "Inter-Black": require("./assets/Fonts/Inter-Black.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <SafeAreaProvider>
       <Provider store={store}>

@@ -42,6 +42,7 @@ const TabNavigator = () => {
             <>
               {tabScreenVisible && (
                 <AnimatedBlurView
+                  experimentalBlurMethod="dimezisBlurView"
                   tint="dark"
                   intensity={70}
                   className="bg-transparent overflow-hidden w-full h-full"
