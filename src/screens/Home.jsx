@@ -87,8 +87,6 @@ const Home = () => {
           >
             <View className="h-24" />
             <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
-              {/* changes visibility of screen */}
-
               {/* button bar */}
               <View className="w-full flex-row justify-between mt-6 z-10">
                 <Animated.View
@@ -113,6 +111,7 @@ const Home = () => {
                   entering={FadeInUp.delay(150).duration(500).springify()}
                   exiting={FadeOutUp.duration(500).springify()}
                 >
+                  {/* no workouts */}
                   {workout.workouts.length == 0 ? (
                     <View className="flex-1 items-center mt-20">
                       <Text className="text-center text-white w-44 font-inter">
@@ -120,7 +119,16 @@ const Home = () => {
                         create a new workout
                       </Text>
                     </View>
+                  ) : // shared workouts when theres nothing shared
+                  workout.dropdownTitle == "Shared" &&
+                    workout.sharedWorkouts.length == 0 ? (
+                    <View className="flex-1 items-center mt-20">
+                      <Text className="text-center text-white w-44 font-inter">
+                        {"Shared workouts will appear here :)"}
+                      </Text>
+                    </View>
                   ) : (
+                    // when there are workouts
                     <View className="w-full mt-7">
                       <FlatList
                         scrollEnabled={false}
@@ -143,7 +151,6 @@ const Home = () => {
                   )}
                 </Animated.View>
               </View>
-
               <AddWorkoutModal />
             </SafeAreaView>
           </Animated.ScrollView>
