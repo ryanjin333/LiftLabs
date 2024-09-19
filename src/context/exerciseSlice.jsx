@@ -53,6 +53,8 @@ export const addAllExercisesToFirestore = createAsyncThunk(
           id: item.id,
         };
       });
+      //console.log(exerciseProperties);
+
       await updateDoc(doc(db, "exercises", "allExercises"), {
         exercises: exerciseProperties,
       });

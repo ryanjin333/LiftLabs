@@ -15,9 +15,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchWorkouts, changeModalVisible } from "../context/workoutSlice";
 import { addAllExercisesToFirestore } from "../context/exerciseSlice";
 
+import axios from "axios";
+
 // Firebase imports
 import { auth, db } from "../config/firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, getDoc, updateDoc } from "firebase/firestore";
 
 // custom imports
 import {
@@ -46,27 +48,64 @@ const Home = () => {
   //   dispatch(addAllExercisesToFirestore()); // fetch exercises
   // }, []);
 
+  useEffect(() => {
+    const updateExerciseRankWithAI = async () => {
+      try {
+        const exerciseRef = doc(db, "exercises", "allExercises");
+        const exerciseSnap = await getDoc(exerciseRef);
+        if (exerciseSnap.exists()) {
+          const exercises = exerciseSnap.data().exercises;
+          console.log(exercises);
+          // // Step 2: Send exercises to ChatGPT API to rank them
+          // const response = await axios.post(
+          //   "https://api.openai.com/v1/chat/completions",
+          //   {
+          //     model: "gpt-4",
+          //     messages: [
+          //       {
+          //         role: "system",
+          //         content:
+          //           "You are a trainer that sorts chest exercises based on relevance.",
+          //       },
+          //       {
+          //         role: "user",
+          //         content: `Please sort the following exercises from most to least relevant, make sure that the format of the output is still the same as the input: ${JSON.stringify(
+          //           exercises
+          //         )}`,
+          //       },
+          //     ],
+          //   },
+          //   {
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //       Authorization: `Bearer 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`, // Replace with your OpenAI API key
+          //     },
+          //   }
+          // );
+
+          // const sortedExercises = response.data.choices[0].message.content;
+
+          // // Step 3: Update Firestore with the sorted exercises
+          // await updateDoc(exerciseRef, {
+          //   exercises: JSON.parse(sortedExercises), // Update with the new sorted data
+          // });
+
+          // console.log("Exercises updated successfully!");
+        } else {
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    updateExerciseRankWithAI();
+  }, []);
+
   // redux
   const dispatch = useDispatch();
   const workout = useSelector((state) => state.workout);
   const homeScreenVisible = useSelector(
     (state) => state.animation.homeScreenVisible
   );
-
-  // firebase
-
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(
-  //     doc(db, "users", auth.currentUser.uid),
-  //     (docSnapshot) => {
-  //       if (docSnapshot.exists()) {
-  //         dispatch(fetchWorkouts(docSnapshot.data()));
-  //       }
-  //     }
-  //   );
-
-  //   return () => unsubscribe();
-  // }, [dispatch]);
 
   // animations
   const offsetY = useSharedValue(0);
