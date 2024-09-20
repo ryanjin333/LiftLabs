@@ -55,42 +55,43 @@ const Home = () => {
         const exerciseSnap = await getDoc(exerciseRef);
         if (exerciseSnap.exists()) {
           const exercises = exerciseSnap.data().exercises;
-          console.log(exercises);
-          // // Step 2: Send exercises to ChatGPT API to rank them
-          // const response = await axios.post(
-          //   "https://api.openai.com/v1/chat/completions",
-          //   {
-          //     model: "gpt-4",
-          //     messages: [
-          //       {
-          //         role: "system",
-          //         content:
-          //           "You are a trainer that sorts chest exercises based on relevance.",
-          //       },
-          //       {
-          //         role: "user",
-          //         content: `Please sort the following exercises from most to least relevant, make sure that the format of the output is still the same as the input: ${JSON.stringify(
-          //           exercises
-          //         )}`,
-          //       },
-          //     ],
-          //   },
-          //   {
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //       Authorization: `Bearer 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`, // Replace with your OpenAI API key
-          //     },
-          //   }
-          // );
+          //console.log(exercises);
+          // Step 2: Send exercises to ChatGPT API to rank them
+          const response = await axios.post(
+            "https://api.openai.com/v1/chat/completions",
+            {
+              model: "gpt-4",
+              messages: [
+                {
+                  role: "system",
+                  content:
+                    "You are a trainer that sorts various exercises based on relevance.",
+                },
+                {
+                  role: "user",
+                  content: `Please sort the following exercises from most to least relevant, make sure that the format of the output is still the same as the input: ${JSON.stringify(
+                    exercises
+                  )}`,
+                },
+              ],
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer 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`, // Replace with your OpenAI API key
+              },
+            }
+          );
 
-          // const sortedExercises = response.data.choices[0].message.content;
+          const sortedExercises = response.data.choices[0].message.content;
+          console.log(JSON.parse(sortedExercises));
 
-          // // Step 3: Update Firestore with the sorted exercises
+          // Step 3: Update Firestore with the sorted exercises
           // await updateDoc(exerciseRef, {
           //   exercises: JSON.parse(sortedExercises), // Update with the new sorted data
           // });
 
-          // console.log("Exercises updated successfully!");
+          console.log("Exercises updated successfully!");
         } else {
         }
       } catch (error) {
