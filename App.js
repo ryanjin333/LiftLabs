@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { View, Text } from "react-native";
 import { store } from "./src/context/store";
 import { Provider } from "react-redux";
@@ -17,11 +18,19 @@ import {
   SearchUser,
   Loader,
   Done,
+  Splash,
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
 
 function App() {
+  // splash animation
+  const [splashCompleted, setSplashComplete] = useState(false);
+  const handleSplashEnd = () => {
+    setSplashComplete(true); // Hide the splash screen after video ends
+  };
+
+  // load fonts
   const [fontsLoaded] = useFonts({
     "Inter-Thin": require("./assets/Fonts/Inter-Thin.ttf"),
     Inter_ExtraLight: require("./assets/Fonts/Inter-ExtraLight.ttf"),
@@ -38,58 +47,67 @@ function App() {
     return null;
   }
   return (
-    <SafeAreaProvider>
-      <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Loader"
-            screenOptions={{
-              headerShown: false,
-              gestureEnabled: false,
-            }}
-          >
-            <Stack.Screen
-              name="Loader"
-              component={Loader}
-              options={{ animation: "none" }}
-            />
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{ animation: "none" }}
-            />
-            <Stack.Screen
-              name="Signup"
-              component={Signup}
-              options={{ animation: "none" }}
-            />
-            <Stack.Screen
-              name="TabNavigator"
-              component={TabNavigator}
-              options={{ animation: "none" }}
-            />
-            <Stack.Screen
-              name="Workout"
-              component={Workout}
-              options={{ animation: "none" }}
-            />
-            <Stack.Screen name="SearchExercise" component={SearchExercise} />
-            <Stack.Screen
-              name="Focus"
-              component={Focus}
-              options={{ animation: "none" }}
-            />
-            <Stack.Screen
-              name="Done"
-              component={Done}
-              options={{ animation: "none" }}
-            />
-            <Stack.Screen name="SearchUser" component={SearchUser} />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <FlashMessage position="top" />
-      </Provider>
-    </SafeAreaProvider>
+    <>
+      {!splashCompleted ? (
+        <Splash onSplashEnd={handleSplashEnd} />
+      ) : (
+        <SafeAreaProvider>
+          <Provider store={store}>
+            <NavigationContainer>
+              <Stack.Navigator
+                initialRouteName="Loader"
+                screenOptions={{
+                  headerShown: false,
+                  gestureEnabled: false,
+                }}
+              >
+                <Stack.Screen
+                  name="Loader"
+                  component={Loader}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="Login"
+                  component={Login}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="Signup"
+                  component={Signup}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="TabNavigator"
+                  component={TabNavigator}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="Workout"
+                  component={Workout}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="SearchExercise"
+                  component={SearchExercise}
+                />
+                <Stack.Screen
+                  name="Focus"
+                  component={Focus}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="Done"
+                  component={Done}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen name="SearchUser" component={SearchUser} />
+              </Stack.Navigator>
+            </NavigationContainer>
+            <FlashMessage position="top" />
+          </Provider>
+        </SafeAreaProvider>
+      )}
+    </>
   );
 }
 

@@ -7,8 +7,6 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/icon.png",
-      "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
     "assetBundlePatterns": ["**/*"],
@@ -36,7 +34,8 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-video"
     ],
     "scheme": "lift-lab",
     "extra": {

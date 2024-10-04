@@ -10,6 +10,7 @@ import Focus from "./Focus";
 import Notifications from "./Notifications";
 import Loader from "./Loader";
 import Done from "./Done";
+import Splash from "./Splash";
 
 export {
   Login,
@@ -24,4 +25,5 @@ export {
   Notifications,
   Loader,
   Done,
+  Splash,
 };
