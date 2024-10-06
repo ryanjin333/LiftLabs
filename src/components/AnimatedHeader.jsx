@@ -18,7 +18,7 @@ import Animated, {
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
-const AnimatedHeader = ({ offsetY, title, delay = 300 }) => {
+const AnimatedHeader = ({ offsetY, title, delay = 300, animate = true }) => {
   // animations
 
   const screenWidth = Dimensions.get("window").width;
@@ -90,7 +90,7 @@ const AnimatedHeader = ({ offsetY, title, delay = 300 }) => {
         <Animated.Text
           className="text-white text-4xl font-interBold mt-16 h-10"
           onLayout={handleTextLayout}
-          entering={FadeInUp.duration(500).springify()}
+          entering={animate ? FadeInUp.duration(500).springify() : null}
           exiting={FadeOutUp.delay(delay).duration(500).springify()}
           numberOfLines={1}
           ellipsizeMode="tail"

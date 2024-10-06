@@ -29,16 +29,12 @@ const Notifications = () => {
 
   return (
     <>
-      <AnimatedHeader offsetY={offsetY} title="Notifications" />
+      <AnimatedHeader offsetY={offsetY} title="Notifications" animate={false} />
       <Animated.ScrollView className="flex-1 bg-black" onScroll={scrollHandler}>
         <View className="h-24" />
         <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
           <View className="w-full">
-            <Animated.View
-              className="w-full"
-              entering={FadeInUp.delay(50).duration(500).springify()}
-              exiting={FadeOutUp.duration(500).springify()}
-            >
+            <Animated.View className="w-full">
               {/* pending workouts */}
               {workout.pendingWorkouts.length == 0 ? (
                 <View className="flex-1 items-center mt-20">

@@ -47,12 +47,12 @@ function App() {
     return null;
   }
   return (
-    <>
-      {!splashCompleted ? (
-        <Splash onSplashEnd={handleSplashEnd} />
-      ) : (
-        <SafeAreaProvider>
-          <Provider store={store}>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        {!splashCompleted ? (
+          <Splash onSplashEnd={handleSplashEnd} />
+        ) : (
+          <>
             <NavigationContainer>
               <Stack.Navigator
                 initialRouteName="Loader"
@@ -104,10 +104,10 @@ function App() {
               </Stack.Navigator>
             </NavigationContainer>
             <FlashMessage position="top" />
-          </Provider>
-        </SafeAreaProvider>
-      )}
-    </>
+          </>
+        )}
+      </Provider>
+    </SafeAreaProvider>
   );
 }
 

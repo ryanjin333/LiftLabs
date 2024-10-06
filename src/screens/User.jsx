@@ -345,7 +345,7 @@ const User = ({ navigation }) => {
     <>
       {userScreenVisible && (
         <>
-          <AnimatedHeader offsetY={offsetY} title="User" />
+          <AnimatedHeader offsetY={offsetY} title="User" animate={false} />
 
           <Animated.ScrollView
             className="flex-1 bg-black"
@@ -357,7 +357,7 @@ const User = ({ navigation }) => {
                 {/* pfp */}
                 <AnimatedPressable
                   onPress={pickImage}
-                  entering={FadeInUp.delay(50).duration(500).springify()}
+                  //entering={FadeInUp.delay(50).duration(500).springify()}
                   exiting={FadeOutUp.delay(250).duration(500).springify()}
                 >
                   <View className="absolute h-7 w-7 top-0 right-0 bg-[#515151a8] z-10 rounded-full justify-center items-center ">
@@ -394,7 +394,7 @@ const User = ({ navigation }) => {
               <View className="w-full">
                 {/* Personal info section */}
                 <Animated.View
-                  entering={FadeInUp.delay(100).duration(500).springify()}
+                  //entering={FadeInUp.delay(100).duration(500).springify()}
                   exiting={FadeOutUp.delay(200).duration(500).springify()}
                 >
                   <SettingsList data={SECTIONS[0]} />
@@ -402,7 +402,7 @@ const User = ({ navigation }) => {
 
                 {/* Units section */}
                 <Animated.View
-                  entering={FadeInUp.delay(150).duration(500).springify()}
+                  //entering={FadeInUp.delay(150).duration(500).springify()}
                   exiting={FadeOutUp.delay(150).duration(500).springify()}
                 >
                   <SettingsList data={SECTIONS[1]} />
@@ -410,7 +410,7 @@ const User = ({ navigation }) => {
 
                 {/* Legal section */}
                 <Animated.View
-                  entering={FadeInUp.delay(200).duration(500).springify()}
+                  //entering={FadeInUp.delay(200).duration(500).springify()}
                   exiting={FadeOutUp.delay(100).duration(500).springify()}
                 >
                   <SettingsList data={SECTIONS[2]} />
@@ -418,7 +418,7 @@ const User = ({ navigation }) => {
 
                 {/* App info */}
                 <Animated.View
-                  entering={FadeInUp.delay(250).duration(500).springify()}
+                  //entering={FadeInUp.delay(250).duration(500).springify()}
                   exiting={FadeOutUp.delay(50).duration(500).springify()}
                 >
                   <SettingsList data={SECTIONS[3]} />
@@ -426,7 +426,7 @@ const User = ({ navigation }) => {
                 {/* logout button */}
                 <Animated.View
                   className="w-full mt-6"
-                  entering={FadeInUp.delay(300).duration(500).springify()}
+                  //entering={FadeInUp.delay(300).duration(500).springify()}
                   exiting={FadeOutUp.duration(500).springify()}
                 >
                   <GenericButton

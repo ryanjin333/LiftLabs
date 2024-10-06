@@ -9,6 +9,7 @@ const initialState = {
   focusScreenVisible: true,
   userScreenVisible: true,
   doneScreenVisible: true,
+  splashScreenVisible: true,
 };
 
 // LOGIN TRANSITIONS
@@ -125,6 +126,15 @@ export const userToLoginScreenTransition = createAsyncThunk(
   }
 );
 
+// SPLASH TRANSITIONS
+export const splashScreenTransition = createAsyncThunk(
+  "animation/splashScreenTransition",
+  async (_, { dispatch }) => {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    dispatch(animationSlice.actions.hideSplashScreen());
+  }
+);
+
 // Create the slice
 const animationSlice = createSlice({
   name: "animation",
@@ -181,6 +191,13 @@ const animationSlice = createSlice({
     },
     hideDoneScreen(state) {
       state.doneScreenVisible = false;
+    },
+    // SPLASH
+    showSplashScreen(state) {
+      state.splashScreenVisible = true;
+    },
+    hideSplashScreen(state) {
+      state.splashScreenVisible = false;
     },
   },
 });

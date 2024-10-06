@@ -131,7 +131,7 @@ const WorkoutRow = ({ currentWorkout, isNotification = false }) => {
           </Text>
         </View>
       </View>
-      {isNotification ? (
+      {isNotification ? ( // as in its not a row where the user sends to another user
         <View className="flex-row space-x-6">
           <Pressable
             className="h-10 w-10 justify-center items-center"
