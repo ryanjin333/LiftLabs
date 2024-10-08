@@ -4,6 +4,7 @@ import { useVideoPlayer, VideoView } from "expo-video";
 import { useDispatch, useSelector } from "react-redux";
 import { splashScreenTransition } from "../context/animationSlice";
 import Animated, { Easing, FadeIn, FadeOut } from "react-native-reanimated";
+import LottieView from "lottie-react-native";
 
 const videoSource = require("../../assets/splash.mp4");
 
@@ -33,10 +34,16 @@ const Splash = ({ onSplashEnd }) => {
       {splashScreenVisible && (
         <Animated.View
           entering={FadeIn.duration(2000)}
-          exiting={FadeOut.duration(2000)}
+          exiting={FadeOut.duration(500)}
           className="h-full w-full bg-black items-center justify-center"
         >
-          <VideoView className=" h-full w-full" player={player} />
+          <VideoView className=" h-3/4 w-full" player={player} />
+          <LottieView
+            source={require("../assets/loading_animation.json")}
+            className=" w-48 h-48"
+            autoPlay
+            loop
+          />
         </Animated.View>
       )}
     </>

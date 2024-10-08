@@ -130,7 +130,7 @@ export const userToLoginScreenTransition = createAsyncThunk(
 export const splashScreenTransition = createAsyncThunk(
   "animation/splashScreenTransition",
   async (_, { dispatch }) => {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 6500));
     dispatch(animationSlice.actions.hideSplashScreen());
   }
 );
