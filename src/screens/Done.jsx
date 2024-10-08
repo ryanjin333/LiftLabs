@@ -31,12 +31,6 @@ import { AnimatedHeader } from "../components";
 const Done = ({ navigation, route }) => {
   // initial load
   const { session } = route.params;
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     dispatch(doneToHomeScreenTransition());
-  //     navigation.navigate("Home");
-  //   }, 1000); // however long the animation is
-  // }, []);
 
   // time needs to be converted
   const formatTime = (milliseconds) => {
@@ -78,20 +72,23 @@ const Done = ({ navigation, route }) => {
             keyboardShouldPersistTaps="always"
           >
             <SafeAreaView className="flex-1 bg-black items-center justify-center pt-96">
-              <View>
+              <View className="items-center gap-y-52">
                 <Animated.View
                   entering={FadeInUp.duration(500).springify()}
                   exiting={FadeOutUp.duration(500).springify()}
+                  className="items-center"
                 >
-                  <Text className="font-interSemiBold text-white">
-                    Time Elapsed
-                  </Text>
-                  <Text className="font-interBold text-lg text-white">
+                  <Text className="font-interBold text-5xl text-white">
                     {formattedSession}
+                  </Text>
+                  <Text className="font-interBold text-3xl text-primary">
+                    Time Elapsed
                   </Text>
                 </Animated.View>
                 <Pressable onPress={finishButtonPressed}>
-                  <Text className="font-interSemiBold text-white">Finish</Text>
+                  <Text className="font-interSemiBold text-white">
+                    Tap anywhere to finish
+                  </Text>
                 </Pressable>
               </View>
             </SafeAreaView>
