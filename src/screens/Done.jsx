@@ -43,11 +43,11 @@ const Done = ({ navigation, route }) => {
   const formattedSession = formatTime(session);
 
   const finishButtonPressed = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
+    dispatch(doneToHomeScreenTransition());
     setTimeout(() => {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
-      dispatch(doneToHomeScreenTransition());
       navigation.navigate("Home");
-    }, 1000);
+    }, 600);
   };
 
   const dispatch = useDispatch();
@@ -66,20 +66,24 @@ const Done = ({ navigation, route }) => {
     <View className="w-full h-full bg-black">
       {doneScreenVisible && (
         <>
-          <AnimatedHeader offsetY={offsetY} title="Summary" delay={150} />
+          {/* summary header */}
+          <AnimatedHeader
+            offsetY={offsetY}
+            title="Summary"
+            delay={100}
+            className="z-10"
+          />
           <Animated.ScrollView
             className="flex-1 bg-black "
             onScroll={scrollHandler}
             keyboardShouldPersistTaps="always"
           >
             <SafeAreaView className="flex-1 bg-black items-center justify-center pt-96">
-              <Pressable
-                className="items-center gap-y-52"
-                onPress={finishButtonPressed}
-              >
+              {/* time elapsed view */}
+              <View className="items-center gap-y-52">
                 <Animated.View
-                  entering={FadeInUp.duration(2500).springify()}
-                  exiting={FadeOutUp.duration(2500).springify()}
+                  entering={FadeInUp.duration(500).delay(50).springify()}
+                  exiting={FadeOutUp.duration(500).delay(50).springify()}
                   className="items-center"
                 >
                   <Text className="font-interBold text-5xl text-white">
@@ -92,15 +96,20 @@ const Done = ({ navigation, route }) => {
                 <View>
                   <Animated.Text
                     className="font-interSemiBold text-white"
-                    entering={FadeInUp.duration(2500).springify()}
-                    exiting={FadeOutUp.duration(2500).springify()}
+                    entering={FadeInUp.duration(500).delay(100).springify()}
+                    exiting={FadeOutUp.duration(500).springify()}
                   >
                     Tap anywhere to finish
                   </Animated.Text>
                 </View>
-              </Pressable>
+              </View>
             </SafeAreaView>
           </Animated.ScrollView>
+          {/* button to return to home screen */}
+          <Pressable
+            className="top-0 left-0 right-0 bottom-0 absolute z-20"
+            onPress={finishButtonPressed}
+          />
         </>
       )}
     </View>

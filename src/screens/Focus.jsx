@@ -53,9 +53,9 @@ const Focus = ({ navigation }) => {
 
   const [fullPlan, setFullPlan] = useState({});
   useEffect(() => {
+    // start timer
+    stopwatchTimerRef.current?.play();
     const fullPlanAlgorithm = currentWorkout.plan.flatMap((exercise) => {
-      // start timer
-      stopwatchTimerRef.current?.play();
       // Create an array of sets for each exercise
       return Array.from(
         { length: parseInt(exercise.sets, 10) },
@@ -110,181 +110,193 @@ const Focus = ({ navigation }) => {
     stopwatchTimerRef.current?.pause();
 
     dispatch(focusToDoneScreenTransition());
-    console.log(stopwatchTimerRef.current?.getSnapshot());
+    const session = stopwatchTimerRef.current?.getSnapshot();
 
     setTimeout(() => {
       navigation.navigate("Done", {
-        session: stopwatchTimerRef.current?.getSnapshot(),
+        session: session,
       });
     }, 850);
   };
   return (
     <>
-      {/* timer and exit button */}
-      <View className="flex-row w-full justify-between items-center px-10 pt-20 absolute z-50">
-        <Animated.View
-          entering={FadeInUp.duration(500).springify()}
-          exiting={FadeOutUp.delay(350).duration(500).springify()}
-        >
-          {/* timer */}
-          <StopwatchTimer
-            ref={stopwatchTimerRef}
-            textCharStyle={{
-              color: "#fff",
-              fontSize: 48,
-              fontWeight: "bold",
-              letterSpacing: 1,
-            }}
-            trailingZeros={0}
-          />
-          {/* exit button */}
-          <Pressable
-            className="w-10 h-10 flex justify-center items-center rounded-full bg-[#292929]"
-            onPress={() => {
-              dispatch(focusToWorkoutScreenTransition());
-              setTimeout(() => {
-                navigation.goBack();
-              }, 850);
-            }}
-          >
-            <Image className="h-5 w-5" source={require("../assets/exit.png")} />
-          </Pressable>
-        </Animated.View>
-      </View>
-      <Animated.FlatList
-        className="bg-black z-10"
-        data={fullPlan}
-        keyExtractor={(item) => item.uniqueId}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          // actual screen
-          <SafeAreaView className="h-screen w-screen px-6 py-3 bg-black justify-between items-center">
-            {/* add animations here */}
-            {focusScreenVisible && (
-              <>
-                <View className="w-full items-end">
-                  {/* header spacing */}
-                  <View className="h-20" />
+      {focusScreenVisible && (
+        <>
+          {/* timer and exit button */}
+          <View className="flex-row w-full justify-between items-center px-10 pt-20 absolute z-50">
+            <Animated.View
+              entering={FadeInUp.duration(500).springify()}
+              exiting={FadeOutUp.delay(350).duration(500).springify()}
+              className="flex-row w-full justify-between items-center"
+            >
+              {/* timer */}
+              <StopwatchTimer
+                ref={stopwatchTimerRef}
+                textCharStyle={{
+                  color: "#fff",
+                  fontSize: 48,
+                  fontWeight: "bold",
+                  letterSpacing: 1,
+                }}
+                trailingZeros={0}
+              />
+              {/* exit button */}
+              <Pressable
+                className="w-10 h-10 flex justify-center items-center rounded-full bg-[#292929]"
+                onPress={() => {
+                  dispatch(focusToWorkoutScreenTransition());
+                  setTimeout(() => {
+                    navigation.goBack();
+                  }, 850);
+                }}
+              >
+                <Image
+                  className="h-5 w-5"
+                  source={require("../assets/exit.png")}
+                />
+              </Pressable>
+            </Animated.View>
+          </View>
+          <Animated.FlatList
+            className="bg-black z-10"
+            data={fullPlan}
+            keyExtractor={(item) => item.uniqueId}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              // actual screen
+              <SafeAreaView className="h-screen w-screen px-6 py-3 bg-black justify-between items-center">
+                {/* add animations here */}
 
-                  <View className="flex-row justify-between mb-10 w-full mt-3 px-3">
-                    {/* title  */}
-                    <Animated.Text
-                      entering={FadeInUp.delay(50).duration(500).springify()}
-                      exiting={FadeOutUp.delay(300).duration(500).springify()}
-                      className="w-56 text-primary font-interBold text-3xl"
-                      ellipsizeMode="tail"
-                      numberOfLines={3}
-                    >
-                      {item.title}
-                    </Animated.Text>
-                    {/* exercise weight */}
-                    <Animated.Text
-                      className=" text-primary font-interBold text-3xl "
-                      entering={FadeInUp.delay(100).duration(500).springify()}
-                      exiting={FadeOutUp.delay(250).duration(500).springify()}
-                    >
-                      {item.weight}
+                <>
+                  <View className="w-full items-end">
+                    {/* header spacing */}
+                    <View className="h-20" />
+
+                    <View className="flex-row justify-between mb-10 w-full mt-3 px-3">
+                      {/* title  */}
                       <Animated.Text
-                        className="text-white font-interMedium text-2xl"
-                        entering={FadeInUp.delay(150).duration(500).springify()}
-                        exiting={FadeOutUp.delay(200).duration(500).springify()}
+                        entering={FadeInUp.delay(50).duration(500).springify()}
+                        exiting={FadeOutUp.delay(300).duration(500).springify()}
+                        className="w-56 text-primary font-interBold text-3xl"
+                        ellipsizeMode="tail"
+                        numberOfLines={3}
                       >
-                        {` ${user.weight}`}
+                        {item.title}
                       </Animated.Text>
-                    </Animated.Text>
+                      {/* exercise weight */}
+                      <Animated.Text
+                        className=" text-primary font-interBold text-3xl "
+                        entering={FadeInUp.delay(100).duration(500).springify()}
+                        exiting={FadeOutUp.delay(250).duration(500).springify()}
+                      >
+                        {item.weight}
+                        <Animated.Text
+                          className="text-white font-interMedium text-2xl"
+                          entering={FadeInUp.delay(150)
+                            .duration(500)
+                            .springify()}
+                          exiting={FadeOutUp.delay(200)
+                            .duration(500)
+                            .springify()}
+                        >
+                          {` ${user.weight}`}
+                        </Animated.Text>
+                      </Animated.Text>
+                    </View>
+
+                    {/* gif */}
+                    <Animated.View
+                      entering={FadeInUp.delay(200).duration(500).springify()}
+                      exiting={FadeOutUp.delay(150).duration(500).springify()}
+                      className="rounded-[30px] overflow-hidden"
+                    >
+                      <RNEImage
+                        style={{
+                          width: "100%",
+                          aspectRatio: 1,
+                          borderRadius: 40,
+                          overflow: "hidden",
+                          backgroundColor: "transparent",
+                        }}
+                        source={{ uri: item.gif }}
+                        PlaceholderContent={
+                          <Animated.View
+                            style={{
+                              width: "100%",
+                              aspectRatio: 1,
+                              borderRadius: 12,
+                              overflow: "hidden",
+                              backgroundColor: "#3d3d3d",
+                              opacity: loadingOpacity,
+                            }}
+                          />
+                        }
+                      />
+                    </Animated.View>
+
+                    {/* other information */}
+                    {/* exercise set */}
+                    <View className="px-6 w-full flex-row mt-10 justify-between">
+                      <Animated.Text
+                        className=" text-primary font-interBold text-3xl "
+                        entering={FadeInUp.delay(250).duration(500).springify()}
+                        exiting={FadeOutUp.delay(100).duration(500).springify()}
+                      >
+                        {item.set + " "}
+                        of
+                        {" " + item.sets}
+                        <Text className="text-white font-interMedium text-2xl">
+                          {" "}
+                          sets
+                        </Text>
+                      </Animated.Text>
+
+                      {/* exercise reps */}
+                      <Animated.Text
+                        className="text-primary  font-interBold text-3xl"
+                        entering={FadeInUp.delay(300).duration(500).springify()}
+                        exiting={FadeOutUp.delay(50).duration(500).springify()}
+                      >
+                        {item.reps}
+                        <Text className="text-white font-interMedium text-2xl">
+                          {" "}
+                          reps
+                        </Text>
+                      </Animated.Text>
+                    </View>
                   </View>
-
-                  {/* gif */}
-                  <Animated.View
-                    entering={FadeInUp.delay(200).duration(500).springify()}
-                    exiting={FadeOutUp.delay(150).duration(500).springify()}
-                    className="rounded-[30px] overflow-hidden"
-                  >
-                    <RNEImage
-                      style={{
-                        width: "100%",
-                        aspectRatio: 1,
-                        borderRadius: 40,
-                        overflow: "hidden",
-                        backgroundColor: "transparent",
-                      }}
-                      source={{ uri: item.gif }}
-                      PlaceholderContent={
-                        <Animated.View
-                          style={{
-                            width: "100%",
-                            aspectRatio: 1,
-                            borderRadius: 12,
-                            overflow: "hidden",
-                            backgroundColor: "#3d3d3d",
-                            opacity: loadingOpacity,
-                          }}
-                        />
-                      }
-                    />
-                  </Animated.View>
-
-                  {/* other information */}
-                  {/* exercise set */}
-                  <View className="px-6 w-full flex-row mt-10 justify-between">
-                    <Animated.Text
-                      className=" text-primary font-interBold text-3xl "
-                      entering={FadeInUp.delay(250).duration(500).springify()}
-                      exiting={FadeOutUp.delay(100).duration(500).springify()}
-                    >
-                      {item.set + " "}
-                      of
-                      {" " + item.sets}
-                      <Text className="text-white font-interMedium text-2xl">
-                        {" "}
-                        sets
+                  {/* swipe down message (only show on first and last screen)*/}
+                  {(fullPlan[0].uniqueId == item.uniqueId ||
+                    fullPlan[fullPlan.length - 1].uniqueId ==
+                      item.uniqueId) && (
+                    <Animated.View className="items-center ">
+                      <Text
+                        className=" text-white font-interMedium "
+                        entering={FadeInUp.delay(350).duration(500).springify()}
+                        exiting={FadeOutUp.duration(500).springify()}
+                      >
+                        {fullPlan[0].uniqueId == item.uniqueId
+                          ? "swipe to continue"
+                          : "swipe to finish"}
                       </Text>
-                    </Animated.Text>
-
-                    {/* exercise reps */}
-                    <Animated.Text
-                      className="text-primary  font-interBold text-3xl"
-                      entering={FadeInUp.delay(300).duration(500).springify()}
-                      exiting={FadeOutUp.delay(50).duration(500).springify()}
-                    >
-                      {item.reps}
-                      <Text className="text-white font-interMedium text-2xl">
-                        {" "}
-                        reps
-                      </Text>
-                    </Animated.Text>
-                  </View>
-                </View>
-                {/* swipe down message (only show on first and last screen)*/}
-                {(fullPlan[0].uniqueId == item.uniqueId ||
-                  fullPlan[fullPlan.length - 1].uniqueId == item.uniqueId) && (
-                  <Animated.View className="items-center ">
-                    <Text
-                      className=" text-white font-interMedium "
-                      entering={FadeInUp.delay(350).duration(500).springify()}
-                      exiting={FadeOutUp.duration(500).springify()}
-                    >
-                      {fullPlan[0].uniqueId == item.uniqueId
-                        ? "swipe to continue"
-                        : "swipe to finish"}
-                    </Text>
-                    <AnimatedImage
-                      className="h-7 w-7"
-                      style={animatedStyle}
-                      source={require("../assets/chevron_down.png")}
-                    />
-                  </Animated.View>
-                )}
-              </>
+                      <AnimatedImage
+                        className="h-7 w-7"
+                        style={animatedStyle}
+                        source={require("../assets/chevron_down.png")}
+                      />
+                    </Animated.View>
+                  )}
+                </>
+              </SafeAreaView>
             )}
-          </SafeAreaView>
-        )}
-        snapToInterval={Dimensions.get("window").height - 0.1}
-        decelerationRate="fast"
-        onEndReachedThreshold={0}
-        onEndReached={endOfWorkoutReached}
-        showsHorizontalScrollIndicator={false}
-      />
+            snapToInterval={Dimensions.get("window").height - 0.1}
+            decelerationRate="fast"
+            onEndReachedThreshold={0}
+            onEndReached={endOfWorkoutReached}
+            showsHorizontalScrollIndicator={false}
+          />
+        </>
+      )}
     </>
   );
 };
