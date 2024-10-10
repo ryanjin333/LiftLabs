@@ -44,6 +44,7 @@ const Done = ({ navigation, route }) => {
 
   const finishButtonPressed = () => {
     setTimeout(() => {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
       dispatch(doneToHomeScreenTransition());
       navigation.navigate("Home");
     }, 1000);
@@ -72,10 +73,13 @@ const Done = ({ navigation, route }) => {
             keyboardShouldPersistTaps="always"
           >
             <SafeAreaView className="flex-1 bg-black items-center justify-center pt-96">
-              <View className="items-center gap-y-52">
+              <Pressable
+                className="items-center gap-y-52"
+                onPress={finishButtonPressed}
+              >
                 <Animated.View
-                  entering={FadeInUp.duration(500).springify()}
-                  exiting={FadeOutUp.duration(500).springify()}
+                  entering={FadeInUp.duration(2500).springify()}
+                  exiting={FadeOutUp.duration(2500).springify()}
                   className="items-center"
                 >
                   <Text className="font-interBold text-5xl text-white">
@@ -85,12 +89,16 @@ const Done = ({ navigation, route }) => {
                     Time Elapsed
                   </Text>
                 </Animated.View>
-                <Pressable onPress={finishButtonPressed}>
-                  <Text className="font-interSemiBold text-white">
+                <View>
+                  <Animated.Text
+                    className="font-interSemiBold text-white"
+                    entering={FadeInUp.duration(2500).springify()}
+                    exiting={FadeOutUp.duration(2500).springify()}
+                  >
                     Tap anywhere to finish
-                  </Text>
-                </Pressable>
-              </View>
+                  </Animated.Text>
+                </View>
+              </Pressable>
             </SafeAreaView>
           </Animated.ScrollView>
         </>

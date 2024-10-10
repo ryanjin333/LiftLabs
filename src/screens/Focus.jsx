@@ -29,7 +29,6 @@ import Animated, {
 } from "react-native-reanimated";
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
-const AnimatedText = Animated.createAnimatedComponent(Text);
 
 import { Image as RNEImage } from "@rneui/themed";
 
@@ -123,22 +122,22 @@ const Focus = ({ navigation }) => {
     <>
       {/* timer and exit button */}
       <View className="flex-row w-full justify-between items-center px-10 pt-20 absolute z-50">
-        {/* timer */}
-        <StopwatchTimer
-          ref={stopwatchTimerRef}
-          textCharStyle={{
-            color: "#fff",
-            fontSize: 48,
-            fontWeight: "bold",
-            letterSpacing: 1,
-          }}
-          trailingZeros={0}
-        />
-        {/* exit button */}
         <Animated.View
           entering={FadeInUp.duration(500).springify()}
           exiting={FadeOutUp.delay(350).duration(500).springify()}
         >
+          {/* timer */}
+          <StopwatchTimer
+            ref={stopwatchTimerRef}
+            textCharStyle={{
+              color: "#fff",
+              fontSize: 48,
+              fontWeight: "bold",
+              letterSpacing: 1,
+            }}
+            trailingZeros={0}
+          />
+          {/* exit button */}
           <Pressable
             className="w-10 h-10 flex justify-center items-center rounded-full bg-[#292929]"
             onPress={() => {
@@ -169,7 +168,7 @@ const Focus = ({ navigation }) => {
 
                   <View className="flex-row justify-between mb-10 w-full mt-3 px-3">
                     {/* title  */}
-                    <AnimatedText
+                    <Animated.Text
                       entering={FadeInUp.delay(50).duration(500).springify()}
                       exiting={FadeOutUp.delay(300).duration(500).springify()}
                       className="w-56 text-primary font-interBold text-3xl"
@@ -177,22 +176,22 @@ const Focus = ({ navigation }) => {
                       numberOfLines={3}
                     >
                       {item.title}
-                    </AnimatedText>
+                    </Animated.Text>
                     {/* exercise weight */}
-                    <AnimatedText
+                    <Animated.Text
                       className=" text-primary font-interBold text-3xl "
                       entering={FadeInUp.delay(100).duration(500).springify()}
                       exiting={FadeOutUp.delay(250).duration(500).springify()}
                     >
                       {item.weight}
-                      <AnimatedText
+                      <Animated.Text
                         className="text-white font-interMedium text-2xl"
                         entering={FadeInUp.delay(150).duration(500).springify()}
                         exiting={FadeOutUp.delay(200).duration(500).springify()}
                       >
                         {` ${user.weight}`}
-                      </AnimatedText>
-                    </AnimatedText>
+                      </Animated.Text>
+                    </Animated.Text>
                   </View>
 
                   {/* gif */}
@@ -228,7 +227,7 @@ const Focus = ({ navigation }) => {
                   {/* other information */}
                   {/* exercise set */}
                   <View className="px-6 w-full flex-row mt-10 justify-between">
-                    <AnimatedText
+                    <Animated.Text
                       className=" text-primary font-interBold text-3xl "
                       entering={FadeInUp.delay(250).duration(500).springify()}
                       exiting={FadeOutUp.delay(100).duration(500).springify()}
@@ -240,10 +239,10 @@ const Focus = ({ navigation }) => {
                         {" "}
                         sets
                       </Text>
-                    </AnimatedText>
+                    </Animated.Text>
 
                     {/* exercise reps */}
-                    <AnimatedText
+                    <Animated.Text
                       className="text-primary  font-interBold text-3xl"
                       entering={FadeInUp.delay(300).duration(500).springify()}
                       exiting={FadeOutUp.delay(50).duration(500).springify()}
@@ -253,7 +252,7 @@ const Focus = ({ navigation }) => {
                         {" "}
                         reps
                       </Text>
-                    </AnimatedText>
+                    </Animated.Text>
                   </View>
                 </View>
                 {/* swipe down message (only show on first and last screen)*/}

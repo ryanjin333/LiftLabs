@@ -37,7 +37,7 @@ const Splash = ({ onSplashEnd }) => {
           exiting={FadeOut.duration(500)}
           className="h-full w-full bg-black items-center justify-center"
         >
-          <VideoView className=" h-3/4 w-full" player={player} />
+          <VideoView className=" h-3/5 w-full" player={player} />
           <LottieView
             source={require("../assets/loading_animation.json")}
             className=" w-48 h-48"
