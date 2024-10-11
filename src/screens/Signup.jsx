@@ -50,6 +50,7 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 import { registerUser } from "../context/userSlice";
 import { signupToLoginScreenTransition } from "../context/animationSlice";
+import { useToggleAuth } from "../hooks";
 
 const initialState = {
   username: "",
@@ -120,6 +121,10 @@ const Signup = () => {
   const handleChange = (value, name) => {
     setValues({ ...values, [name]: value });
   };
+
+  // Google login toggle
+  const showGoogleAuth = useToggleAuth();
+
   return (
     <>
       <KeyboardAwareScrollView
@@ -178,6 +183,7 @@ const Signup = () => {
                     value={values.password}
                   />
                 </Animated.View>
+
                 {/* sign up button */}
                 <Animated.View
                   className="w-full"
@@ -190,25 +196,29 @@ const Signup = () => {
                     isLoading={user.isLoading}
                   />
                 </Animated.View>
+
                 {/* Google or Apple sign in options */}
                 <Animated.View
                   className="w-full items-center"
                   entering={FadeInUp.delay(250).duration(500).springify()}
                   exiting={FadeOutUp.delay(50).duration(500).springify()}
                 >
-                  {/* <GoogleAppleAuth /> */}
+                  {showGoogleAuth && <GoogleAppleAuth />}
                 </Animated.View>
+
                 {/* switch between login and sign up screens */}
-                <Animated.View
-                  className="w-full items-center"
-                  entering={FadeInUp.delay(300).duration(500).springify()}
-                  exiting={FadeOutUp.duration(500).springify()}
-                >
-                  <LoginSignupSwitcher
-                    isLogin={false}
-                    onPress={() => dispatch(signupToLoginScreenTransition())}
-                  />
-                </Animated.View>
+                <View>
+                  <Animated.View
+                    className="w-full items-center"
+                    entering={FadeInUp.delay(300).duration(500).springify()}
+                    exiting={FadeOutUp.duration(500).springify()}
+                  >
+                    <LoginSignupSwitcher
+                      isLogin={false}
+                      onPress={() => dispatch(signupToLoginScreenTransition())}
+                    />
+                  </Animated.View>
+                </View>
               </View>
             </>
           )}

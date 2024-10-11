@@ -26,12 +26,14 @@ import Animated, {
   useDerivedValue,
 } from "react-native-reanimated";
 import { loginUser } from "../context/userSlice";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import {
   loginToHomeScreenTransition,
   loginToSignupScreenTransition,
   signupToLoginScreenTransition,
 } from "../context/animationSlice";
+import { doc, getDoc } from "firebase/firestore";
+import { useToggleAuth } from "../hooks";
 
 const initialState = {
   email: "",
@@ -91,6 +93,9 @@ const Login = () => {
   const handleChange = (value, name) => {
     setValues({ ...values, [name]: value });
   };
+
+  // Google login toggle
+  const showGoogleAuth = useToggleAuth();
 
   return (
     <>
@@ -158,7 +163,7 @@ const Login = () => {
                   entering={FadeInUp.delay(200).duration(500).springify()}
                   exiting={FadeOutUp.delay(50).duration(500).springify()}
                 >
-                  {/* <GoogleAppleAuth /> */}
+                  {showGoogleAuth && <GoogleAppleAuth />}
                 </Animated.View>
                 {/* switch between login and sign up screens */}
                 <Animated.View
