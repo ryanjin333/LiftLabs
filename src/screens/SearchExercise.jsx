@@ -72,35 +72,43 @@ const SearchExercise = ({ navigation }) => {
 
   const handleSearch = (query) => {
     const formattedQuery = query.toLowerCase();
-    const filteredData = filter(values.fullData.exercises, (item) => {
-      return contains(item, formattedQuery);
+
+    // Assign relevance score based on query match
+    const scoredData = values.fullData.exercises.map((exercise) => {
+      let score = 0;
+      if (exercise.name.toLowerCase() === formattedQuery) {
+        score += 20; // Exact match
+      } else if (exercise.name.toLowerCase().includes(formattedQuery)) {
+        score += 10; // Partial match
+      }
+
+      // 2. Add points for exact or partial match in mainMuscle
+      if (exercise.mainMuscle.toLowerCase().includes(formattedQuery)) {
+        score += 5;
+      }
+
+      // Return the exercise object with the calculated score
+      return { ...exercise, score };
     });
 
-    const upperCasedFilteredData = filteredData.map((item) => {
-      // uppercase the first letter of each result before returning to result list
+    // Sort exercises by relevance score in descending order
+    const sortedData = scoredData.sort((a, b) => b.score - a.score);
+
+    // Map the sorted data for display (capitalize first letter of each field)
+    const upperCasedFilteredData = sortedData.map((item) => {
       const upperCasedName =
         item.name[0].toUpperCase() + item.name.substring(1);
       const upperCasedMainMuscle =
         item.mainMuscle[0].toUpperCase() + item.mainMuscle.substring(1);
 
       return {
-        gif: item.gif,
+        ...item,
         name: upperCasedName,
         mainMuscle: upperCasedMainMuscle,
-        id: item.id,
       };
     });
 
-    // if filtered data length is greater than maxAmount, slice it
-    // var optimizedUpperCasedFilteredData = [];
-    // const maxAmount = 100;
-    // if (upperCasedFilteredData.length > maxAmount) {
-    //   optimizedUpperCasedFilteredData = upperCasedFilteredData.slice(
-    //     0,
-    //     maxAmount
-    //   );
-    // }
-
+    // Update the state with sorted data
     setValues({
       ...values,
       prompt: query,
