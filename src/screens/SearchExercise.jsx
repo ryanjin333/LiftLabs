@@ -101,16 +101,11 @@ const SearchExercise = ({ navigation }) => {
     //   );
     // }
 
-    // if query is empty, return an empty flatList otherwise keep flatList
-    if (query == "") {
-      setValues({ ...values, prompt: query, data: [] });
-    } else {
-      setValues({
-        ...values,
-        prompt: query,
-        data: upperCasedFilteredData,
-      });
-    }
+    setValues({
+      ...values,
+      prompt: query,
+      data: upperCasedFilteredData,
+    });
   };
 
   const contains = (exerciseInfo, query) => {
@@ -176,7 +171,9 @@ const SearchExercise = ({ navigation }) => {
       </View>
       {/* results */}
       <FlatList
-        data={values.data}
+        data={
+          values.data.length === 0 ? values.fullData.exercises : values.data
+        }
         keyExtractor={(item) => item.id}
         keyboardShouldPersistTaps="always"
         ListFooterComponent={<View className=" h-96 w-full" />}
