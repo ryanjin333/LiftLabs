@@ -17,6 +17,7 @@ import {
   Focus,
   SearchUser,
   Loader,
+  Intro,
   Done,
   Splash,
 } from "./src/screens";
@@ -64,6 +65,11 @@ function App() {
                 <Stack.Screen
                   name="Loader"
                   component={Loader}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="Intro"
+                  component={Intro}
                   options={{ animation: "none" }}
                 />
                 <Stack.Screen

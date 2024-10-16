@@ -11,6 +11,7 @@ import Notifications from "./Notifications";
 import Loader from "./Loader";
 import Done from "./Done";
 import Splash from "./Splash";
+import Intro from "./Intro";
 
 export {
   Login,
@@ -26,4 +27,5 @@ export {
   Loader,
   Done,
   Splash,
+  Intro,
 };
