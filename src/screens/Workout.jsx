@@ -19,6 +19,8 @@ import { workoutToHomeScreenTransition } from "../context/animationSlice";
 import Animated, {
   FadeInUp,
   FadeInDown,
+  FadeInLeft,
+  FadeOutLeft,
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
@@ -106,8 +108,8 @@ const Workout = ({ route, navigation }) => {
               <View className="w-full items-center">
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(200).duration(500).springify()}
-                  exiting={FadeOutUp.delay(50).duration(500).springify()}
+                  entering={FadeInLeft.delay(200).duration(500).springify()}
+                  exiting={FadeOutLeft.delay(50).duration(500).springify()}
                 >
                   {/* exercise list */}
                   {currentWorkout.plan.length == 0 ? (
@@ -136,7 +138,7 @@ const Workout = ({ route, navigation }) => {
           </Animated.ScrollView>
 
           <Animated.View
-            entering={FadeInUp.delay(250).duration(500).springify()}
+            entering={FadeInDown.delay(250).duration(500).springify()}
             exiting={FadeOutDown.duration(500).springify()}
           >
             <FocusStartButton />

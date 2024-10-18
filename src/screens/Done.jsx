@@ -13,6 +13,8 @@ import * as Haptics from "expo-haptics";
 import Animated, {
   FadeInUp,
   FadeInDown,
+  FadeInLeft,
+  FadeOutLeft,
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
@@ -82,8 +84,8 @@ const Done = ({ navigation, route }) => {
               {/* time elapsed view */}
               <View className="items-center gap-y-52">
                 <Animated.View
-                  entering={FadeInUp.duration(500).delay(50).springify()}
-                  exiting={FadeOutUp.duration(500).delay(50).springify()}
+                  entering={FadeInLeft.duration(500).delay(50).springify()}
+                  exiting={FadeOutLeft.duration(500).delay(50).springify()}
                   className="items-center"
                 >
                   <Text className="font-interBold text-5xl text-white">
@@ -96,8 +98,8 @@ const Done = ({ navigation, route }) => {
                 <View>
                   <Animated.Text
                     className="font-interSemiBold text-white"
-                    entering={FadeInUp.duration(500).delay(100).springify()}
-                    exiting={FadeOutUp.duration(500).springify()}
+                    entering={FadeInDown.duration(500).delay(100).springify()}
+                    exiting={FadeOutDown.duration(500).springify()}
                   >
                     Tap anywhere to finish
                   </Animated.Text>

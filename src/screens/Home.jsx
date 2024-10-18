@@ -39,6 +39,8 @@ import {
 import Animated, {
   FadeInUp,
   FadeInDown,
+  FadeInLeft,
+  FadeOutLeft,
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
@@ -144,8 +146,8 @@ const Home = () => {
               <View className="w-full h-full">
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(150).duration(500).springify()}
-                  exiting={FadeOutUp.duration(500).springify()}
+                  entering={FadeInLeft.delay(150).duration(500).springify()}
+                  exiting={FadeOutLeft.duration(500).springify()}
                 >
                   {/* no workouts */}
                   {workout.workouts.length == 0 ? (

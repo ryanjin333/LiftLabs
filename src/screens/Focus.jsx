@@ -18,6 +18,8 @@ import * as Haptics from "expo-haptics";
 import Animated, {
   FadeInUp,
   FadeInDown,
+  FadeInLeft,
+  FadeOutLeft,
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
@@ -215,8 +217,8 @@ const Focus = ({ navigation }) => {
 
                     {/* gif */}
                     <Animated.View
-                      entering={FadeInUp.delay(200).duration(500).springify()}
-                      exiting={FadeOutUp.delay(150).duration(500).springify()}
+                      entering={FadeInLeft.delay(200).duration(500).springify()}
+                      exiting={FadeOutLeft.delay(150).duration(500).springify()}
                       className="rounded-[30px] overflow-hidden"
                     >
                       <RNEImage
@@ -248,8 +250,12 @@ const Focus = ({ navigation }) => {
                     <View className="px-6 w-full flex-row mt-10 justify-between">
                       <Animated.Text
                         className=" text-primary font-interBold text-3xl "
-                        entering={FadeInUp.delay(250).duration(500).springify()}
-                        exiting={FadeOutUp.delay(100).duration(500).springify()}
+                        entering={FadeInDown.delay(250)
+                          .duration(500)
+                          .springify()}
+                        exiting={FadeOutDown.delay(100)
+                          .duration(500)
+                          .springify()}
                       >
                         {item.set + " "}
                         of
@@ -263,8 +269,12 @@ const Focus = ({ navigation }) => {
                       {/* exercise reps */}
                       <Animated.Text
                         className="text-primary  font-interBold text-3xl"
-                        entering={FadeInUp.delay(300).duration(500).springify()}
-                        exiting={FadeOutUp.delay(50).duration(500).springify()}
+                        entering={FadeInDown.delay(300)
+                          .duration(500)
+                          .springify()}
+                        exiting={FadeOutDown.delay(50)
+                          .duration(500)
+                          .springify()}
                       >
                         {item.reps}
                         <Text className="text-white font-interMedium text-2xl">
@@ -281,8 +291,10 @@ const Focus = ({ navigation }) => {
                     <Animated.View className="items-center ">
                       <Text
                         className=" text-white font-interMedium "
-                        entering={FadeInUp.delay(350).duration(500).springify()}
-                        exiting={FadeOutUp.duration(500).springify()}
+                        entering={FadeInDown.delay(350)
+                          .duration(500)
+                          .springify()}
+                        exiting={FadeOutDown.duration(500).springify()}
                       >
                         {fullPlan[0].uniqueId == item.uniqueId
                           ? "swipe to continue"
