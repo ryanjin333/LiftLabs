@@ -5,34 +5,6 @@ import useControls from "r3f-native-orbitcontrols";
 import { View } from "react-native";
 //import { useGLTF } from "@react-three/drei/native";
 
-// function Model(props) {
-//   const gltf = useGLTF(
-//     "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/refs/heads/main/2.0/Avocado/glTF/Avocado.gltf"
-//   );
-//   return <primitive {...props} object={gltf.scene} />;
-// }
-
-const RotatingBox = () => {
-  const boxRef = useRef();
-
-  // Rotate the box on each frame
-  useFrame(() => {
-    if (boxRef.current) {
-      boxRef.current.rotation.y += 0.01;
-      boxRef.current.rotation.x += 0.01;
-    }
-  });
-
-  return (
-    <mesh ref={boxRef}>
-      {/* A simple box geometry */}
-      <boxGeometry args={[1, 1, 1]} />
-      {/* Apply a basic material */}
-      <meshStandardMaterial color={"orange"} />
-    </mesh>
-  );
-};
-
 const IntroScene = () => {
   const [OrbitControls, events] = useControls();
   return (

@@ -5,6 +5,7 @@ import {
   FlatList,
   Pressable,
   Image,
+  Button,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState, useRef } from "react";
@@ -50,11 +51,16 @@ const Focus = ({ navigation }) => {
 
   // timer
   const stopwatchTimerRef = useRef(null);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      stopwatchTimerRef.current?.play();
+    }, 1000); // Run this every second
+
+    return () => clearInterval(interval);
+  }, []);
 
   const [fullPlan, setFullPlan] = useState({});
   useEffect(() => {
-    // start timer
-    stopwatchTimerRef.current?.play();
     const fullPlanAlgorithm = currentWorkout.plan.flatMap((exercise) => {
       // Create an array of sets for each exercise
       return Array.from(
@@ -107,7 +113,7 @@ const Focus = ({ navigation }) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
     // update stopwatch
-    stopwatchTimerRef.current?.pause();
+    stopwatchTimerRef.current?.reset();
 
     dispatch(focusToDoneScreenTransition());
     const session = stopwatchTimerRef.current?.getSnapshot();
@@ -140,11 +146,14 @@ const Focus = ({ navigation }) => {
                 }}
                 trailingZeros={0}
               />
+
               {/* exit button */}
               <Pressable
                 className="w-10 h-10 flex justify-center items-center rounded-full bg-[#292929]"
                 onPress={() => {
                   dispatch(focusToWorkoutScreenTransition());
+                  // update stopwatch
+                  stopwatchTimerRef.current?.reset();
                   setTimeout(() => {
                     navigation.goBack();
                   }, 850);
