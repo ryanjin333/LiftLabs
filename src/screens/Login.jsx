@@ -18,6 +18,8 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import Animated, {
   FadeInUp,
   FadeInDown,
+  FadeInLeft,
+  FadeOutLeft,
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
@@ -122,8 +124,8 @@ const Login = () => {
               <View className="mt-32 mb-7 gap-7 w-full items-center">
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(50).duration(500).springify()}
-                  exiting={FadeOutUp.delay(200).duration(500).springify()}
+                  entering={FadeInLeft.delay(50).duration(500).springify()}
+                  exiting={FadeOutLeft.delay(200).duration(500).springify()}
                 >
                   <FormRow
                     name="Email"
@@ -134,8 +136,8 @@ const Login = () => {
                 </Animated.View>
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(100).duration(500).springify()}
-                  exiting={FadeOutUp.delay(150).duration(500).springify()}
+                  entering={FadeInLeft.delay(100).duration(500).springify()}
+                  exiting={FadeOutLeft.delay(150).duration(500).springify()}
                 >
                   <FormRow
                     name="Password"
@@ -148,8 +150,8 @@ const Login = () => {
                 {/* login button */}
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(150).duration(500).springify()}
-                  exiting={FadeOutUp.delay(100).duration(500).springify()}
+                  entering={FadeInLeft.delay(150).duration(500).springify()}
+                  exiting={FadeOutLeft.delay(100).duration(500).springify()}
                 >
                   <LoadingGenericButton
                     title="Login"
@@ -160,16 +162,16 @@ const Login = () => {
                 {/* Google or Apple sign in options */}
                 <Animated.View
                   className="w-full items-center"
-                  entering={FadeInUp.delay(200).duration(500).springify()}
-                  exiting={FadeOutUp.delay(50).duration(500).springify()}
+                  entering={FadeInDown.delay(200).duration(500).springify()}
+                  exiting={FadeOutDown.delay(50).duration(500).springify()}
                 >
                   {showGoogleAuth && <GoogleAppleAuth />}
                 </Animated.View>
                 {/* switch between login and sign up screens */}
                 <Animated.View
                   className="w-full items-center"
-                  entering={FadeInUp.delay(250).duration(500).springify()}
-                  exiting={FadeOutUp.duration(500).springify()}
+                  entering={FadeInDown.delay(250).duration(500).springify()}
+                  exiting={FadeOutDown.duration(500).springify()}
                 >
                   <LoginSignupSwitcher
                     isLogin={true}

@@ -37,7 +37,7 @@ const Loader = ({ navigation }) => {
           console.error("Error setting up snapshot listener:", error);
         }
       } else {
-        navigation.replace("Login");
+        navigation.replace("Intro");
       }
     });
 

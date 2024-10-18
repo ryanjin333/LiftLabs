@@ -39,6 +39,8 @@ import { setIsLoading } from "../context/workoutSlice";
 import Animated, {
   FadeInUp,
   FadeInDown,
+  FadeInLeft,
+  FadeOutLeft,
   FadeOutUp,
   FadeOutDown,
   useSharedValue,
@@ -148,8 +150,8 @@ const Signup = () => {
               <View className="mt-32 mb-7 gap-7 w-full items-center">
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(50).duration(500).springify()}
-                  exiting={FadeOutUp.delay(250).duration(500).springify()}
+                  entering={FadeInLeft.delay(50).duration(500).springify()}
+                  exiting={FadeOutLeft.delay(250).duration(500).springify()}
                 >
                   <FormRow
                     name="username"
@@ -160,8 +162,8 @@ const Signup = () => {
                 </Animated.View>
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(100).duration(500).springify()}
-                  exiting={FadeOutUp.delay(200).duration(500).springify()}
+                  entering={FadeInLeft.delay(100).duration(500).springify()}
+                  exiting={FadeOutLeft.delay(200).duration(500).springify()}
                 >
                   <FormRow
                     name="Email"
@@ -172,8 +174,8 @@ const Signup = () => {
                 </Animated.View>
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(150).duration(500).springify()}
-                  exiting={FadeOutUp.delay(150).duration(500).springify()}
+                  entering={FadeInLeft.delay(150).duration(500).springify()}
+                  exiting={FadeOutLeft.delay(150).duration(500).springify()}
                 >
                   <FormRow
                     name="Password"
@@ -187,8 +189,8 @@ const Signup = () => {
                 {/* sign up button */}
                 <Animated.View
                   className="w-full"
-                  entering={FadeInUp.delay(200).duration(500).springify()}
-                  exiting={FadeOutUp.delay(100).duration(500).springify()}
+                  entering={FadeInLeft.delay(200).duration(500).springify()}
+                  exiting={FadeOutLeft.delay(100).duration(500).springify()}
                 >
                   <LoadingGenericButton
                     title="Sign up"
@@ -200,8 +202,8 @@ const Signup = () => {
                 {/* Google or Apple sign in options */}
                 <Animated.View
                   className="w-full items-center"
-                  entering={FadeInUp.delay(250).duration(500).springify()}
-                  exiting={FadeOutUp.delay(50).duration(500).springify()}
+                  entering={FadeInDown.delay(250).duration(500).springify()}
+                  exiting={FadeOutDown.delay(50).duration(500).springify()}
                 >
                   {showGoogleAuth && <GoogleAppleAuth />}
                 </Animated.View>
@@ -210,8 +212,8 @@ const Signup = () => {
                 <View>
                   <Animated.View
                     className="w-full items-center"
-                    entering={FadeInUp.delay(300).duration(500).springify()}
-                    exiting={FadeOutUp.duration(500).springify()}
+                    entering={FadeInDown.delay(300).duration(500).springify()}
+                    exiting={FadeOutDown.duration(500).springify()}
                   >
                     <LoginSignupSwitcher
                       isLogin={false}

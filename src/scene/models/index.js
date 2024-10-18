@@ -1,3 +1,5 @@
 import Dumbbell from "./Dumbbell";
+import Test from "./Test";
+import Ben from "./Ben";
 
-export { Dumbbell };
+export { Dumbbell, Test, Ben };
