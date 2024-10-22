@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   loginScreenVisible: true,
   signupScreenVisible: true,
+  introScreenVisible: true,
   homeScreenVisible: true,
   workoutScreenVisible: true,
   tabScreenVisible: true,
@@ -51,6 +52,16 @@ export const signupToHomeScreenTransition = createAsyncThunk(
     await new Promise((resolve) => setTimeout(resolve, 800));
     dispatch(animationSlice.actions.showLoginScreen());
     dispatch(animationSlice.actions.showUserScreen());
+  }
+);
+
+// INTRO TRANSITIONS
+export const introToLoginScreenTransition = createAsyncThunk(
+  "animation/introToLoginScreenTransition",
+  async (_, { dispatch }) => {
+    //dispatch(animationSlice.actions.hideSignupScreen());
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    dispatch(animationSlice.actions.showLoginScreen());
   }
 );
 
@@ -153,6 +164,13 @@ const animationSlice = createSlice({
     },
     hideSignupScreen(state) {
       state.signupScreenVisible = false;
+    },
+    // INTRO
+    showIntroScreen(state) {
+      state.introScreenVisible = true;
+    },
+    hideIntroScreen(state) {
+      state.introScreenVisible = false;
     },
     // WORKOUT
     showWorkoutScreen(state) {

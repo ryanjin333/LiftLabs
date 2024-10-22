@@ -5,87 +5,78 @@ import {
   useSharedValue,
   withRepeat,
   withTiming,
+  withSequence,
+  withSpring,
 } from "react-native-reanimated";
 import { useFrame } from "@react-three/fiber/native";
 
 const Dumbbell = (props) => {
   const { nodes, materials } = useGLTF(
-    require("../../assets/models/dumbbell.gltf")
+    require("../../assets/models/dumbbell.glb")
   );
   // animations
   const dumbbellRef = useRef();
-  const x = useSharedValue(0);
-  const y = useSharedValue(0);
-  const z = useSharedValue(0);
+
+  const xRotation = useSharedValue(0);
+  const yRotation = useSharedValue(0);
+  const yPosition = useSharedValue(-6);
+  const scale = useSharedValue(0);
+
+  // Initial animation: Move dumbbell from bottom to center in an arc
+  // useEffect(() => {
+  //   // Animation sequence with two spins, short pause between spins, and longer pause after both spins
+  //   yRotation.value = withRepeat(
+  //     withTiming(2 * Math.PI, {
+  //       duration: 5000,
+  //       easing: Easing.circle, // Apply easing effect
+  //     }),
+  //     -1, // Repeat infinitely
+  //     false // Don't reverse
+  //   );
+  // }, []);
+
   useEffect(() => {
     //animations go here
     //actions[ACTIONNAME]?.play()
-    x.value = withRepeat(
-      withTiming(2 * Math.PI, { duration: 5000, easing: Easing.linear }),
+    xRotation.value = withRepeat(
+      withTiming(2 * Math.PI, { duration: 7000, easing: Easing.linear }),
       -1,
       false
     );
-    y.value = withRepeat(
-      withTiming(2 * Math.PI, { duration: 5000, easing: Easing.linear }),
+    yRotation.value = withRepeat(
+      withTiming(2 * Math.PI, {
+        duration: 7000,
+        easing: Easing.linear,
+      }),
       -1,
       false
     );
-    z.value = withRepeat(
-      withTiming(2 * Math.PI, { duration: 5000, easing: Easing.linear }),
-      -1,
-      false
-    );
+    yPosition.value = withTiming(-0.5, {
+      duration: 4000,
+      easing: Easing.inOut(Easing.ease),
+    });
+
+    scale.value = withTiming(1, {
+      duration: 2000, // Duration to reach full size
+      easing: Easing.ease, // You can also use withSpring for a bouncing effect
+    });
   }, []);
   useFrame(() => {
-    dumbbellRef.current.rotation.set(x.value, y.value, z.value);
+    //dumbbellRef.current.rotation.y = yRotation.value;
+    dumbbellRef.current.rotation.set(xRotation.value, yRotation.value, 0); // apply spinning motion
+    dumbbellRef.current.position.set(0, yPosition.value, 0); // apply spinning motion
+    dumbbellRef.current.scale.set(scale.value, scale.value, scale.value);
   });
   return (
-    <group ref={dumbbellRef} {...props} dispose={null} position={[0, -0.5, 0]}>
+    <group ref={dumbbellRef} {...props} dispose={null}>
       <group scale={0.003}>
-        <group position={[151.861, 174.884, 149.11]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cylinder.geometry}
-            material={nodes.Cylinder.material}
-            position={[62.305, 80.728, 112.715]}
-            rotation={[-0.661, -0.383, -2.254]}
-            scale={[0.368, 3.612, 0.368]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Sphere_3.geometry}
-            material={nodes.Sphere_3.material}
-            position={[-248.285, -210.688, -68.408]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Sphere_2.geometry}
-            material={nodes.Sphere_2.material}
-            position={[83.131, -37.007, -303.171]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Sphere.geometry}
-            material={nodes.Sphere.material}
-            position={[-277.354, -11.906, -129.15]}
-          />
-        </group>
-        <pointLight
-          intensity={1}
-          decay={2}
-          distance={2000}
-          position={[-130.211, 158.281, 6.928]}
-        />
-        <OrthographicCamera
-          makeDefault={false}
-          far={100000}
-          near={0}
-          position={[610.886, 619.926, 1236.136]}
-          rotation={[-0.405, 0.375, 0.156]}
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Cylinder.geometry}
+          material={materials["Rough Metal"]}
+          rotation={[-0.661, -0.383, -2.254]}
+          scale={[0.368, 3.612, 0.368]}
         />
       </group>
     </group>

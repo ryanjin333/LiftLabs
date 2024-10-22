@@ -1,6 +1,6 @@
 import { View, ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
-import { auth, db } from "../config/firebase"; // Ensure db is imported
+import { auth, db } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { doc, onSnapshot } from "firebase/firestore";

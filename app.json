@@ -2,7 +2,7 @@
   "expo": {
     "name": "LiftLabs",
     "slug": "LiftLabs",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "jsEngine": "jsc",
@@ -23,7 +23,7 @@
       },
       "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.ryanjin333.LiftLabs",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"

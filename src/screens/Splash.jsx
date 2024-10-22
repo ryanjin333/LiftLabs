@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React, { useEffect } from "react";
-import { useVideoPlayer, VideoView } from "expo-video";
+import { Video } from "expo-av";
 import { useDispatch, useSelector } from "react-redux";
 import { splashScreenTransition } from "../context/animationSlice";
 import Animated, { Easing, FadeIn, FadeOut } from "react-native-reanimated";
@@ -15,12 +15,6 @@ const Splash = ({ onSplashEnd }) => {
     (state) => state.animation.splashScreenVisible
   );
 
-  // initial animation for splash screen
-  const player = useVideoPlayer(videoSource, (player) => {
-    player.loop = true;
-    player.muted = true;
-    player.play();
-  });
   useEffect(() => {
     // Timer to hide splash after a certain duration
     dispatch(splashScreenTransition());
@@ -37,7 +31,16 @@ const Splash = ({ onSplashEnd }) => {
           exiting={FadeOut.duration(500)}
           className="h-full w-full bg-black items-center justify-center"
         >
-          <VideoView className=" h-3/5 w-full" player={player} />
+          <Video
+            source={videoSource}
+            className="h-3/5 w-full"
+            isLooping
+            isMuted
+            shouldPlay
+            resizeMode="contain"
+            useNativeControls={false}
+          />
+
           <LottieView
             source={require("../assets/loading_animation.json")}
             className=" w-48 h-48"

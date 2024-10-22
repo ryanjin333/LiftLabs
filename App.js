@@ -1,3 +1,17 @@
+// Suppress specific warning
+const originalWarn = console.warn;
+console.warn = (message, ...args) => {
+  if (
+    typeof message === "string" &&
+    message.includes(
+      "EXGL: gl.pixelStorei() doesn't support this parameter yet!"
+    )
+  ) {
+    return;
+  }
+  originalWarn(message, ...args);
+};
+
 import { useState } from "react";
 import { View, Text } from "react-native";
 import { store } from "./src/context/store";
@@ -47,6 +61,7 @@ function App() {
   if (!fontsLoaded) {
     return null;
   }
+
   return (
     <SafeAreaProvider>
       <Provider store={store}>
