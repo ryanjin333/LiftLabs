@@ -13,7 +13,7 @@ console.warn = (message, ...args) => {
 };
 
 import { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, LogBox } from "react-native";
 import { store } from "./src/context/store";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
@@ -37,6 +37,28 @@ import {
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
+
+LogBox.ignoreLogs([
+  "EXGL: gl.pixelStorei() doesn't support this parameter yet!",
+  "THREE.WebGLRenderer: EXT_color_buffer_float extension not supported",
+]);
+
+const originalLog = console.log;
+
+// Override console.log to filter out the unwanted log
+console.log = (...args) => {
+  if (
+    typeof args[0] === "string" &&
+    args[0].includes(
+      "EXGL: gl.pixelStorei() doesn't support this parameter yet!"
+    )
+  ) {
+    // Ignore the log
+    return;
+  }
+  // Call the original log function for all other logs
+  originalLog(...args);
+};
 
 function App() {
   // splash animation

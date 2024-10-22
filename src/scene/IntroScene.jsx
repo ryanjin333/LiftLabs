@@ -1,6 +1,6 @@
 import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber/native";
-import { Dumbbell } from "./models";
+import { Dumbbell, Animation } from "./models";
 import useControls from "r3f-native-orbitcontrols";
 import { View } from "react-native";
 import { Gltf } from "@react-three/drei/native";
@@ -29,7 +29,7 @@ const IntroScene = () => {
         <OrbitControls enablePan={false} enableZoom={false} />
 
         <Suspense>
-          <Dumbbell />
+          <Animation />
         </Suspense>
       </Canvas>
     </View>

@@ -51,11 +51,11 @@ const Intro = ({ navigation }) => {
         text2Visible: true,
       });
     }, 2000);
-    const timer = setTimeout(() => {
-      navigation.navigate("Login");
-    }, 3000);
+    // const timer = setTimeout(() => {
+    //   navigation.navigate("Login");
+    // }, 3000);
     return () => {
-      clearTimeout(timer);
+      //clearTimeout(timer);
       clearTimeout(timer1);
     };
   }, []);
@@ -91,7 +91,7 @@ const Intro = ({ navigation }) => {
           </View>
         )} */}
       </View>
-      {/* {values.text2Visible && <IntroScene />} */}
+      {values.text2Visible && <IntroScene />}
     </View>
   );
 };
