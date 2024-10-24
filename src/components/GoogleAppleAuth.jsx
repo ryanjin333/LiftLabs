@@ -8,6 +8,9 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../context/userSlice";
+import { GoogleAppleAuthHelper } from "../helpers/components";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -19,21 +22,30 @@ const GoogleAppleAuth = () => {
       "811062416555-vpej2sh9rr6cb573qs45ceki9udo2kt0.apps.googleusercontent.com",
   });
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      const { id_token } = response.params;
+  // redux
+  const dispatch = useDispatch();
 
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential)
-        .then(async (result) => {
+  useEffect(() => {
+    const handleGoogleSignIn = async () => {
+      if (response?.type === "success") {
+        const { id_token } = response.params;
+
+        try {
+          const credential = GoogleAuthProvider.credential(id_token);
+          const result = await signInWithCredential(auth, credential);
+
+          // unique username creation
+          const { generateUsername } = GoogleAppleAuthHelper();
+          const username = await generateUsername(result.user.email);
+
           const currentUser = {
-            username: result.user.displayName || "DefaultUsername", // Extracted or default username
+            username: username, // Extracted or default username
             email: result.user.email,
             password: "GoogleAuth", // Not needed, but included for consistency
           };
 
           // Dispatch the registerUser thunk
-          const userId = await dispatch(registerUser(currentUser));
+          const userId = dispatch(registerUser(currentUser));
 
           if (userId) {
             showMessage({
@@ -41,21 +53,23 @@ const GoogleAppleAuth = () => {
               type: "success",
             });
           }
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error("Error during sign-in with Google:", error);
           showMessage({
             message: "Google sign-in failed. Please try again.",
             type: "danger",
           });
+        }
+      } else if (response?.type === "error") {
+        console.error("Google sign-in error:", response.error);
+        showMessage({
+          message: "Google sign-in failed. Please try again.",
+          type: "danger",
         });
-    } else if (response?.type === "error") {
-      console.error("Google sign-in error:", response.error);
-      showMessage({
-        message: "Google sign-in failed. Please try again.",
-        type: "danger",
-      });
-    }
+      }
+    };
+
+    handleGoogleSignIn();
   }, [response]);
 
   return (

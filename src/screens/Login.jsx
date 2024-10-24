@@ -163,9 +163,13 @@ const Login = () => {
                 <Animated.View
                   className="w-full items-center"
                   entering={FadeInDown.delay(200).duration(500).springify()}
-                  exiting={FadeOutDown.delay(50).duration(500).springify()}
+                  exiting={FadeOutDown.duration(500).springify()}
                 >
-                  {showGoogleAuth && <GoogleAppleAuth />}
+                  {showGoogleAuth ? (
+                    <GoogleAppleAuth />
+                  ) : (
+                    <View className="w-12 h-12" /> // BAKA VARIABLE
+                  )}
                 </Animated.View>
                 {/* switch between login and sign up screens */}
                 <Animated.View

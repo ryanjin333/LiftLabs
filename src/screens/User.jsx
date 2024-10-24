@@ -124,7 +124,7 @@ const User = ({ navigation }) => {
     },
     {
       title: "App Info",
-      data: [{ title: "App version", action: () => {}, text: "v1.1.0" }],
+      data: [{ title: "App version", action: () => {}, text: "v1.1.1" }],
     },
   ];
 
