@@ -50,6 +50,7 @@ import {
   SettingsList,
 } from "../components";
 import { userToLoginScreenTransition } from "../context/animationSlice";
+import { useScrollOffset } from "../hooks";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -128,12 +129,8 @@ const User = ({ navigation }) => {
     },
   ];
 
-  // animations
-  const offsetY = useSharedValue(0);
-
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    offsetY.value = event.contentOffset.y;
-  });
+  // header animations
+  const { offsetY, scrollHandler } = useScrollOffset();
 
   const loadingOpacity = useSharedValue(1);
   useEffect(() => {
