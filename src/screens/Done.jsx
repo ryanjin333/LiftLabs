@@ -29,21 +29,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { doneToHomeScreenTransition } from "../context/animationSlice";
 import { AnimatedHeader } from "../components";
+import { DoneScreenHelper } from "../helpers/screens";
+import { useScrollOffset } from "../hooks";
 
 const Done = ({ navigation, route }) => {
-  // initial load
+  // child data from parent
   const { session } = route.params;
 
   // time needs to be converted
-  const formatTime = (milliseconds) => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-    return `${minutes}:${formattedSeconds}`;
-  };
+  const { formatTime } = DoneScreenHelper;
   const formattedSession = formatTime(session);
 
+  // transition back to home screen
   const finishButtonPressed = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
     dispatch(doneToHomeScreenTransition());
@@ -52,17 +49,14 @@ const Done = ({ navigation, route }) => {
     }, 600);
   };
 
+  // redux
   const dispatch = useDispatch();
   const doneScreenVisible = useSelector(
     (state) => state.animation.doneScreenVisible
   );
 
-  // animations
-  const offsetY = useSharedValue(0);
-
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    offsetY.value = event.contentOffset.y;
-  });
+  // header animations
+  const { offsetY, scrollHandler } = useScrollOffset();
 
   return (
     <View className="w-full h-full bg-black">

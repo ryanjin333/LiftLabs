@@ -41,6 +41,12 @@ import {
   focusToDoneScreenTransition,
   focusToWorkoutScreenTransition,
 } from "../context/animationSlice";
+import {
+  useBouncingAnimation,
+  useFullPlan,
+  useStopwatchInterval,
+  useLoadingOpacity,
+} from "../hooks";
 
 const Focus = ({ navigation }) => {
   // redux
@@ -52,63 +58,16 @@ const Focus = ({ navigation }) => {
   );
 
   // timer
-  const stopwatchTimerRef = useRef(null);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      stopwatchTimerRef.current?.play();
-    }, 1000); // Run this every second
+  const stopwatchTimerRef = useStopwatchInterval();
 
-    return () => clearInterval(interval);
-  }, []);
-
-  const [fullPlan, setFullPlan] = useState({});
-  useEffect(() => {
-    const fullPlanAlgorithm = currentWorkout.plan.flatMap((exercise) => {
-      // Create an array of sets for each exercise
-      return Array.from(
-        { length: parseInt(exercise.sets, 10) },
-        (_, index) => ({
-          ...exercise,
-          set: index + 1,
-          uniqueId: `${exercise.id}-${index + 1}`,
-        })
-      );
-    });
-    setFullPlan(fullPlanAlgorithm);
-  }, []);
+  // iterate through to create a list separated by sets also
+  const fullPlan = useFullPlan(currentWorkout);
 
   // loading animations for gif images
-  const loadingOpacity = useSharedValue(1);
-  useEffect(() => {
-    loadingOpacity.value = withRepeat(
-      withTiming(0.6, { duration: 700 }),
-      -1,
-      true
-    );
-  }, []);
+  const loadingOpacity = useLoadingOpacity();
 
   // animations for swipe down image
-  const translateY = useSharedValue(0);
-
-  useEffect(() => {
-    translateY.value = withRepeat(
-      withSequence(
-        withTiming(8, { duration: 700 }),
-        withTiming(0, { duration: 700 }),
-        withTiming(8, { duration: 700 }),
-        withTiming(0, { duration: 700 }), // repeat twice before stopping briefly
-        withTiming(0, { duration: 1400 })
-      ),
-      -1, // Infinite repeat
-      false // No reverse
-    );
-  }, [translateY]);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: translateY.value }],
-    };
-  });
+  const animatedStyle = useBouncingAnimation();
 
   // trigger when scrolled past the bottom
   const endOfWorkoutReached = () => {

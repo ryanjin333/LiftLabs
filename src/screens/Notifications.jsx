@@ -15,17 +15,14 @@ import Animated, {
   useAnimatedScrollHandler,
 } from "react-native-reanimated";
 import { AnimatedHeader, WorkoutRow } from "../components";
+import { useScrollOffset } from "../hooks";
 
 const Notifications = () => {
   // redux
   const workout = useSelector((state) => state.workout);
 
-  // animations
-  const offsetY = useSharedValue(0);
-
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    offsetY.value = event.contentOffset.y;
-  });
+  // header animations
+  const { offsetY, scrollHandler } = useScrollOffset();
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { IntroScene } from "../scene";
+import { IntroScene } from "../scenes";
 import { LoginSignupSwitcher } from "../components";
 import Animated, {
   FadeIn,
@@ -57,6 +57,7 @@ const Intro = ({ navigation }) => {
     return () => {
       //clearTimeout(timer);
       clearTimeout(timer1);
+      clearTimeout(timer);
     };
   }, []);
   return (

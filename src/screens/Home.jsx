@@ -47,6 +47,7 @@ import Animated, {
   useAnimatedScrollHandler,
   useDerivedValue,
 } from "react-native-reanimated";
+import { useScrollOffset } from "../hooks";
 
 const Home = () => {
   // initial load
@@ -55,50 +56,6 @@ const Home = () => {
   //   dispatch(addAllExercisesToFirestore()); // fetch exercises
   // }, []);
 
-  useEffect(() => {
-    const updateExerciseRankWithAI = async () => {
-      try {
-        const exerciseRef = doc(db, "exercises", "allExercises");
-        const exerciseRefTest = doc(db, "exercises", "allExercisesTest");
-        const exerciseSnap = await getDoc(exerciseRef);
-        if (exerciseSnap.exists()) {
-          const exercises = exerciseSnap.data().exercises;
-          //console.log(exercises);
-          // Step 2: Send exercises to Gemini API to rank them
-
-          // const openai = new OpenAI({
-          //   apiKey:
-          //     "sk-FD53WCJTLHLbaQNNet1BskPDUzmwdlV8seuxjY5r1DT3BlbkFJLqkSrl8fpcJhY982lNT0xIXd0Uxuod8wObhrlOAwkA",
-          // });
-          // const completion = await openai.chat.completions.create({
-          //   model: "gpt-4o-mini",
-          //   messages: [
-          //     {
-          //       role: "user",
-          //       content: `Please sort the json object by the key called name of each object. These are gym exercises and sort from most to least relevant (it is in json notation), make sure that the format of the output is in raw json and has the same amount of objects as the input and don't include any headers, explaination,
-          //        additional text or \`\`\`json\`\`\` : ${JSON.stringify(
-          //         exercises
-          //       )}`,
-          //     },
-          //   ],
-          // });
-
-          // //console.log(completion.choices[0].message.content);
-          // // Step 3: Update Firestore with the sorted exercises
-          // await updateDoc(exerciseRefTest, {
-          //   exercises: JSON.parse(completion.choices[0].message.content), // Update with the new sorted data
-          // });
-
-          console.log("Exercises updated successfully!");
-        } else {
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    updateExerciseRankWithAI();
-  }, []);
-
   // redux
   const dispatch = useDispatch();
   const workout = useSelector((state) => state.workout);
@@ -106,12 +63,8 @@ const Home = () => {
     (state) => state.animation.homeScreenVisible
   );
 
-  // animations
-  const offsetY = useSharedValue(0);
-
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    offsetY.value = event.contentOffset.y;
-  });
+  // header animations
+  const { offsetY, scrollHandler } = useScrollOffset();
 
   return (
     <View className="w-full h-full bg-black">
