@@ -27,25 +27,31 @@ const GoogleAppleAuth = () => {
 
   useEffect(() => {
     const handleGoogleSignIn = async () => {
+      console.log("Handling Google Sign-In...");
       if (response?.type === "success") {
         const { id_token } = response.params;
+        console.log("Received ID token:", id_token);
 
         try {
           const credential = GoogleAuthProvider.credential(id_token);
           const result = await signInWithCredential(auth, credential);
+          console.log("Sign-in successful:", result);
 
-          // unique username creation
+          // Unique username creation
           const { generateUsername } = GoogleAppleAuthHelper();
           const username = await generateUsername(result.user.email);
+          console.log("Generated username:", username);
 
           const currentUser = {
-            username: username, // Extracted or default username
+            username: username,
             email: result.user.email,
-            password: "GoogleAuth", // Not needed, but included for consistency
+            password: "GoogleAuth",
+            isEmailSignIn: false,
           };
 
           // Dispatch the registerUser thunk
           const userId = dispatch(registerUser(currentUser));
+          console.log("User registered with ID:", userId);
 
           if (userId) {
             showMessage({

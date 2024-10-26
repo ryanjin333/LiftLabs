@@ -49,9 +49,12 @@ export const registerUser = createAsyncThunk(
   "user/registerUser",
   async (currentUser) => {
     try {
-      const { username, email, password } = currentUser;
+      const { username, email, password, isEmailSignIn } = currentUser;
 
-      await createUserWithEmailAndPassword(auth, email, password);
+      if (isEmailSignIn) {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
+
       await setDoc(doc(db, "users", auth.currentUser.uid), {
         username: username,
         fullName: "",
@@ -95,9 +98,11 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (currentUser) => {
-    const { email, password } = currentUser;
+    const { email, password, isEmailSignIn } = currentUser;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      if (isEmailSignIn) {
+        await signInWithEmailAndPassword(auth, email, password);
+      }
       return auth.currentUser.uid;
     } catch (error) {
       // display global alert

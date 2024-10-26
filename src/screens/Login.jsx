@@ -71,7 +71,7 @@ const Login = () => {
       });
       return;
     }
-    const currentUser = { email, password };
+    const currentUser = { email, password, isEmailSignIn: true };
     try {
       dispatch(loginUser(currentUser));
     } catch (error) {

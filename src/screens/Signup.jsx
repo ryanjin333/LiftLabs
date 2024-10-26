@@ -99,7 +99,7 @@ const Signup = () => {
         return;
       }
 
-      const currentUser = { username, email, password };
+      const currentUser = { username, email, password, isEmailSignIn: true };
       dispatch(registerUser(currentUser));
     } catch (error) {
       console.error(error);
