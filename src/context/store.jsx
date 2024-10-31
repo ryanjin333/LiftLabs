@@ -3,6 +3,7 @@ import userReducer from "./userSlice";
 import workoutReducer from "./workoutSlice";
 import exerciseReducer from "./exerciseSlice";
 import animationReducer from "./animationSlice";
+import calendarReducer from "./calendarSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     workout: workoutReducer,
     exercise: exerciseReducer,
     animation: animationReducer,
+    calendar: calendarReducer,
   },
 });

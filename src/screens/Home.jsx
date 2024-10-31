@@ -33,6 +33,7 @@ import {
   AddWorkoutModal,
   Dropdown,
   AnimatedHeader,
+  WeekCalendar,
 } from "../components";
 
 // reanimated imports
@@ -62,6 +63,9 @@ const Home = () => {
   const homeScreenVisible = useSelector(
     (state) => state.animation.homeScreenVisible
   );
+  const selectedDate = useSelector((state) => state.calendar.selectedDate);
+
+  // calendar config
 
   // header animations
   const { offsetY, scrollHandler } = useScrollOffset();
@@ -78,6 +82,13 @@ const Home = () => {
           >
             <View className="h-24" />
             <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
+              <View className="w-full items-start px-2 ">
+                <Text className="text-white font-interBold">
+                  {selectedDate}
+                </Text>
+              </View>
+
+              <WeekCalendar />
               {/* button bar */}
               <View className="w-full flex-row justify-between mt-6 z-10">
                 <Animated.View

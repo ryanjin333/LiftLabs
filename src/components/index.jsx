@@ -16,6 +16,7 @@ import OutlineButtonCircle from "./OutlineButtonCircle";
 import ModalDoneButton from "./ModalDoneButton";
 import SettingsList from "./SettingsList";
 import ChangeInfoModal from "./ChangeInfoModal";
+import WeekCalendar from "./WeekCalendar";
 
 export {
   FormRow,
@@ -36,4 +37,5 @@ export {
   ModalDoneButton,
   SettingsList,
   ChangeInfoModal,
+  WeekCalendar,
 };
