@@ -72,7 +72,10 @@ const Intro = ({ navigation }) => {
             entering={FadeIn.delay(500).duration(1500).springify()}
             exiting={FadeOut.duration(1500).springify()}
           >
-            Welcome to LiftLabs
+            Welcome to{" "}
+            <Text className="text-4xl font-interExtraBold text-white text-center">
+              LiftLabs
+            </Text>
           </Animated.Text>
         )}
 

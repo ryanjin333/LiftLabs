@@ -4,6 +4,8 @@ import * as Haptics from "expo-haptics";
 
 import { useNavigation } from "@react-navigation/native";
 
+import { LinearGradient } from "expo-linear-gradient";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import Animated, {
@@ -57,16 +59,37 @@ const FocusStartButton = () => {
   return (
     <AnimatedPressable
       style={animatedStyle}
-      className="bg-primary rounded-full h-20 w-20 justify-center items-center absolute bottom-16 right-3"
+      className=" rounded-full h-20 w-20 justify-center items-center absolute bottom-16 right-3"
       onPress={buttonPressed}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
     >
-      <Image
-        style={{ resizeMode: "contain" }}
-        source={require("../assets/play_button.png")}
-        className="h-8 w-8"
-      ></Image>
+      {/* Shadow view for button */}
+      <View
+        className="w-full h-full justify-center items-center rounded-full"
+        style={{
+          borderRadius: 9999,
+          shadowColor: "#ffffff",
+          shadowOffset: { width: 0, height: 5 },
+          shadowOpacity: 0.6,
+          shadowRadius: 25,
+          elevation: 25, // For Android
+        }}
+      >
+        <LinearGradient
+          // Button Linear Gradient
+          colors={["#ffffffd2", "#ffffff48"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          className="w-full h-full justify-center items-center rounded-full"
+        >
+          <Image
+            style={{ resizeMode: "contain" }}
+            source={require("../assets/play_button.png")}
+            className="h-8 w-8"
+          />
+        </LinearGradient>
+      </View>
     </AnimatedPressable>
   );
 };

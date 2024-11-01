@@ -2,6 +2,21 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import moment from "moment";
 import { LinearGradient } from "expo-linear-gradient";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  FadeInUp,
+  FadeInDown,
+  FadeInLeft,
+  FadeOutLeft,
+  FadeInRight,
+  FadeOutRight,
+  FadeOutUp,
+  FadeOutDown,
+  useSharedValue,
+  useAnimatedScrollHandler,
+  useDerivedValue,
+} from "react-native-reanimated";
 
 // Redux imports
 import { useSelector, useDispatch } from "react-redux";
@@ -25,13 +40,26 @@ const WeekCalendar = () => {
     dispatch(setSelectedDate(date.format("MMM 'YY")));
   };
 
+  // animation configs
+  const delay = 100;
+
   // Array of single-letter abbreviations for each day of the week
   const dayAbbreviations = ["S", "M", "T", "W", "T", "F", "S"];
 
   return (
     <View className="flex-row justify-between gap-x-1.5">
       {daysOfWeek.map((day, index) => (
-        <Animated.View>
+        <Animated.View
+          key={index}
+          entering={FadeInRight.delay(delay * index)
+            .duration(100)
+            .springify()}
+          exiting={FadeOutRight.delay(
+            Math.abs(delay * index - delay * dayAbbreviations.length)
+          )
+            .duration(100)
+            .springify()}
+        >
           <TouchableOpacity
             key={index}
             className={`w-12 h-16 items-center justify-center rounded`}
