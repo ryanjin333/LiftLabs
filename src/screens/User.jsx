@@ -105,6 +105,18 @@ const User = ({ navigation }) => {
       data: [{ title: "Weight", action: () => {}, value: user.weight }],
     },
     {
+      title: "Calendar",
+      data: [
+        { title: "Monday", action: () => {}, value: user.weight },
+        { title: "Tuesday", action: () => {}, value: user.weight },
+        { title: "Wednesday", action: () => {}, value: user.weight },
+        { title: "Thursday", action: () => {}, value: user.weight },
+        { title: "Friday", action: () => {}, value: user.weight },
+        { title: "Saturday", action: () => {}, value: user.weight },
+        { title: "Sunday", action: () => {}, value: user.weight },
+      ],
+    },
+    {
       title: "Legal",
       data: [
         {
