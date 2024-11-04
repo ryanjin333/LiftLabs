@@ -107,13 +107,62 @@ const User = ({ navigation }) => {
     {
       title: "Calendar",
       data: [
-        { title: "Monday", action: () => {}, value: user.weight },
-        { title: "Tuesday", action: () => {}, value: user.weight },
-        { title: "Wednesday", action: () => {}, value: user.weight },
-        { title: "Thursday", action: () => {}, value: user.weight },
-        { title: "Friday", action: () => {}, value: user.weight },
-        { title: "Saturday", action: () => {}, value: user.weight },
-        { title: "Sunday", action: () => {}, value: user.weight },
+        {
+          title: "Monday",
+          action: () => {
+            console.log("hi");
+          },
+
+          text: "Not set",
+        },
+        {
+          title: "Tuesday",
+          action: () => {
+            console.log("hi");
+          },
+
+          text: "Not set",
+        },
+        {
+          title: "Wednesday",
+          action: () => {
+            console.log("hi");
+          },
+
+          text: "Not set",
+        },
+        {
+          title: "Thursday",
+          action: () => {
+            console.log("hi");
+          },
+
+          text: "Not set",
+        },
+        {
+          title: "Friday",
+          action: () => {
+            console.log("hi");
+          },
+
+          text: "Not set",
+        },
+        {
+          title: "Saturday",
+          action: () => {
+            console.log("hi");
+          },
+
+          text: "Not set",
+        },
+        {
+          title: "Sunday",
+          action: () => {
+            console.log("hi");
+          },
+
+          text: "Not set",
+        },
       ],
     },
     {
@@ -152,6 +201,9 @@ const User = ({ navigation }) => {
       true
     );
   }, []);
+
+  // general animations
+  const exitDelays = [200, 150, 150, 100, 50];
 
   // firestore
   const [imageUrl, setImageUrl] = useState(null);
@@ -401,37 +453,18 @@ const User = ({ navigation }) => {
                 </AnimatedPressable>
               </View>
               <View className="w-full">
-                {/* Personal info section */}
-                <Animated.View
-                  //entering={FadeInUp.delay(100).duration(500).springify()}
-                  exiting={FadeOutUp.delay(200).duration(500).springify()}
-                >
-                  <SettingsList data={SECTIONS[0]} />
-                </Animated.View>
-
-                {/* Units section */}
-                <Animated.View
-                  //entering={FadeInUp.delay(150).duration(500).springify()}
-                  exiting={FadeOutUp.delay(150).duration(500).springify()}
-                >
-                  <SettingsList data={SECTIONS[1]} />
-                </Animated.View>
-
-                {/* Legal section */}
-                <Animated.View
-                  //entering={FadeInUp.delay(200).duration(500).springify()}
-                  exiting={FadeOutUp.delay(100).duration(500).springify()}
-                >
-                  <SettingsList data={SECTIONS[2]} />
-                </Animated.View>
-
-                {/* App info */}
-                <Animated.View
-                  //entering={FadeInUp.delay(250).duration(500).springify()}
-                  exiting={FadeOutUp.delay(50).duration(500).springify()}
-                >
-                  <SettingsList data={SECTIONS[3]} />
-                </Animated.View>
+                {SECTIONS.map((section, index) => (
+                  <Animated.View
+                    key={index}
+                    // Uncomment if entering animation is needed
+                    // entering={FadeInUp.delay(100 + index * 50).duration(500).springify()}
+                    exiting={FadeOutUp.delay(exitDelays[index])
+                      .duration(500)
+                      .springify()}
+                  >
+                    <SettingsList data={section} />
+                  </Animated.View>
+                ))}
                 {/* logout button */}
                 <Animated.View
                   className="w-full mt-6"
