@@ -75,7 +75,7 @@ const TabNavigator = () => {
                     source={iconName}
                     style={{ width: 25, height: 25 }}
                     entering={FadeInDown.delay(500).duration(500).springify()}
-                    exiting={FadeOutUp.duration(500).springify()}
+                    exiting={FadeOutDown.duration(500).springify()}
                   />
                 )}
               </>

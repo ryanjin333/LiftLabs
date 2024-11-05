@@ -19,7 +19,7 @@ import { showMessage } from "react-native-flash-message";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const FocusStartButton = () => {
+const FocusStartButton = ({ size = "base" }) => {
   // navigation
   const navigation = useNavigation();
 
@@ -59,7 +59,9 @@ const FocusStartButton = () => {
   return (
     <AnimatedPressable
       style={animatedStyle}
-      className=" rounded-full h-20 w-20 justify-center items-center absolute bottom-16 right-3"
+      className={`rounded-full ${
+        size == "base" ? "h-20 w-20 absolute bottom-16 right-3" : "h-16 w-16"
+      }  justify-center items-center`}
       onPress={buttonPressed}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
@@ -86,7 +88,7 @@ const FocusStartButton = () => {
           <Image
             style={{ resizeMode: "contain" }}
             source={require("../assets/play_button.png")}
-            className="h-8 w-8"
+            className={`rounded-full ${size == "base" ? "h-8 w-8" : "h-6 w-6"}`}
           />
         </LinearGradient>
       </View>

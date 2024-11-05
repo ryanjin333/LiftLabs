@@ -10,6 +10,8 @@ import {
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { BlurView } from "expo-blur";
+
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { fetchWorkouts, changeModalVisible } from "../context/workoutSlice";
@@ -34,6 +36,8 @@ import {
   Dropdown,
   AnimatedHeader,
   WeekCalendar,
+  OutlineButtonCircle,
+  FocusStartButton,
 } from "../components";
 
 // reanimated imports
@@ -156,6 +160,45 @@ const Home = () => {
               <AddWorkoutModal />
             </SafeAreaView>
           </Animated.ScrollView>
+          {/* quick start view */}
+          <Animated.View
+            className="absolute z-50 h-20 w-full my-8 px-8 bottom-20  "
+            style={{
+              shadowColor: "#353535",
+              borderRadius: 9999,
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.5,
+              shadowRadius: 20,
+              elevation: 20, // for Android
+            }}
+            entering={FadeInDown.duration(500).springify()}
+            exiting={FadeOutDown.delay(200).duration(500).springify()}
+          >
+            <View
+              className="w-full h-full rounded-full overflow-hidden "
+              style={{
+                borderWidth: 1,
+                borderColor: "#1b1b1b",
+              }}
+            >
+              <BlurView
+                intensity={80}
+                tint="dark"
+                className="h-full w-full flex-row items-center px-8 pr-2 justify-between"
+              >
+                <View>
+                  <Text className="text-white font-interSemiBold text-base">
+                    Quick Start⚡
+                  </Text>
+                  <Text className="text-[#797979] font-interMedium text-sm">
+                    Push
+                  </Text>
+                </View>
+
+                <FocusStartButton size="sm" />
+              </BlurView>
+            </View>
+          </Animated.View>
         </>
       )}
     </View>
