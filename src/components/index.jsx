@@ -17,6 +17,7 @@ import ModalDoneButton from "./ModalDoneButton";
 import SettingsList from "./SettingsList";
 import ChangeInfoModal from "./ChangeInfoModal";
 import WeekCalendar from "./WeekCalendar";
+import QuickStartModal from "./QuickStartModal";
 
 export {
   FormRow,
@@ -38,4 +39,5 @@ export {
   SettingsList,
   ChangeInfoModal,
   WeekCalendar,
+  QuickStartModal,
 };

@@ -57,6 +57,20 @@ const NavigationOnly = () => {
   );
 };
 
+const WorkoutPicker = () => {
+  return (
+    <Pressable
+      onPress={() => {
+        console.log("hi");
+      }}
+    >
+      <View className="bg-[#676767] rounded-full h-8 w-16 justify-center items-center">
+        <Text className="text-white font-interMedium">+ Add</Text>
+      </View>
+    </Pressable>
+  );
+};
+
 const SettingsList = ({ data }) => {
   return (
     <View className="w-full">
@@ -88,7 +102,13 @@ const SettingsList = ({ data }) => {
                       {item.title == "Weight" ? (
                         <SwitcherOnly />
                       ) : (
-                        <NavigationOnly />
+                        <>
+                          {data.title == "Calendar" ? (
+                            <WorkoutPicker />
+                          ) : (
+                            <NavigationOnly />
+                          )}
+                        </>
                       )}
                     </>
                   )}
