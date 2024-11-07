@@ -112,56 +112,42 @@ const User = ({ navigation }) => {
           action: () => {
             console.log("hi");
           },
-
-          text: "Not set",
         },
         {
           title: "Tuesday",
           action: () => {
             console.log("hi");
           },
-
-          text: "Not set",
         },
         {
           title: "Wednesday",
           action: () => {
             console.log("hi");
           },
-
-          text: "Not set",
         },
         {
           title: "Thursday",
           action: () => {
             console.log("hi");
           },
-
-          text: "Not set",
         },
         {
           title: "Friday",
           action: () => {
             console.log("hi");
           },
-
-          text: "Not set",
         },
         {
           title: "Saturday",
           action: () => {
             console.log("hi");
           },
-
-          text: "Not set",
         },
         {
           title: "Sunday",
           action: () => {
             console.log("hi");
           },
-
-          text: "Not set",
         },
       ],
     },

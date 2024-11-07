@@ -2,6 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selectedDate: "",
+  days: {
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: [],
+  },
 };
 
 export const calendarSlice = createSlice({
