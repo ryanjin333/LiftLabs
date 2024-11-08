@@ -67,6 +67,7 @@ const User = ({ navigation }) => {
   // redux
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+
   const userScreenVisible = useSelector(
     (state) => state.animation.userScreenVisible
   );

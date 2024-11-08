@@ -55,22 +55,7 @@ export const registerUser = createAsyncThunk(
         await createUserWithEmailAndPassword(auth, email, password);
       }
 
-      // await setDoc(doc(db, "users", auth.currentUser.uid), {
-      //   username: username,
-      //   fullName: "",
-      //   pfp: "https://firebasestorage.googleapis.com/v0/b/gym-app-cf517.appspot.com/o/images%2Fpfp.png?alt=media&token=3e47b16b-99b0-43b6-ba18-d3b6370e783d",
-      //   bio: "",
-      //   os: Platform.OS,
-      //   weight: "lbs",
-      //   followers: [],
-      //   following: [],
-      //   email: email,
-      //   workouts: [],
-      //   sharedWorkouts: [],
-      //   pendingWorkouts: [],
-      //   more: uuid.v4(),
-      // });
-      await setDoc(doc(db, "usersTest", auth.currentUser.uid), {
+      await setDoc(doc(db, "users", auth.currentUser.uid), {
         username: username,
         fullName: "",
         pfp: "https://firebasestorage.googleapis.com/v0/b/gym-app-cf517.appspot.com/o/images%2Fpfp.png?alt=media&token=3e47b16b-99b0-43b6-ba18-d3b6370e783d",
@@ -85,6 +70,21 @@ export const registerUser = createAsyncThunk(
         pendingWorkouts: [],
         more: uuid.v4(),
       });
+      // await setDoc(doc(db, "usersTest", auth.currentUser.uid), {
+      //   username: username,
+      //   fullName: "",
+      //   pfp: "https://firebasestorage.googleapis.com/v0/b/gym-app-cf517.appspot.com/o/images%2Fpfp.png?alt=media&token=3e47b16b-99b0-43b6-ba18-d3b6370e783d",
+      //   bio: "",
+      //   os: Platform.OS,
+      //   weight: "lbs",
+      //   followers: [],
+      //   following: [],
+      //   email: email,
+      //   workouts: [],
+      //   sharedWorkouts: [],
+      //   pendingWorkouts: [],
+      //   more: uuid.v4(),
+      // });
       return auth.currentUser.uid;
     } catch (error) {
       // display global alert

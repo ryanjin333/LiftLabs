@@ -2,6 +2,8 @@ import { View, Text, FlatList, Pressable, Image } from "react-native";
 import React from "react";
 import SwitchSelector from "react-native-switch-selector";
 
+import SelectDropdown from "react-native-select-dropdown";
+
 import { useSelector, useDispatch } from "react-redux";
 import { setInfo } from "../context/userSlice";
 
@@ -58,16 +60,32 @@ const NavigationOnly = () => {
 };
 
 const WorkoutPicker = () => {
+  // redux
+  const workout = useSelector((state) => state.workout);
+  const allWorkouts = [...workout.workouts, ...workout.sharedWorkouts];
+
   return (
-    <Pressable
-      onPress={() => {
-        console.log("hi");
+    <SelectDropdown
+      data={allWorkouts}
+      onSelect={(selectedItem, index) => {
+        console.log(selectedItem, index);
       }}
-    >
-      <View className="bg-[#676767] rounded-full h-8 w-16 justify-center items-center">
-        <Text className="text-white font-interMedium">+ Add</Text>
-      </View>
-    </Pressable>
+      renderButton={(selectedItem, isOpened) => {
+        return (
+          <Pressable
+            onPress={() => {
+              allWorkouts.forEach((workout) => {
+                console.log(workout.title);
+              });
+            }}
+          >
+            <View className="bg-[#676767] rounded-full h-8 w-16 justify-center items-center">
+              <Text className="text-white font-interMedium">+ Add</Text>
+            </View>
+          </Pressable>
+        );
+      }}
+    />
   );
 };
 
