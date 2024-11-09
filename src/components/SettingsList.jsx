@@ -1,11 +1,21 @@
-import { View, Text, FlatList, Pressable, Image } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  Image,
+  SectionList,
+} from "react-native";
+import React, { useState } from "react";
 import SwitchSelector from "react-native-switch-selector";
-
-import SelectDropdown from "react-native-select-dropdown";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setInfo } from "../context/userSlice";
+
+import * as Haptics from "expo-haptics";
+
+import Modal from "react-native-modal";
+import { BlurView } from "expo-blur";
 
 const TextOnly = ({ text }) => {
   return <Text className="text-[#5e5e5e] font-interMedium">{text}</Text>;
@@ -59,33 +69,84 @@ const NavigationOnly = () => {
   );
 };
 
-const WorkoutPicker = () => {
-  // redux
+const WorkoutPicker = ({ title }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [contentHeight, setContentHeight] = useState(0);
+
   const workout = useSelector((state) => state.workout);
   const allWorkouts = [...workout.workouts, ...workout.sharedWorkouts];
+  const DATA = [
+    {
+      title: title,
+      data: allWorkouts,
+    },
+  ];
 
   return (
-    <SelectDropdown
-      data={allWorkouts}
-      onSelect={(selectedItem, index) => {
-        console.log(selectedItem, index);
-      }}
-      renderButton={(selectedItem, isOpened) => {
-        return (
-          <Pressable
-            onPress={() => {
-              allWorkouts.forEach((workout) => {
-                console.log(workout.title);
-              });
-            }}
+    <>
+      <Pressable
+        onPress={() => {
+          setIsVisible(true);
+        }}
+      >
+        <View className="bg-[#676767] rounded-full h-8 w-16 justify-center items-center">
+          <Text className="text-white font-interMedium">+ Add</Text>
+        </View>
+      </Pressable>
+
+      {/* pick workout popup */}
+      <Modal isVisible={isVisible}>
+        <Pressable
+          className="flex-1 justify-end pb-5 gap-y-4"
+          onPress={() => setIsVisible(false)}
+        >
+          <BlurView
+            className="rounded-[26px] overflow-hidden"
+            intensity={60}
+            tint="dark"
+            style={{ height: contentHeight || 200 }} // Fallback to 200px if height is not calculated yet
           >
-            <View className="bg-[#676767] rounded-full h-8 w-16 justify-center items-center">
-              <Text className="text-white font-interMedium">+ Add</Text>
-            </View>
-          </Pressable>
-        );
-      }}
-    />
+            <SectionList
+              sections={DATA}
+              keyExtractor={(item, index) => item.title + index}
+              onContentSizeChange={(width, height) => setContentHeight(height)} // Dynamically set the height
+              renderItem={({ item }) => (
+                <View
+                  className="items-center justify-center h-16"
+                  style={{
+                    borderTopWidth: 1,
+                    borderColor: "#1b1b1b",
+                  }}
+                >
+                  <Text className="text-white font-interMedium">
+                    {item.title}
+                  </Text>
+                </View>
+              )}
+              renderSectionHeader={({ section: { title } }) => (
+                <View className="items-center justify-center h-20">
+                  <Text className="text-white font-interBold text-lg">
+                    {title}
+                  </Text>
+                  <Text className="text-[#727272] font-interMedium">
+                    Select a workout for this day
+                  </Text>
+                </View>
+              )}
+            />
+          </BlurView>
+          <BlurView
+            className="rounded-[26px] overflow-hidden h-16 justify-center items-center"
+            intensity={60}
+            tint="dark"
+          >
+            <Pressable onPress={() => setIsVisible(false)}>
+              <Text className="font-interMedium text-[#ff3131]">Cancel</Text>
+            </Pressable>
+          </BlurView>
+        </Pressable>
+      </Modal>
+    </>
   );
 };
 
@@ -122,7 +183,7 @@ const SettingsList = ({ data }) => {
                       ) : (
                         <>
                           {data.title == "Calendar" ? (
-                            <WorkoutPicker />
+                            <WorkoutPicker title={item.title} />
                           ) : (
                             <NavigationOnly />
                           )}
