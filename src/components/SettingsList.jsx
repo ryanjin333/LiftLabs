@@ -110,18 +110,23 @@ const WorkoutPicker = ({ title }) => {
               sections={DATA}
               keyExtractor={(item, index) => item.title + index}
               onContentSizeChange={(width, height) => setContentHeight(height)} // Dynamically set the height
-              renderItem={({ item }) => (
-                <View
+              renderItem={({ item, section }) => (
+                <Pressable
                   className="items-center justify-center h-16"
                   style={{
                     borderTopWidth: 1,
                     borderColor: "#1b1b1b",
                   }}
+                  onPress={() => {
+                    console.log(
+                      `Item: ${item.title}, Section: ${section.title} ID: ${item.id}`
+                    );
+                  }}
                 >
                   <Text className="text-white font-interMedium">
                     {item.title}
                   </Text>
-                </View>
+                </Pressable>
               )}
               renderSectionHeader={({ section: { title } }) => (
                 <View className="items-center justify-center h-20">
