@@ -14,6 +14,8 @@ import { setInfo } from "../context/userSlice";
 
 import * as Haptics from "expo-haptics";
 
+import { WorkoutHelpers } from "../helpers/general";
+
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
 
@@ -117,10 +119,12 @@ const WorkoutPicker = ({ title }) => {
                     borderTopWidth: 1,
                     borderColor: "#1b1b1b",
                   }}
-                  onPress={() => {
-                    console.log(
-                      `Item: ${item.title}, Section: ${section.title} ID: ${item.id}`
-                    );
+                  onPress={async () => {
+                    // console.log(
+                    //   `Item: ${item.title}, Section: ${section.title} ID: ${item.id}`
+                    // );
+                    const workout = await WorkoutHelpers.idToWorkout(item.id);
+                    console.log(workout);
                   }}
                 >
                   <Text className="text-white font-interMedium">

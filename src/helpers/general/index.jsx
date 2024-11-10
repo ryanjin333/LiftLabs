@@ -1,3 +1,3 @@
-import AnimationHelper from "./animationHelpers";
+import WorkoutHelpers from "./WorkoutHelpers";
 
-export { AnimationHelper };
+export { WorkoutHelpers };
