@@ -6,7 +6,7 @@ import {
   Image,
   SectionList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SwitchSelector from "react-native-switch-selector";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -18,6 +18,10 @@ import { WorkoutHelpers } from "../helpers/general";
 
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
+import {
+  addWorkoutToDay,
+  deleteWorkoutFromDay,
+} from "../context/calendarSlice";
 
 const TextOnly = ({ text }) => {
   return <Text className="text-[#5e5e5e] font-interMedium">{text}</Text>;
@@ -75,8 +79,15 @@ const WorkoutPicker = ({ title }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
 
+  const dispatch = useDispatch();
+
+  // fetch all workouts the user has and combine them
   const workout = useSelector((state) => state.workout);
-  const allWorkouts = [...workout.workouts, ...workout.sharedWorkouts];
+
+  const allWorkouts = [
+    ...(workout.workouts || []),
+    ...(workout.sharedWorkouts || []),
+  ];
   const DATA = [
     {
       title: title,
@@ -84,17 +95,57 @@ const WorkoutPicker = ({ title }) => {
     },
   ];
 
+  // pick the specific day im on
+  const days = useSelector((state) => state.calendar.days);
+  const day = days[title.toLowerCase()];
+  const [workoutName, setWorkoutName] = useState("");
+  useEffect(() => {
+    const fetchWorkout = async () => {
+      try {
+        const workout = await WorkoutHelpers.idToWorkout(day[0], allWorkouts);
+        setWorkoutName(workout.title);
+      } catch (error) {
+        console.error("Error fetching workout:", error);
+      }
+    };
+
+    if (day && day.length > 0 && allWorkouts) {
+      fetchWorkout();
+    }
+  }, [day, allWorkouts]);
+
   return (
     <>
-      <Pressable
-        onPress={() => {
-          setIsVisible(true);
-        }}
-      >
-        <View className="bg-[#676767] rounded-full h-8 w-16 justify-center items-center">
-          <Text className="text-white font-interMedium">+ Add</Text>
-        </View>
-      </Pressable>
+      {/* switches between an add button and a workout delete button when workout is already added */}
+      {day.length === 0 ? (
+        <Pressable
+          onPress={() => {
+            setIsVisible(true);
+          }}
+        >
+          <View className="bg-[#676767] rounded-full h-8 w-16 justify-center items-center">
+            <Text className="text-white font-interMedium">+ Add</Text>
+          </View>
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={() => {
+            // empty local day workouts
+            // empty database day workouts
+            dispatch(deleteWorkoutFromDay({ day: title.toLowerCase() }));
+          }}
+        >
+          <View className="bg-[#676767] rounded-full h-8 justify-center items-center px-4">
+            <Text className="text-white font-interMedium">{workoutName}</Text>
+            <View className="h-4 w-4 bg-[#ce2121] absolute -right-1 -top-1 rounded-full justify-center items-center">
+              <Image
+                className="h-2 w-2"
+                source={require("../assets/exit.png")}
+              />
+            </View>
+          </View>
+        </Pressable>
+      )}
 
       {/* pick workout popup */}
       <Modal isVisible={isVisible}>
@@ -123,6 +174,12 @@ const WorkoutPicker = ({ title }) => {
                     // console.log(
                     //   `Item: ${item.title}, Section: ${section.title} ID: ${item.id}`
                     // );
+                    dispatch(
+                      addWorkoutToDay({
+                        day: section.title.toLowerCase(),
+                        id: item.id,
+                      })
+                    );
                     const workout = await WorkoutHelpers.idToWorkout(item.id);
                     console.log(workout);
                   }}

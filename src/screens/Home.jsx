@@ -54,6 +54,7 @@ import Animated, {
   useDerivedValue,
 } from "react-native-reanimated";
 import { useScrollOffset } from "../hooks";
+import { WorkoutHelpers } from "../helpers/general";
 
 const Home = () => {
   // initial load
@@ -71,6 +72,9 @@ const Home = () => {
   const selectedDate = useSelector((state) => state.calendar.selectedDate);
 
   // calendar config
+
+  // adds default days to all users
+  // WorkoutHelpers.addDaysToAllUsers();
 
   // header animations
   const { offsetY, scrollHandler } = useScrollOffset();
