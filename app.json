@@ -10,7 +10,9 @@
     "splash": {
       "backgroundColor": "#000000"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
       "backgroundColor": "#000000",
@@ -21,7 +23,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "permissions": ["android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
       "package": "com.ryanjin333.LiftLabs",
       "versionCode": 3
     },
@@ -36,9 +40,11 @@
         }
       ],
       "expo-font",
-      "expo-video"
+      "expo-video",
+      "expo-asset"
     ],
     "scheme": "lift-lab",
+    "newArchEnabled": true,
     "extra": {
       "eas": {
         "projectId": "a38d121f-e787-4431-ac6f-217029b9fe5e"

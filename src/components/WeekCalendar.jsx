@@ -37,7 +37,7 @@ const WeekCalendar = () => {
   // Handle date selection
   const selectDate = (date) => {
     setCurrentDate(date);
-    dispatch(setSelectedDate(date.format("MMM 'YY")));
+    dispatch(setSelectedDate(date.format("dddd")));
   };
 
   // animation configs

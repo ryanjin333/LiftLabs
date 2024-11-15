@@ -166,7 +166,7 @@ const Home = () => {
             </SafeAreaView>
           </Animated.ScrollView>
           {/* quick start view */}
-          <QuickStartModal />
+          <QuickStartModal selectedDate={selectedDate} />
         </>
       )}
     </View>

@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { doc, onSnapshot } from "firebase/firestore";
 import { fetchWorkouts } from "../context/workoutSlice";
 import { loadInfo } from "../context/userSlice";
+import { setDays } from "../context/calendarSlice";
 
 const Loader = ({ navigation }) => {
   // redux
@@ -22,6 +23,9 @@ const Loader = ({ navigation }) => {
               if (docSnapshot.exists()) {
                 dispatch(fetchWorkouts(docSnapshot.data()));
                 dispatch(loadInfo());
+
+                // calendar pre load
+                dispatch(setDays(docSnapshot.data().days));
               }
             },
             (error) => {

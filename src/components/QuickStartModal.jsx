@@ -1,7 +1,8 @@
 import { View, Text } from "react-native";
+import { useState, useEffect } from "react";
 import { BlurView } from "expo-blur";
 import FocusStartButton from "./FocusStartButton";
-import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import Animated, {
   FadeInUp,
@@ -14,8 +15,23 @@ import Animated, {
   useAnimatedScrollHandler,
   useDerivedValue,
 } from "react-native-reanimated";
+import { WorkoutHelpers } from "../helpers/general";
+import { useWorkoutInfo, useWorkoutTitle } from "../hooks";
+import { changeCurrentWorkout } from "../context/exerciseSlice";
 
-const QuickStartModal = () => {
+const QuickStartModal = ({ selectedDate }) => {
+  // get current workout title
+  const dispatch = useDispatch();
+  const workoutTitle = useWorkoutTitle(selectedDate);
+  const workoutInfo = useWorkoutInfo(selectedDate);
+  useEffect(() => {
+    if (workoutInfo) {
+      console.log(workoutInfo);
+
+      dispatch(changeCurrentWorkout(workoutInfo));
+    }
+  }, [selectedDate]);
+
   return (
     <Animated.View
       className="absolute z-50 h-20 w-full my-8 px-6 bottom-20  "
@@ -47,7 +63,7 @@ const QuickStartModal = () => {
               Quick Start⚡
             </Text>
             <Text className="text-[#797979] font-interMedium text-sm">
-              Push
+              {workoutTitle}
             </Text>
           </View>
 

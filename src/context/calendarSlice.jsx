@@ -4,9 +4,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import moment from "moment";
 
 const initialState = {
-  selectedDate: "",
+  selectedDate: moment().format("dddd"),
   days: {
     monday: [],
     tuesday: [],
@@ -55,6 +56,9 @@ export const calendarSlice = createSlice({
     setSelectedDate(state, action) {
       state.selectedDate = action.payload;
     },
+    setDays(state, action) {
+      state.days = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // addWorkoutToDay
@@ -80,6 +84,6 @@ export const calendarSlice = createSlice({
   },
 });
 
-export const { setSelectedDate } = calendarSlice.actions;
+export const { setSelectedDate, setDays } = calendarSlice.actions;
 
 export default calendarSlice.reducer;

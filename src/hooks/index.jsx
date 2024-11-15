@@ -5,6 +5,8 @@ import useBouncingAnimation from "./useBouncingAnimation";
 import useStopwatchInterval from "./useStopwatchInterval";
 import useLoadingOpacity from "./useLoadingOpacity";
 import useScrollOffset from "./useScrollOffset";
+import useWorkoutTitle from "./useWorkoutTitle";
+import useWorkoutInfo from "./useWorkoutInfo";
 
 export {
   useAuth,
@@ -14,4 +16,6 @@ export {
   useStopwatchInterval,
   useLoadingOpacity,
   useScrollOffset,
+  useWorkoutTitle,
+  useWorkoutInfo,
 };
