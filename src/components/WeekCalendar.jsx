@@ -27,6 +27,7 @@ const WeekCalendar = () => {
 
   // Redux
   const dispatch = useDispatch();
+  const days = useSelector((state) => state.calendar.days);
 
   // Get the start of the week (Sunday)
   const startOfWeek = currentDate.clone().startOf("week"); // Start the week on Sunday
@@ -63,7 +64,9 @@ const WeekCalendar = () => {
           <TouchableOpacity
             key={index}
             className={`w-12 h-16 items-center justify-center rounded`}
-            onPress={() => selectDate(day)}
+            onPress={() => {
+              selectDate(day);
+            }}
           >
             {/* Shadow view for selected date */}
             <View
@@ -94,13 +97,28 @@ const WeekCalendar = () => {
                 <Text className="text-[#535353] text-xs font-interMedium">
                   {dayAbbreviations[index]}
                 </Text>
+
                 {/* The date */}
                 <Text
                   className={`${
                     day.isSame(currentDate, "day") ? "text-black" : "text-white"
-                  } font-interSemiBold text-xl mt-1`}
+                  } font-interSemiBold text-xl `}
                 >
                   {day.format("D")}
+                </Text>
+
+                {/* Tracker */}
+
+                <Text
+                  className={`${
+                    days[day.format("dddd").toLowerCase()].length > 0
+                      ? day.isSame(currentDate, "day")
+                        ? "text-[#3d3d3d]"
+                        : "text-[#828282]"
+                      : "text-[#fff0]"
+                  } text-xs font-interMedium -mt-1`}
+                >
+                  •
                 </Text>
               </LinearGradient>
             </View>

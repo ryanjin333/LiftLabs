@@ -26,11 +26,9 @@ const QuickStartModal = ({ selectedDate }) => {
   const workoutInfo = useWorkoutInfo(selectedDate);
   useEffect(() => {
     if (workoutInfo) {
-      console.log(workoutInfo);
-
       dispatch(changeCurrentWorkout(workoutInfo));
     }
-  }, [selectedDate]);
+  }, [workoutInfo]);
 
   return (
     <Animated.View

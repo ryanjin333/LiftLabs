@@ -174,14 +174,14 @@ const WorkoutPicker = ({ title }) => {
                     // console.log(
                     //   `Item: ${item.title}, Section: ${section.title} ID: ${item.id}`
                     // );
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
+                    setIsVisible(false);
                     dispatch(
                       addWorkoutToDay({
                         day: section.title.toLowerCase(),
                         id: item.id,
                       })
                     );
-                    const workout = await WorkoutHelpers.idToWorkout(item.id);
-                    console.log(workout);
                   }}
                 >
                   <Text className="text-white font-interMedium">

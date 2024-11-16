@@ -15,7 +15,10 @@ import { BlurView } from "expo-blur";
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { fetchWorkouts, changeModalVisible } from "../context/workoutSlice";
-import { addAllExercisesToFirestore } from "../context/exerciseSlice";
+import {
+  addAllExercisesToFirestore,
+  changeCurrentWorkout,
+} from "../context/exerciseSlice";
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -53,7 +56,7 @@ import Animated, {
   useAnimatedScrollHandler,
   useDerivedValue,
 } from "react-native-reanimated";
-import { useScrollOffset } from "../hooks";
+import { useScrollOffset, useWorkoutInfo } from "../hooks";
 import { WorkoutHelpers } from "../helpers/general";
 
 const Home = () => {
@@ -72,6 +75,19 @@ const Home = () => {
   const selectedDate = useSelector((state) => state.calendar.selectedDate);
 
   // calendar config
+
+  const workoutInfo = useWorkoutInfo(selectedDate);
+  const [quickStartModalVisible, setQuickStartModalVisible] = useState(true);
+  useEffect(() => {
+    if (selectedDate) {
+      setQuickStartModalVisible(false);
+      const timer = setTimeout(() => {
+        setQuickStartModalVisible(true);
+      }, 600);
+
+      return () => clearTimeout(timer);
+    }
+  }, [selectedDate]);
 
   // adds default days to all users
   // WorkoutHelpers.addDaysToAllUsers();
@@ -166,7 +182,9 @@ const Home = () => {
             </SafeAreaView>
           </Animated.ScrollView>
           {/* quick start view */}
-          <QuickStartModal selectedDate={selectedDate} />
+          {quickStartModalVisible && (
+            <QuickStartModal selectedDate={selectedDate} />
+          )}
         </>
       )}
     </View>
