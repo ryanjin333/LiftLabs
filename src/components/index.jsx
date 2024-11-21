@@ -18,6 +18,7 @@ import SettingsList from "./SettingsList";
 import ChangeInfoModal from "./ChangeInfoModal";
 import WeekCalendar from "./WeekCalendar";
 import QuickStartModal from "./QuickStartModal";
+import NavigateToUserButton from "./NavigateToUserButton";
 
 export {
   FormRow,
@@ -40,4 +41,5 @@ export {
   ChangeInfoModal,
   WeekCalendar,
   QuickStartModal,
+  NavigateToUserButton,
 };

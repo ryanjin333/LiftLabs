@@ -87,6 +87,7 @@ const WorkoutPicker = ({ title }) => {
   const allWorkouts = [
     ...(workout.workouts || []),
     ...(workout.sharedWorkouts || []),
+    { title: "Rest", id: "rest" },
   ];
   const DATA = [
     {

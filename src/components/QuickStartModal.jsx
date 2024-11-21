@@ -18,6 +18,8 @@ import Animated, {
 import { WorkoutHelpers } from "../helpers/general";
 import { useWorkoutInfo, useWorkoutTitle } from "../hooks";
 import { changeCurrentWorkout } from "../context/exerciseSlice";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import NavigateToUserButton from "./NavigateToUserButton";
 
 const QuickStartModal = ({ selectedDate }) => {
   // get current workout title
@@ -30,9 +32,14 @@ const QuickStartModal = ({ selectedDate }) => {
     }
   }, [workoutInfo]);
 
+  // insets
+  const insets = useSafeAreaInsets();
+
   return (
     <Animated.View
-      className="absolute z-50 h-20 w-full my-8 px-6 bottom-20  "
+      className={`absolute z-50 h-20 w-full my-8 px-6 ${
+        insets.bottom > 0 ? "bottom-20" : "bottom-10"
+      }`}
       style={{
         shadowColor: "#353535",
         borderRadius: 9999,
@@ -58,14 +65,19 @@ const QuickStartModal = ({ selectedDate }) => {
         >
           <View>
             <Text className="text-white font-interSemiBold text-base">
-              Quick Start⚡
+              {workoutTitle == "Go to user"
+                ? "Setup schedule  🔧"
+                : "Quick Start⚡"}
             </Text>
             <Text className="text-[#797979] font-interMedium text-sm">
-              {workoutTitle}
+              {`${workoutTitle} ${workoutTitle !== "Go to user" ? "day" : ""}`}
             </Text>
           </View>
-
-          <FocusStartButton size="sm" />
+          {workoutTitle === "Go to user" ? (
+            <NavigateToUserButton size="sm" />
+          ) : (
+            workoutTitle !== "Rest" && <FocusStartButton size="sm" />
+          )}
         </BlurView>
       </View>
     </Animated.View>

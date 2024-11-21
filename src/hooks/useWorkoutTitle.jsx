@@ -11,25 +11,33 @@ const useWorkoutTitle = (selectedDate) => {
     ...(workout.sharedWorkouts || []),
   ];
 
-  const [workoutTitle, setWorkoutTitle] = useState("None");
+  const defaultTitle = "Go to user";
+  const [workoutTitle, setWorkoutTitle] = useState(defaultTitle);
 
   useEffect(() => {
     const fetchWorkout = async () => {
       const day = days[selectedDate.toLowerCase()];
       try {
         if (day && day.length > 0) {
-          const workout = await WorkoutHelpers.idToWorkout(day[0], allWorkouts);
-          if (workout) {
-            setWorkoutTitle(workout.title);
+          if (day[0] == "rest") {
+            setWorkoutTitle("Rest");
           } else {
-            setWorkoutTitle("None");
+            const workout = await WorkoutHelpers.idToWorkout(
+              day[0],
+              allWorkouts
+            );
+            if (workout) {
+              setWorkoutTitle(workout.title);
+            } else {
+              setWorkoutTitle(defaultTitle);
+            }
           }
         } else {
-          setWorkoutTitle("None");
+          setWorkoutTitle(defaultTitle);
         }
       } catch (error) {
         console.error("Error fetching workout:", error);
-        setWorkoutTitle("None");
+        setWorkoutTitle(defaultTitle);
       }
     };
 

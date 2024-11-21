@@ -104,7 +104,9 @@ const Home = () => {
             className="flex-1 bg-black"
             onScroll={scrollHandler}
             keyboardShouldPersistTaps="always"
+            showsVerticalScrollIndicator={false}
           >
+            {/* header spacing */}
             <View className="h-24" />
             <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center">
               {/* <View className="w-full items-start px-2 ">
@@ -180,6 +182,8 @@ const Home = () => {
               </View>
               <AddWorkoutModal />
             </SafeAreaView>
+            {/* footer spacing */}
+            <View className="h-16" />
           </Animated.ScrollView>
           {/* quick start view */}
           {quickStartModalVisible && (

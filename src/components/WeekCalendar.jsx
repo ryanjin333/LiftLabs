@@ -111,7 +111,8 @@ const WeekCalendar = () => {
 
                 <Text
                   className={`${
-                    days[day.format("dddd").toLowerCase()].length > 0
+                    days[day.format("dddd").toLowerCase()].length > 0 &&
+                    days[day.format("dddd").toLowerCase()][0] !== "rest"
                       ? day.isSame(currentDate, "day")
                         ? "text-[#3d3d3d]"
                         : "text-[#828282]"
