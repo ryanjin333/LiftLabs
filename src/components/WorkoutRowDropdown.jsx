@@ -20,6 +20,7 @@ import {
   changeModalVisible,
   setEditModeWorkout,
 } from "../context/workoutSlice";
+import { deleteWorkoutFromDay } from "../context/calendarSlice";
 
 const options = [
   {
@@ -51,6 +52,9 @@ const DropdownRow = ({ item, values, setValues, currentWorkout }) => {
         {
           text: "OK",
           onPress: () => {
+            dispatch(
+              deleteWorkoutFromDay({ day: currentWorkout.title.toLowerCase() })
+            );
             dispatch(
               deleteWorkout({ workout: currentWorkout, type: "workouts" })
             );

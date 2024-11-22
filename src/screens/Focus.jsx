@@ -106,6 +106,16 @@ const Focus = ({ navigation }) => {
                   letterSpacing: 1,
                 }}
                 trailingZeros={0}
+                renderText={(time) => {
+                  // Format the time to include minutes and seconds
+                  const minutes = Math.floor(time / 60000)
+                    .toString()
+                    .padStart(2, "0");
+                  const seconds = Math.floor((time % 60000) / 1000)
+                    .toString()
+                    .padStart(2, "0");
+                  return `${minutes}:${seconds}`;
+                }}
               />
 
               {/* exit button */}
