@@ -68,6 +68,15 @@ export const registerUser = createAsyncThunk(
         workouts: [],
         sharedWorkouts: [],
         pendingWorkouts: [],
+        days: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [],
+          friday: [],
+          saturday: [],
+          sunday: [],
+        },
         more: uuid.v4(),
       });
       // await setDoc(doc(db, "usersTest", auth.currentUser.uid), {

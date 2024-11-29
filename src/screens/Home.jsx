@@ -186,9 +186,11 @@ const Home = () => {
             <View className="h-16" />
           </Animated.ScrollView>
           {/* quick start view */}
-          {quickStartModalVisible && (
-            <QuickStartModal selectedDate={selectedDate} />
-          )}
+          {quickStartModalVisible &&
+            (workout.workouts.length > 0 ||
+              workout.sharedWorkouts.length > 0) && (
+              <QuickStartModal selectedDate={selectedDate} />
+            )}
         </>
       )}
     </View>
