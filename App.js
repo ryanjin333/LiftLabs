@@ -34,6 +34,7 @@ import {
   Intro,
   Done,
   Splash,
+  Countdown,
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
@@ -141,6 +142,11 @@ function App() {
                 <Stack.Screen
                   name="Done"
                   component={Done}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="Countdown"
+                  component={Countdown}
                   options={{ animation: "none" }}
                 />
                 <Stack.Screen name="SearchUser" component={SearchUser} />

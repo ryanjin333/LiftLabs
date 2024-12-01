@@ -12,6 +12,7 @@ import Loader from "./Loader";
 import Done from "./Done";
 import Splash from "./Splash";
 import Intro from "./Intro";
+import Countdown from "./Countdown";
 
 export {
   Login,
@@ -28,4 +29,5 @@ export {
   Done,
   Splash,
   Intro,
+  Countdown,
 };

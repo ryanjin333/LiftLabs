@@ -43,12 +43,14 @@ const FocusStartButton = ({ size = "base" }) => {
   };
 
   // functions
+
+  // TODO: NAVIGATE TO COUNTDOWN SCREEN BEFORE TRANSITION
   const buttonPressed = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     if (currentWorkout.plan.length > 0) {
       dispatch(workoutToFocusScreenTransition());
       setTimeout(() => {
-        navigation.navigate("Focus");
+        navigation.navigate("Countdown");
       }, 750);
     } else {
       showMessage({
