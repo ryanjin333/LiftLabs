@@ -14,7 +14,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
-import { workoutToFocusScreenTransition } from "../context/animationSlice";
+import { workoutToCountdownScreenTransition } from "../context/animationSlice";
 import { showMessage } from "react-native-flash-message";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -47,11 +47,11 @@ const FocusStartButton = ({ size = "base" }) => {
   // TODO: NAVIGATE TO COUNTDOWN SCREEN BEFORE TRANSITION
   const buttonPressed = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-    if (currentWorkout.plan.length > 0) {
-      dispatch(workoutToFocusScreenTransition());
+    if (currentWorkout.plan?.length > 0) {
+      dispatch(workoutToCountdownScreenTransition());
       setTimeout(() => {
         navigation.navigate("Countdown");
-      }, 750);
+      }, 1500);
     } else {
       showMessage({
         message: "Add exercises to continue",

@@ -11,6 +11,7 @@ const initialState = {
   userScreenVisible: true,
   doneScreenVisible: true,
   splashScreenVisible: true,
+  countdownScreenVisible: true,
 };
 
 // LOGIN TRANSITIONS
@@ -87,11 +88,31 @@ export const workoutToHomeScreenTransition = createAsyncThunk(
   }
 );
 
-export const workoutToFocusScreenTransition = createAsyncThunk(
-  "animation/workoutToFocusScreenTransition",
+// export const workoutToFocusScreenTransition = createAsyncThunk(
+//   "animation/workoutToFocusScreenTransition",
+//   async (_, { dispatch }) => {
+//     dispatch(animationSlice.actions.hideWorkoutScreen());
+//     await new Promise((resolve) => setTimeout(resolve, 750));
+//     dispatch(animationSlice.actions.showFocusScreen());
+//   }
+// );
+
+export const workoutToCountdownScreenTransition = createAsyncThunk(
+  "animation/workoutToCountdownScreenTransition",
   async (_, { dispatch }) => {
     dispatch(animationSlice.actions.hideWorkoutScreen());
-    await new Promise((resolve) => setTimeout(resolve, 750));
+    dispatch(animationSlice.actions.hideHomeScreen());
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    dispatch(animationSlice.actions.showCountdownScreen());
+  }
+);
+
+// COUNTDOWN TRANSITIONS
+export const countdownToFocusScreenTransition = createAsyncThunk(
+  "animation/countdownToFocusScreenTransition",
+  async (_, { dispatch }) => {
+    dispatch(animationSlice.actions.hideCountdownScreen());
+    await new Promise((resolve) => setTimeout(resolve, 600));
     dispatch(animationSlice.actions.showFocusScreen());
   }
 );
@@ -104,6 +125,7 @@ export const focusToWorkoutScreenTransition = createAsyncThunk(
     dispatch(animationSlice.actions.hideFocusScreen());
     await new Promise((resolve) => setTimeout(resolve, 850));
     dispatch(animationSlice.actions.showWorkoutScreen());
+    dispatch(animationSlice.actions.showHomeScreen());
   }
 );
 
@@ -178,6 +200,13 @@ const animationSlice = createSlice({
     },
     hideWorkoutScreen(state) {
       state.workoutScreenVisible = false;
+    },
+    // COUNTDOWN
+    showCountdownScreen(state) {
+      state.countdownScreenVisible = true;
+    },
+    hideCountdownScreen(state) {
+      state.countdownScreenVisible = false;
     },
     // HOME
     showHomeScreen(state) {

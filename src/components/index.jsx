@@ -19,6 +19,7 @@ import ChangeInfoModal from "./ChangeInfoModal";
 import WeekCalendar from "./WeekCalendar";
 import QuickStartModal from "./QuickStartModal";
 import NavigateToUserButton from "./NavigateToUserButton";
+import AnimatedStopwatchTimer from "./AnimatedStopwatchTimer";
 
 export {
   FormRow,
@@ -42,4 +43,5 @@ export {
   WeekCalendar,
   QuickStartModal,
   NavigateToUserButton,
+  AnimatedStopwatchTimer,
 };

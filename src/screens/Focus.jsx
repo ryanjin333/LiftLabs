@@ -9,9 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState, useRef } from "react";
-import StopwatchTimer, {
-  StopwatchTimerMethods,
-} from "react-native-animated-stopwatch-timer";
+import { AnimatedStopwatchTimer } from "../components";
 
 import * as Haptics from "expo-haptics";
 
@@ -74,10 +72,10 @@ const Focus = ({ navigation }) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
     // update stopwatch
-    stopwatchTimerRef.current?.reset();
+    stopwatchTimerRef.current?.resetTimer();
 
     dispatch(focusToDoneScreenTransition());
-    const session = stopwatchTimerRef.current?.getSnapshot();
+    const session = stopwatchTimerRef.current?.getTime();
 
     setTimeout(() => {
       navigation.navigate("Done", {
@@ -97,26 +95,7 @@ const Focus = ({ navigation }) => {
               className="flex-row w-full justify-between items-center"
             >
               {/* timer */}
-              <StopwatchTimer
-                ref={stopwatchTimerRef}
-                textCharStyle={{
-                  color: "#fff",
-                  fontSize: 48,
-                  fontWeight: "bold",
-                  letterSpacing: 1,
-                }}
-                trailingZeros={0}
-                renderText={(time) => {
-                  // Format the time to include minutes and seconds
-                  const minutes = Math.floor(time / 60000)
-                    .toString()
-                    .padStart(2, "0");
-                  const seconds = Math.floor((time % 60000) / 1000)
-                    .toString()
-                    .padStart(2, "0");
-                  return `${minutes}:${seconds}`;
-                }}
-              />
+              <AnimatedStopwatchTimer ref={stopwatchTimerRef} />
 
               {/* exit button */}
               <Pressable
@@ -124,9 +103,9 @@ const Focus = ({ navigation }) => {
                 onPress={() => {
                   dispatch(focusToWorkoutScreenTransition());
                   // update stopwatch
-                  stopwatchTimerRef.current?.reset();
+                  stopwatchTimerRef.current?.resetTimer();
                   setTimeout(() => {
-                    navigation.goBack();
+                    navigation.navigate("Home");
                   }, 850);
                 }}
               >

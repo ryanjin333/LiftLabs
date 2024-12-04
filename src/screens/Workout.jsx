@@ -112,7 +112,7 @@ const Workout = ({ route, navigation }) => {
                   exiting={FadeOutLeft.delay(50).duration(500).springify()}
                 >
                   {/* exercise list */}
-                  {currentWorkout.plan.length == 0 ? (
+                  {currentWorkout.plan?.length === 0 ? (
                     <View className="flex-1 justify-center items-center mt-20">
                       <Text className="text-center text-white w-44 font-inter">
                         Tap <Text className="font-interBold">Add</Text> to

@@ -4,11 +4,10 @@ const useStopwatchInterval = () => {
   const stopwatchTimerRef = useRef(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      stopwatchTimerRef.current?.play(); // Call the `play` method on the ref
-    }, 1000); // Run this every second
+    stopwatchTimerRef.current?.startTimer(); // Call the `startTimer` method on the ref
+    // Run this every second
 
-    return () => clearInterval(interval); // Clean up the interval on unmount
+    // return () => clearInterval(interval); // Clean up the interval on unmount
   }, []);
 
   return stopwatchTimerRef;

@@ -93,6 +93,8 @@ const AnimatedHeader = ({ offsetY, title, delay = 300, animate = true }) => {
           onLayout={handleTextLayout}
           numberOfLines={1}
           ellipsizeMode="tail"
+          entering={FadeInUp.duration(300).springify()}
+          exiting={FadeOutUp.delay(delay).duration(300).springify()}
         >
           {title}
         </Animated.Text>
