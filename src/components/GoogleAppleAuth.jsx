@@ -10,6 +10,7 @@ import {
 import { auth } from "../config/firebase";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../context/userSlice";
+import { showMessage } from "react-native-flash-message";
 import { GoogleAppleAuthHelper } from "../helpers/components";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -38,8 +39,8 @@ const GoogleAppleAuth = () => {
           console.log("Sign-in successful:", result);
 
           // Unique username creation
-          const { generateUsername } = GoogleAppleAuthHelper();
-          const username = await generateUsername(result.user.email);
+          const { generateUsername } = GoogleAppleAuthHelper;
+          const username = generateUsername(result.user.email);
           console.log("Generated username:", username);
 
           const currentUser = {
@@ -54,10 +55,10 @@ const GoogleAppleAuth = () => {
           console.log("User registered with ID:", userId);
 
           if (userId) {
-            showMessage({
-              message: "User registered successfully!",
-              type: "success",
-            });
+            // showMessage({
+            //   message: "User registered successfully!",
+            //   type: "success",
+            // });
           }
         } catch (error) {
           console.error("Error during sign-in with Google:", error);
