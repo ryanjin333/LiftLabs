@@ -173,7 +173,7 @@ const User = ({ navigation }) => {
     },
     {
       title: "App Info",
-      data: [{ title: "App version", action: () => {}, text: "v1.1.1" }],
+      data: [{ title: "App version", action: () => {}, text: "v1.2.0" }],
     },
   ];
 
@@ -398,6 +398,7 @@ const User = ({ navigation }) => {
           <Animated.ScrollView
             className="flex-1 bg-black"
             onScroll={scrollHandler}
+            showsVerticalScrollIndicator={false}
           >
             <View className="h-24" />
             <SafeAreaView className="flex-1 bg-black px-6 pb-32 items-center justify-center">

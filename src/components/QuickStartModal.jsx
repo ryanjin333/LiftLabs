@@ -41,10 +41,10 @@ const QuickStartModal = ({ selectedDate }) => {
         insets.bottom > 0 ? "bottom-20" : "bottom-10"
       }`}
       style={{
-        shadowColor: "#353535",
+        shadowColor: "#3c3c3c",
         borderRadius: 9999,
         shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.6,
         shadowRadius: 20,
         elevation: 20, // for Android
       }}

@@ -2,20 +2,15 @@ import React, { useEffect } from "react";
 import { View, Pressable, Image } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import {
-  getAuth,
-  signInWithCredential,
-  GoogleAuthProvider,
-} from "firebase/auth";
-import { auth } from "../config/firebase";
+import * as AppleAuthentication from "expo-apple-authentication";
+import { GoogleAuthProvider, OAuthProvider } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../context/userSlice";
 import { showMessage } from "react-native-flash-message";
 import { GoogleAppleAuthHelper } from "../helpers/components";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const GoogleAppleAuth = () => {
+const GoogleAppleAuth = ({ type = "google" }) => {
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     iosClientId:
       "811062416555-fsq78k7il4gv3r6k4tet6jju4gvie12k.apps.googleusercontent.com",
@@ -28,38 +23,15 @@ const GoogleAppleAuth = () => {
 
   useEffect(() => {
     const handleGoogleSignIn = async () => {
-      console.log("Handling Google Sign-In...");
       if (response?.type === "success") {
         const { id_token } = response.params;
-        console.log("Received ID token:", id_token);
 
         try {
           const credential = GoogleAuthProvider.credential(id_token);
-          const result = await signInWithCredential(auth, credential);
-          console.log("Sign-in successful:", result);
 
-          // Unique username creation
-          const { generateUsername } = GoogleAppleAuthHelper;
-          const username = generateUsername(result.user.email);
-          console.log("Generated username:", username);
-
-          const currentUser = {
-            username: username,
-            email: result.user.email,
-            password: "GoogleAuth",
-            isEmailSignIn: false,
-          };
-
-          // Dispatch the registerUser thunk
-          const userId = dispatch(registerUser(currentUser));
-          console.log("User registered with ID:", userId);
-
-          if (userId) {
-            // showMessage({
-            //   message: "User registered successfully!",
-            //   type: "success",
-            // });
-          }
+          // LOGGED IN
+          const { handleSocialAuth } = GoogleAppleAuthHelper;
+          await handleSocialAuth(credential, dispatch);
         } catch (error) {
           console.error("Error during sign-in with Google:", error);
           showMessage({
@@ -79,6 +51,40 @@ const GoogleAppleAuth = () => {
     handleGoogleSignIn();
   }, [response]);
 
+  const appleButtonPressed = async () => {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [AppleAuthentication.AppleAuthenticationScope.EMAIL],
+      });
+
+      const { identityToken } = credential;
+
+      if (identityToken) {
+        const provider = new OAuthProvider("apple.com");
+
+        // create firebase auth
+        const firebaseCredential = provider.credential({
+          idToken: identityToken,
+          rawNonce: null, // Optional if you include nonce during Apple Sign-In
+        });
+
+        // LOGGED IN
+        const { handleSocialAuth } = GoogleAppleAuthHelper;
+        await handleSocialAuth(firebaseCredential, dispatch);
+      } else {
+        console.error("Apple Sign-In did not return an identity token.");
+      }
+    } catch (e) {
+      if (e.code === "ERR_REQUEST_CANCELED") {
+        // handle that the user canceled the sign-in flow
+        console.log("error 1");
+      } else {
+        // handle other errors
+        console.log("error 2", e);
+      }
+    }
+  };
+
   return (
     <View className="flex-row space-x-9 mt-3">
       <Pressable onPress={() => promptAsync()}>
@@ -86,6 +92,13 @@ const GoogleAppleAuth = () => {
           className="w-9 h-9"
           style={{ resizeMode: "contain" }}
           source={require("../assets/google_logo.png")}
+        />
+      </Pressable>
+      <Pressable onPress={appleButtonPressed}>
+        <Image
+          className="w-9 h-9"
+          style={{ resizeMode: "contain" }}
+          source={require("../assets/apple_logo.png")}
         />
       </Pressable>
     </View>

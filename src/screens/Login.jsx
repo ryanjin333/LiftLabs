@@ -166,7 +166,9 @@ const Login = () => {
                   exiting={FadeOutDown.duration(500).springify()}
                 >
                   {showGoogleAuth ? (
-                    <GoogleAppleAuth />
+                    <>
+                      <GoogleAppleAuth />
+                    </>
                   ) : (
                     <View className="w-12 h-12" /> // BAKA VARIABLE
                   )}
