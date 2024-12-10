@@ -16,7 +16,7 @@
       "backgroundColor": "#000000",
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.ryanjin333.LiftLabs",
-      "buildNumber": "4"
+      "buildNumber": "5"
     },
     "android": {
       "adaptiveIcon": {
