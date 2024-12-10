@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
 import React, { useEffect } from "react";
-import { Video } from "expo-av";
 import { useDispatch, useSelector } from "react-redux";
 import { splashScreenTransition } from "../context/animationSlice";
 import Animated, { Easing, FadeIn, FadeOut } from "react-native-reanimated";
 import LottieView from "lottie-react-native";
+import { useVideoPlayer, VideoView } from "expo-video";
 
 const videoSource = require("../../assets/splash.mp4");
 
@@ -14,6 +14,13 @@ const Splash = ({ onSplashEnd }) => {
   const splashScreenVisible = useSelector(
     (state) => state.animation.splashScreenVisible
   );
+
+  // video setup
+  const player = useVideoPlayer(videoSource, (player) => {
+    player.loop = true;
+    player.muted = true;
+    player.play();
+  });
 
   useEffect(() => {
     // Timer to hide splash after a certain duration
@@ -31,16 +38,13 @@ const Splash = ({ onSplashEnd }) => {
           exiting={FadeOut.duration(500)}
           className="h-full w-full bg-black items-center justify-center"
         >
-          <Video
-            source={videoSource}
+          <VideoView
             className="h-3/5 w-full"
-            isLooping
-            isMuted
-            shouldPlay
-            resizeMode="contain"
-            useNativeControls={false}
+            player={player}
+            allowsFullscreen
+            allowsPictureInPicture
+            nativeControls={false}
           />
-
           <LottieView
             source={require("../assets/loading_animation.json")}
             className=" w-48 h-48"
