@@ -44,6 +44,7 @@ import {
   useFullPlan,
   useStopwatchInterval,
   useLoadingOpacity,
+  useHasNotch,
 } from "../hooks";
 
 const Focus = ({ navigation }) => {
@@ -67,6 +68,9 @@ const Focus = ({ navigation }) => {
   // animations for swipe down image
   const animatedStyle = useBouncingAnimation();
 
+  // checks if phone has notch
+  const hasNotch = useHasNotch();
+
   // trigger when scrolled past the bottom
   const endOfWorkoutReached = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
@@ -88,7 +92,11 @@ const Focus = ({ navigation }) => {
       {focusScreenVisible && (
         <>
           {/* timer and exit button */}
-          <View className="flex-row w-full justify-between items-center px-10 pt-20 absolute z-50">
+          <View
+            className={`flex-row w-full justify-between items-center px-10 mt-${
+              hasNotch ? "20" : "10"
+            } absolute z-50`}
+          >
             <Animated.View
               entering={FadeInUp.duration(500).springify()}
               exiting={FadeOutUp.delay(350).duration(500).springify()}
@@ -99,7 +107,9 @@ const Focus = ({ navigation }) => {
 
               {/* exit button */}
               <Pressable
-                className="w-10 h-10 flex justify-center items-center rounded-full bg-[#292929]"
+                className={`w-${hasNotch ? "10" : "9"} h-${
+                  hasNotch ? "10" : "9"
+                } flex justify-center items-center rounded-full bg-[#292929]`}
                 onPress={() => {
                   dispatch(focusToWorkoutScreenTransition());
                   // update stopwatch
@@ -110,7 +120,9 @@ const Focus = ({ navigation }) => {
                 }}
               >
                 <Image
-                  className="h-5 w-5"
+                  className={`w-${hasNotch ? "5" : "4"} h-${
+                    hasNotch ? "5" : "4"
+                  }`}
                   source={require("../assets/exit.png")}
                 />
               </Pressable>
@@ -129,14 +141,16 @@ const Focus = ({ navigation }) => {
                 <>
                   <View className="w-full items-end">
                     {/* header spacing */}
-                    <View className="h-20" />
+                    <View className={`h-${hasNotch ? "20" : "12"}`} />
 
-                    <View className="flex-row justify-between mb-10 w-full mt-3 px-3">
+                    <View className="flex-row justify-between w-full mt-3 px-3">
                       {/* title  */}
                       <Animated.Text
                         entering={FadeInUp.delay(50).duration(500).springify()}
                         exiting={FadeOutUp.delay(300).duration(500).springify()}
-                        className="w-56 text-primary font-interBold text-3xl"
+                        className={`w-56 text-primary font-interBold text-${
+                          hasNotch ? "3xl" : "2xl"
+                        }`}
                         ellipsizeMode="tail"
                         numberOfLines={3}
                       >
@@ -144,13 +158,17 @@ const Focus = ({ navigation }) => {
                       </Animated.Text>
                       {/* exercise weight */}
                       <Animated.Text
-                        className=" text-primary font-interBold text-3xl "
+                        className={`text-primary font-interBold text-${
+                          hasNotch ? "3xl" : "2xl"
+                        }`}
                         entering={FadeInUp.delay(100).duration(500).springify()}
                         exiting={FadeOutUp.delay(250).duration(500).springify()}
                       >
                         {item.weight}
                         <Animated.Text
-                          className="text-white font-interMedium text-2xl"
+                          className={`text-white font-interMedium text-${
+                            hasNotch ? "2xl" : "xl"
+                          }`}
                           entering={FadeInUp.delay(150)
                             .duration(500)
                             .springify()}
@@ -167,7 +185,9 @@ const Focus = ({ navigation }) => {
                     <Animated.View
                       entering={FadeInLeft.delay(200).duration(500).springify()}
                       exiting={FadeOutLeft.delay(150).duration(500).springify()}
-                      className="rounded-[30px] overflow-hidden"
+                      className={`rounded-[30px] overflow-hidden mt-${
+                        hasNotch ? "10" : "6"
+                      }`}
                     >
                       <RNEImage
                         style={{
@@ -195,9 +215,15 @@ const Focus = ({ navigation }) => {
 
                     {/* other information */}
                     {/* exercise set */}
-                    <View className="px-6 w-full flex-row mt-10 justify-between">
+                    <View
+                      className={`px-6 w-full flex-row mt-${
+                        hasNotch ? "10" : "6"
+                      } justify-between`}
+                    >
                       <Animated.Text
-                        className=" text-primary font-interBold text-3xl "
+                        className={`text-primary font-interBold text-${
+                          hasNotch ? "3xl" : "2xl"
+                        }`}
                         entering={FadeInDown.delay(250)
                           .duration(500)
                           .springify()}
@@ -208,7 +234,11 @@ const Focus = ({ navigation }) => {
                         {item.set + " "}
                         of
                         {" " + item.sets}
-                        <Text className="text-white font-interMedium text-2xl">
+                        <Text
+                          className={`text-white font-interMedium text-${
+                            hasNotch ? "2xl" : "xl"
+                          }`}
+                        >
                           {" "}
                           sets
                         </Text>
@@ -216,7 +246,9 @@ const Focus = ({ navigation }) => {
 
                       {/* exercise reps */}
                       <Animated.Text
-                        className="text-primary  font-interBold text-3xl"
+                        className={`text-primary font-interBold text-${
+                          hasNotch ? "3xl" : "2xl"
+                        }`}
                         entering={FadeInDown.delay(300)
                           .duration(500)
                           .springify()}
@@ -225,7 +257,11 @@ const Focus = ({ navigation }) => {
                           .springify()}
                       >
                         {item.reps}
-                        <Text className="text-white font-interMedium text-2xl">
+                        <Text
+                          className={`text-white font-interMedium text-${
+                            hasNotch ? "2xl" : "xl"
+                          }`}
+                        >
                           {" "}
                           reps
                         </Text>

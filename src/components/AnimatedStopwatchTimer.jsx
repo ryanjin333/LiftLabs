@@ -13,6 +13,8 @@ import Animated, {
   Easing,
 } from "react-native-reanimated";
 
+import { useHasNotch } from "../hooks";
+
 const AnimatedStopwatchTimer = forwardRef(({ textStyle }, ref) => {
   const [time, setTime] = useState(0); // Time in milliseconds
   const [isRunning, setIsRunning] = useState(false);
@@ -83,9 +85,16 @@ const AnimatedStopwatchTimer = forwardRef(({ textStyle }, ref) => {
     opacity: opacity.value,
   }));
 
+  // checks if phone has notch
+  const hasNotch = useHasNotch();
+
   return (
-    <Animated.View style={[animatedStyle]}>
-      <Text style={[styles.timeText, textStyle]}>{formatTime()}</Text>
+    <Animated.View>
+      <Text
+        className={`text-${hasNotch ? "5xl" : "4xl"} text-white font-interBold`}
+      >
+        {formatTime()}
+      </Text>
     </Animated.View>
   );
 });

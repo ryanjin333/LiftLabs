@@ -7,6 +7,7 @@ import useLoadingOpacity from "./useLoadingOpacity";
 import useScrollOffset from "./useScrollOffset";
 import useWorkoutTitle from "./useWorkoutTitle";
 import useWorkoutInfo from "./useWorkoutInfo";
+import { useHasNotch } from "./useHasNotch";
 
 export {
   useAuth,
@@ -18,4 +19,5 @@ export {
   useScrollOffset,
   useWorkoutTitle,
   useWorkoutInfo,
+  useHasNotch,
 };

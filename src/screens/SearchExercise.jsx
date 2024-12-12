@@ -50,11 +50,24 @@ const SearchExercise = ({ navigation }) => {
     try {
       const exerciseRef = doc(db, "exercises", "allExercises");
       const exerciseSnap = await getDoc(exerciseRef);
+      const exerciseData = exerciseSnap.data().exercises; // Access the exercises array
+
+      const capitalizeFirstLetter = (str) =>
+        str.charAt(0).toUpperCase() + str.slice(1);
+
+      const capitalizedExercises = exerciseData.map((exercise) => ({
+        ...exercise,
+        name: capitalizeFirstLetter(exercise.name),
+        mainMuscle: capitalizeFirstLetter(exercise.mainMuscle),
+      }));
+
+      const capitalizedData = { exercises: capitalizedExercises };
+
       if (exerciseSnap.exists()) {
         // update fullData
         setValues({
           ...values,
-          fullData: exerciseSnap.data(),
+          fullData: capitalizedData,
           isLoading: false,
         });
       } else {
