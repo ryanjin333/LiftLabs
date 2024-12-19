@@ -13,6 +13,7 @@ import Done from "./Done";
 import Splash from "./Splash";
 import Intro from "./Intro";
 import Countdown from "./Countdown";
+import Questionnaire from "./Questionnaire";
 
 export {
   Login,
@@ -30,4 +31,5 @@ export {
   Splash,
   Intro,
   Countdown,
+  Questionnaire,
 };

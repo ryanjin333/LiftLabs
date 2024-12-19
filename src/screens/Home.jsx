@@ -58,6 +58,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useScrollOffset, useWorkoutInfo } from "../hooks";
 import { WorkoutHelpers } from "../helpers/general";
+import { useNavigation } from "@react-navigation/native";
 
 const Home = () => {
   // initial load
@@ -92,6 +93,9 @@ const Home = () => {
   // adds default days to all users
   // WorkoutHelpers.addDaysToAllUsers();
 
+  //TEMPORARY
+  const navigation = useNavigation();
+
   // header animations
   const { offsetY, scrollHandler } = useScrollOffset();
 
@@ -115,7 +119,13 @@ const Home = () => {
                 </Text>
               </View> */}
 
+              {/* the calendar */}
               <WeekCalendar />
+              {/* navigate to questionnaire */}
+              <Pressable
+                className="bg-white h-10 w-10"
+                onPress={() => navigation.navigate("Questionnaire")}
+              />
               {/* button bar */}
               <View className="w-full flex-row justify-between mt-6 z-10">
                 <Animated.View

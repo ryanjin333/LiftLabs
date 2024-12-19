@@ -35,6 +35,7 @@ import {
   Done,
   Splash,
   Countdown,
+  Questionnaire,
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
@@ -147,6 +148,11 @@ function App() {
                 <Stack.Screen
                   name="Countdown"
                   component={Countdown}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="Questionnaire"
+                  component={Questionnaire}
                   options={{ animation: "none" }}
                 />
                 <Stack.Screen name="SearchUser" component={SearchUser} />
