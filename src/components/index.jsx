@@ -20,6 +20,8 @@ import WeekCalendar from "./WeekCalendar";
 import QuickStartModal from "./QuickStartModal";
 import NavigateToUserButton from "./NavigateToUserButton";
 import AnimatedStopwatchTimer from "./AnimatedStopwatchTimer";
+import ScrollSelector from "./ScrollSelector";
+import GradientBlur from "./GradientBlur";
 
 export {
   FormRow,
@@ -44,4 +46,6 @@ export {
   QuickStartModal,
   NavigateToUserButton,
   AnimatedStopwatchTimer,
+  ScrollSelector,
+  GradientBlur,
 };
