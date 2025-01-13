@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { doc, onSnapshot } from "firebase/firestore";
 import { fetchWorkouts } from "../context/workoutSlice";
 import { loadInfo } from "../context/userSlice";
+import { loadPreference } from "../context/preferenceSlice";
 import { setDays } from "../context/calendarSlice";
 
 const Loader = ({ navigation }) => {
@@ -24,6 +25,8 @@ const Loader = ({ navigation }) => {
                 dispatch(fetchWorkouts(docSnapshot.data()));
                 dispatch(loadInfo());
 
+                // preference pre load
+                dispatch(loadPreference(docSnapshot.data().preference));
                 // calendar pre load
                 dispatch(setDays(docSnapshot.data().days));
               }

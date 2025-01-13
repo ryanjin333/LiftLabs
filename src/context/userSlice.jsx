@@ -50,12 +50,12 @@ export const submitData = createAsyncThunk(
   async (userData) => {
     try {
       // Map userData keys to descriptive names
-      const bodyData = {
+      const preference = {
         level: userData["1"],
         goal: userData["2"],
         duration: userData["3"],
         age: userData["4"],
-        gender: userData["5"],
+        type: userData["5"],
         weight: userData["6"],
         height: userData["7"],
       };
@@ -64,7 +64,7 @@ export const submitData = createAsyncThunk(
       const userDoc = doc(db, "users", auth.currentUser.uid);
 
       // Save bodyData to the Firestore document
-      await setDoc(userDoc, { bodyData }, { merge: true }); // Merge with existing data if any
+      await setDoc(userDoc, { preference }, { merge: true }); // Merge with existing data if any
     } catch (error) {
       console.error("Error submitting user data:", error);
       throw error; // Re-throw the error to handle it in the caller

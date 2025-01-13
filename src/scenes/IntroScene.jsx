@@ -14,8 +14,8 @@ const IntroScene = () => {
         <directionalLight position={[5, 5, 5]} intensity={5} castShadow />
         <OrbitControls enablePan={false} enableZoom={false} />
 
-        <Suspense>
-          <AnimationSelf />
+        <Suspense fallback={null}>
+          <AnimationSelf position={[0, 0, 0]} />
         </Suspense>
       </Canvas>
     </View>

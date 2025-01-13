@@ -10,7 +10,7 @@ const ScrollSelector = ({ handleAnswer }) => {
   const [selectedItem, setSelectedItem] = useState(1); // Track the selected item
   const flatListRef = useRef(null); // Reference to the FlatList
 
-  const numbers = Array.from({ length: 100 }, (_, i) => i); // Array of numbers
+  const numbers = Array.from({ length: 1000 }, (_, i) => i); // Array of numbers
 
   const onScroll = (event) => {
     const offsetY = event.nativeEvent.contentOffset.y;

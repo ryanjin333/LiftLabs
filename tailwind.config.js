@@ -17,6 +17,7 @@ module.exports = {
       primary: "#F0F2A6",
       white: "#fff",
       black: "#000",
+      subtitle: "#8E8E8E",
     },
   },
   plugins: [],

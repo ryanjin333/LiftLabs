@@ -14,6 +14,7 @@ import Splash from "./Splash";
 import Intro from "./Intro";
 import Countdown from "./Countdown";
 import Questionnaire from "./Questionnaire";
+import AIWorkoutCreator from "./AIWorkoutCreator";
 
 export {
   Login,
@@ -32,4 +33,5 @@ export {
   Intro,
   Countdown,
   Questionnaire,
+  AIWorkoutCreator,
 };

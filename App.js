@@ -36,6 +36,7 @@ import {
   Splash,
   Countdown,
   Questionnaire,
+  AIWorkoutCreator,
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
@@ -153,6 +154,11 @@ function App() {
                 <Stack.Screen
                   name="Questionnaire"
                   component={Questionnaire}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="AIWorkoutCreator"
+                  component={AIWorkoutCreator}
                   options={{ animation: "none" }}
                 />
                 <Stack.Screen name="SearchUser" component={SearchUser} />

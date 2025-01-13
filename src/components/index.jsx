@@ -22,6 +22,8 @@ import NavigateToUserButton from "./NavigateToUserButton";
 import AnimatedStopwatchTimer from "./AnimatedStopwatchTimer";
 import ScrollSelector from "./ScrollSelector";
 import GradientBlur from "./GradientBlur";
+import RadialGradientImage from "./RadialGradientImage";
+import RoundedBlurView from "./RoundedBlurView";
 
 export {
   FormRow,
@@ -48,4 +50,6 @@ export {
   AnimatedStopwatchTimer,
   ScrollSelector,
   GradientBlur,
+  RadialGradientImage,
+  RoundedBlurView,
 };

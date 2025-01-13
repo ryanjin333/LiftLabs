@@ -14,7 +14,7 @@ const GradientBlur = ({
       colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]} // Adjust colors to control opacity
       start={direction == "fromBottom" ? { x: 0, y: 1 } : { x: 0, y: 0 }}
       end={direction == "fromBottom" ? { x: 0, y: 0 } : { x: 0, y: 1 }}
-      className={`${className} `}
+      className={`${className} pointer-events-none`}
     >
       {children}
     </LinearGradient>

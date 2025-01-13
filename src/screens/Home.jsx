@@ -121,11 +121,18 @@ const Home = () => {
 
               {/* the calendar */}
               <WeekCalendar />
-              {/* navigate to questionnaire */}
-              <Pressable
-                className="bg-white h-10 w-10"
-                onPress={() => navigation.navigate("Questionnaire")}
-              />
+              <View className=" flex-row gap-x-6">
+                {/* navigate to questionnaire */}
+                <Pressable
+                  className="bg-white h-10 w-10"
+                  onPress={() => navigation.navigate("Questionnaire")}
+                />
+                <Pressable
+                  className="bg-primary h-10 w-10"
+                  onPress={() => navigation.navigate("AIWorkoutCreator")}
+                />
+              </View>
+
               {/* button bar */}
               <View className="w-full flex-row justify-between mt-6 z-10">
                 <Animated.View

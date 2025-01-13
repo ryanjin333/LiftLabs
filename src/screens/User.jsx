@@ -67,6 +67,7 @@ const User = ({ navigation }) => {
   // redux
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const preferences = useSelector((state) => state.preference.preferences);
 
   const userScreenVisible = useSelector(
     (state) => state.animation.userScreenVisible
@@ -103,7 +104,7 @@ const User = ({ navigation }) => {
     },
     {
       title: "Units",
-      data: [{ title: "Weight", action: () => {}, value: user.weight }],
+      data: [{ title: "Metric", action: () => {}, value: user.weight }],
     },
     {
       title: "Calendar",
@@ -149,6 +150,60 @@ const User = ({ navigation }) => {
           action: () => {
             console.log("hi");
           },
+        },
+      ],
+    },
+    {
+      title: "Preference",
+      data: [
+        {
+          title: "Level",
+          action: () => {
+            console.log("hi");
+          },
+          text: preferences.level,
+        },
+        {
+          title: "Goal",
+          action: () => {
+            console.log("hi");
+          },
+          text: preferences.goal,
+        },
+        {
+          title: "Duration",
+          action: () => {
+            console.log("hi");
+          },
+          text: preferences.duration,
+        },
+        {
+          title: "Age",
+          action: () => {
+            console.log("hi");
+          },
+          text: preferences.age,
+        },
+        {
+          title: "Type",
+          action: () => {
+            console.log("hi");
+          },
+          text: preferences.type,
+        },
+        {
+          title: "Weight",
+          action: () => {
+            console.log("hi");
+          },
+          text: `${preferences.weight} kg`,
+        },
+        {
+          title: "Height",
+          action: () => {
+            console.log("hi");
+          },
+          text: `${preferences.height} cm`,
         },
       ],
     },

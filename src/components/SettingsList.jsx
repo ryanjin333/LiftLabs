@@ -241,11 +241,13 @@ const SettingsList = ({ data }) => {
                 <TextOnly text={item.text} />
               ) : (
                 <>
-                  {item.title == "Username" || item.title == "Full name" ? (
+                  {item.title == "Username" ||
+                  item.title == "Full name" ||
+                  data.title == "Preference" ? (
                     <TextAndNavigation text={item.text} />
                   ) : (
                     <>
-                      {item.title == "Weight" ? (
+                      {item.title == "Metric" ? (
                         <SwitcherOnly />
                       ) : (
                         <>

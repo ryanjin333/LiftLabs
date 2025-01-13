@@ -1,18 +1,59 @@
-import { View, Text } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  Dimensions,
+  Image,
+} from "react-native";
+import { useState } from "react";
 import { createNewWorkout } from "../context/workoutSlice";
 import uuid from "react-native-uuid";
-
+import { useDispatch, useSelector } from "react-redux";
 import OpenAI from "openai";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { BlurView } from "expo-blur";
 
 // Firebase imports
 import { auth, db } from "../config/firebase";
 import { doc, onSnapshot, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
-const AIWorkoutCreator = () => {
-  const generateWorkoutPressed = async () => {
+// Self imports
+import { RadialGradientImage, RoundedBlurView } from "../components";
+import { IntroScene } from "../scenes";
+
+// DUMMY VARIABLES
+const muscleGroups = [
+  { id: "0", name: "General" },
+  { id: "1", name: "Chest" },
+  { id: "2", name: "Back" },
+  { id: "3", name: "Shoulders" },
+  { id: "4", name: "Arms" }, // should include upper and lower arms
+  { id: "5", name: "Legs" }, // should include upper and lower legs
+  { id: "6", name: "Abs" }, // called waist in database
+  { id: "7", name: "Cardio" },
+  { id: "8", name: "Push" },
+  { id: "9", name: "Pull" },
+];
+
+const initialState = {
+  1: "Intermediate", // level
+  2: "General fitness", // goals
+  3: "30 min to 1 hour", // length
+  4: 18, // age
+  5: "Male oriented", // gender
+  6: 180, // weight
+  7: 175, // height
+};
+
+const AIWorkoutCreator = ({ navigation }) => {
+  const [responses, setResponses] = useState(initialState);
+
+  // redux
+  const dispatch = useDispatch();
+
+  const generateWorkoutPressed = async (mainMuscle) => {
     // DUMMY VARIABLES
-    const mainMuscle = "upper legs";
     const numberOfExercises = 6;
     const minuteBreak = 1;
     const secondBreak = 0;
@@ -96,7 +137,7 @@ const AIWorkoutCreator = () => {
         }));
         console.log(plan);
 
-        // TODO: if a plan is undefined run AI again
+        // TODO!!!!!!!!!!!!!!!!!!!!!!!!!: if a plan is undefined run AI again
 
         // Create the workout
 
@@ -116,10 +157,73 @@ const AIWorkoutCreator = () => {
       console.log("completed");
     }
   };
+
+  // grid adjustments
+  const padding = 31 * 2; // Left + right
+  const margin = 2 * 2; // Margins between items in a row
+  const screenWidth = Dimensions.get("window").width;
+  const itemWidth = (screenWidth - padding - margin) / 3;
+
   return (
-    <View>
-      <Text>AIWorkoutCreator</Text>
-    </View>
+    <SafeAreaView className="flex-1 bg-black items-center">
+      <View className="w-full pt-12 px-6">
+        <View className=" flex-row space-x-4">
+          <Text className="text-white font-interBold text-4xl">LiftLab AI</Text>
+          <Image
+            className="w-8 h-8"
+            source={require("../assets/sparkles.png")}
+          />
+        </View>
+
+        <Text className="text-subtitle mb-12 font-interMedium ">
+          Select all that apply
+        </Text>
+      </View>
+
+      <View className="flex-row flex-wrap px-6 ">
+        {muscleGroups.map((item, index) => (
+          // individual workout selection views
+          <RoundedBlurView
+            key={item.id}
+            className={`rounded-[20px] m-0.5 border border-[#1C1B1B]`}
+            style={{ width: itemWidth, height: itemWidth }}
+            containerClassName="p-3 justify-between"
+          >
+            {/* top half of the selection view */}
+            <View className="flex-row justify-between">
+              {/* apply shadowing to the radial gradient */}
+              <View
+                style={{
+                  borderRadius: 9999,
+                  shadowColor: "#858585",
+                  shadowOffset: { width: 0, height: 5 },
+                  shadowOpacity: 0.6,
+                  shadowRadius: 15,
+                  elevation: 15, // For Android
+                }}
+              >
+                <RadialGradientImage
+                  image={require("../assets/body.png")}
+                  gradientSize="9"
+                  imageSize="6"
+                />
+              </View>
+
+              <Image
+                className="w-5 h-5"
+                source={require("../assets/checkmark.png")}
+              />
+            </View>
+
+            {/* bottom half of the selection view */}
+            <Text className="text-white font-interMedium text-sm">
+              {item.name}
+            </Text>
+          </RoundedBlurView>
+        ))}
+      </View>
+    </SafeAreaView>
+    // <IntroScene />
   );
 };
 
