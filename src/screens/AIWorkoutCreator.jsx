@@ -165,65 +165,65 @@ const AIWorkoutCreator = ({ navigation }) => {
   const itemWidth = (screenWidth - padding - margin) / 3;
 
   return (
-    <SafeAreaView className="flex-1 bg-black items-center">
-      <View className="w-full pt-12 px-6">
-        <View className=" flex-row space-x-4">
-          <Text className="text-white font-interBold text-4xl">LiftLab AI</Text>
-          <Image
-            className="w-8 h-8"
-            source={require("../assets/sparkles.png")}
-          />
-        </View>
+    // <SafeAreaView className="flex-1 bg-black items-center">
+    //   <View className="w-full pt-12 px-6">
+    //     <View className=" flex-row space-x-4">
+    //       <Text className="text-white font-interBold text-4xl">LiftLab AI</Text>
+    //       <Image
+    //         className="w-8 h-8"
+    //         source={require("../assets/sparkles.png")}
+    //       />
+    //     </View>
 
-        <Text className="text-subtitle mb-12 font-interMedium ">
-          Select all that apply
-        </Text>
-      </View>
+    //     <Text className="text-subtitle mb-12 font-interMedium ">
+    //       Select all that apply
+    //     </Text>
+    //   </View>
 
-      <View className="flex-row flex-wrap px-6 ">
-        {muscleGroups.map((item, index) => (
-          // individual workout selection views
-          <RoundedBlurView
-            key={item.id}
-            className={`rounded-[20px] m-0.5 border border-[#1C1B1B]`}
-            style={{ width: itemWidth, height: itemWidth }}
-            containerClassName="p-3 justify-between"
-          >
-            {/* top half of the selection view */}
-            <View className="flex-row justify-between">
-              {/* apply shadowing to the radial gradient */}
-              <View
-                style={{
-                  borderRadius: 9999,
-                  shadowColor: "#858585",
-                  shadowOffset: { width: 0, height: 5 },
-                  shadowOpacity: 0.6,
-                  shadowRadius: 15,
-                  elevation: 15, // For Android
-                }}
-              >
-                <RadialGradientImage
-                  image={require("../assets/body.png")}
-                  gradientSize="9"
-                  imageSize="6"
-                />
-              </View>
+    //   <View className="flex-row flex-wrap px-6 ">
+    //     {muscleGroups.map((item, index) => (
+    //       // individual workout selection views
+    //       <RoundedBlurView
+    //         key={item.id}
+    //         className={`rounded-[20px] m-0.5 border border-[#1C1B1B]`}
+    //         style={{ width: itemWidth, height: itemWidth }}
+    //         containerClassName="p-3 justify-between"
+    //       >
+    //         {/* top half of the selection view */}
+    //         <View className="flex-row justify-between">
+    //           {/* apply shadowing to the radial gradient */}
+    //           <View
+    //             style={{
+    //               borderRadius: 9999,
+    //               shadowColor: "#858585",
+    //               shadowOffset: { width: 0, height: 5 },
+    //               shadowOpacity: 0.6,
+    //               shadowRadius: 15,
+    //               elevation: 15, // For Android
+    //             }}
+    //           >
+    //             <RadialGradientImage
+    //               image={require("../assets/body.png")}
+    //               gradientSize="9"
+    //               imageSize="6"
+    //             />
+    //           </View>
 
-              <Image
-                className="w-5 h-5"
-                source={require("../assets/checkmark.png")}
-              />
-            </View>
+    //           <Image
+    //             className="w-5 h-5"
+    //             source={require("../assets/checkmark.png")}
+    //           />
+    //         </View>
 
-            {/* bottom half of the selection view */}
-            <Text className="text-white font-interMedium text-sm">
-              {item.name}
-            </Text>
-          </RoundedBlurView>
-        ))}
-      </View>
-    </SafeAreaView>
-    // <IntroScene />
+    //         {/* bottom half of the selection view */}
+    //         <Text className="text-white font-interMedium text-sm">
+    //           {item.name}
+    //         </Text>
+    //       </RoundedBlurView>
+    //     ))}
+    //   </View>
+    // </SafeAreaView>
+    <IntroScene />
   );
 };
 
