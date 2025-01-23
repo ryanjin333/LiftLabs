@@ -19,7 +19,11 @@ import { auth, db } from "../config/firebase";
 import { doc, onSnapshot, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 // Self imports
-import { RadialGradientImage, RoundedBlurView } from "../components";
+import {
+  RadialGradientImage,
+  RoundedBlurView,
+  GradientButton,
+} from "../components";
 import { IntroScene } from "../scenes";
 
 // DUMMY VARIABLES
@@ -165,65 +169,104 @@ const AIWorkoutCreator = ({ navigation }) => {
   const itemWidth = (screenWidth - padding - margin) / 3;
 
   return (
-    // <SafeAreaView className="flex-1 bg-black items-center">
-    //   <View className="w-full pt-12 px-6">
-    //     <View className=" flex-row space-x-4">
-    //       <Text className="text-white font-interBold text-4xl">LiftLab AI</Text>
-    //       <Image
-    //         className="w-8 h-8"
-    //         source={require("../assets/sparkles.png")}
-    //       />
-    //     </View>
+    <>
+      {/* animated background */}
 
-    //     <Text className="text-subtitle mb-12 font-interMedium ">
-    //       Select all that apply
-    //     </Text>
-    //   </View>
+      {/* the actual black background */}
+      <View className="flex-1 absolute z-0 top-0 bottom-0 left-0 right-0 bg-black">
+        {/* background contents: views, animations, etc */}
+        <View className="h-96 w-96 bg-[#ffffff]  rounded-full ml-36 -mt-12" />
+        <View className="h-96 w-96 bg-[#ffffff]  rounded-full -ml-36 mt-64" />
+      </View>
 
-    //   <View className="flex-row flex-wrap px-6 ">
-    //     {muscleGroups.map((item, index) => (
-    //       // individual workout selection views
-    //       <RoundedBlurView
-    //         key={item.id}
-    //         className={`rounded-[20px] m-0.5 border border-[#1C1B1B]`}
-    //         style={{ width: itemWidth, height: itemWidth }}
-    //         containerClassName="p-3 justify-between"
-    //       >
-    //         {/* top half of the selection view */}
-    //         <View className="flex-row justify-between">
-    //           {/* apply shadowing to the radial gradient */}
-    //           <View
-    //             style={{
-    //               borderRadius: 9999,
-    //               shadowColor: "#858585",
-    //               shadowOffset: { width: 0, height: 5 },
-    //               shadowOpacity: 0.6,
-    //               shadowRadius: 15,
-    //               elevation: 15, // For Android
-    //             }}
-    //           >
-    //             <RadialGradientImage
-    //               image={require("../assets/body.png")}
-    //               gradientSize="9"
-    //               imageSize="6"
-    //             />
-    //           </View>
+      {/* the blur view that blurs the content */}
+      <BlurView
+        intensity={70}
+        tint="dark"
+        className="flex-1 absolute z-10 top-0 bottom-0 left-0 right-0"
+      >
+        <Image
+          source={require("../assets/noise.png")}
+          className="absolute top-0 bottom-0 left-0 right-0 w-full h-full"
+          resizeMode="repeat"
+        />
+      </BlurView>
 
-    //           <Image
-    //             className="w-5 h-5"
-    //             source={require("../assets/checkmark.png")}
-    //           />
-    //         </View>
+      {/* rest of the content */}
+      <SafeAreaView className="flex-1 items-center z-20">
+        <View className="w-full pt-12 px-6">
+          <View className=" flex-row space-x-4">
+            <Text className="text-white font-interBold text-4xl">
+              LiftLab AI
+            </Text>
+            <Image
+              className="w-8 h-8"
+              source={require("../assets/sparkles.png")}
+            />
+          </View>
 
-    //         {/* bottom half of the selection view */}
-    //         <Text className="text-white font-interMedium text-sm">
-    //           {item.name}
-    //         </Text>
-    //       </RoundedBlurView>
-    //     ))}
-    //   </View>
-    // </SafeAreaView>
-    <IntroScene />
+          <Text className="text-subtitle mb-12 font-interMedium ">
+            Select all that apply
+          </Text>
+        </View>
+
+        <View className="flex-row flex-wrap px-6 ">
+          {muscleGroups.map((item, index) => (
+            // individual workout selection views
+            <RoundedBlurView
+              key={item.id}
+              className={`rounded-[20px] m-0.5 border border-[#1C1B1B]`}
+              style={{ width: itemWidth, height: itemWidth }}
+              containerClassName="p-3 justify-between"
+            >
+              {/* top half of the selection view */}
+              <View className="flex-row justify-between">
+                {/* apply shadowing to the radial gradient */}
+                <View
+                  style={{
+                    borderRadius: 9999,
+                    shadowColor: "#858585",
+                    shadowOffset: { width: 0, height: 5 },
+                    shadowOpacity: 0.6,
+                    shadowRadius: 15,
+                    elevation: 15, // For Android
+                  }}
+                >
+                  <RadialGradientImage
+                    image={require("../assets/body.png")}
+                    gradientSize="9"
+                    imageSize="6"
+                  />
+                </View>
+
+                <Image
+                  className="w-5 h-5"
+                  source={require("../assets/checkmark.png")}
+                />
+              </View>
+
+              {/* bottom half of the selection view */}
+              <Text className="text-white font-interMedium text-sm">
+                {item.name}
+              </Text>
+            </RoundedBlurView>
+          ))}
+        </View>
+        {/* bottom bar */}
+        <View className="mt-12 flex-row">
+          <RadialGradientImage
+            imageSize={6}
+            gradientSize={16}
+            image={require("../assets/back.png")}
+          />
+          <View className="mx-2">
+            <GradientButton />
+          </View>
+
+          <View className="w-16" />
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 
