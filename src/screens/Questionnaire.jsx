@@ -12,7 +12,14 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { GradientBlur, ScrollSelector } from "../components";
+import {
+  GradientBlur,
+  GradientButton,
+  RoundedBlurView,
+  ScrollSelector,
+} from "../components";
+
+import { LinearGradient } from "expo-linear-gradient";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -104,20 +111,56 @@ const Questionnaire = () => {
       );
     } else if (currentQuestion.type === "multipleChoice") {
       return (
-        <FlatList
-          data={currentQuestion.options}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              className="w-full h-16 mb-6 rounded-full justify-center items-center bg-black border border-[#363636]"
-              onPress={() => handleAnswer(item)}
+        // <FlatList
+        //   data={currentQuestion.options}
+        //   renderItem={({ item }) => (
+        //     <TouchableOpacity
+        //       className="w-full h-16 mb-6 rounded-full justify-center items-center bg-black border border-[#363636]"
+        //       onPress={() => handleAnswer(item)}
+        //     >
+        //       <Text className=" text-white font-interMedium text-lg">
+        //         {item}
+        //       </Text>
+        //     </TouchableOpacity>
+        //   )}
+        //   keyExtractor={(item, index) => index.toString()}
+        // />
+        <View className="flex-row flex-wrap px-6 -mt-24">
+          {currentQuestion.options.map((item, index) => (
+            // individual workout selection views
+            <LinearGradient
+              colors={["#3d3d3d", "#1b1b1b"]} // Customize gradient colors
+              locations={[0, 0.2]}
+              start={[0, 0]}
+              end={[0, 1]} // Top to bottom gradient
+              className="rounded-[20px] m-0.5 p-[1px]"
+              key={index}
             >
-              <Text className=" text-white font-interMedium text-lg">
-                {item}
-              </Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
+              <View
+                key={item}
+                className="rounded-[20px] bg-[#181818] " // Transparent border to retain gradient
+                style={{ width: 160, height: 160 }}
+              >
+                {/* Top half of the selection view */}
+                <View className="flex-row justify-between">
+                  {/* Apply shadowing to the radial gradient */}
+                  <View
+                    style={{
+                      borderRadius: 9999,
+                      shadowColor: "#3d3d3d",
+                      shadowOffset: { width: 0, height: 5 },
+                      shadowOpacity: 0.6,
+                      shadowRadius: 15,
+                      elevation: 15, // For Android
+                    }}
+                  >
+                    <Text>hi</Text>
+                  </View>
+                </View>
+              </View>
+            </LinearGradient>
+          ))}
+        </View>
       );
     } else {
       return <Text>Unknown question type</Text>;
@@ -132,14 +175,18 @@ const Questionnaire = () => {
             {questions[currentQuestionIndex].text}
           </Text>
         </View>
-        <GradientBlur className="w-full h-48" direction="fromBottom" />
+        {questions[currentQuestionIndex].type == "number" && (
+          <GradientBlur className="w-full h-48" direction="fromBottom" />
+        )}
       </View>
 
       {renderQuestion()}
 
       {/* navigation buttons */}
       <View>
-        <GradientBlur className="w-full h-32 " direction="fromTop" />
+        {questions[currentQuestionIndex].type == "number" && (
+          <GradientBlur className="w-full h-48" direction="fromTop" />
+        )}
         <View className=" flex-row justify-between bg-black">
           {/* go back button */}
           <TouchableOpacity
@@ -157,7 +204,7 @@ const Questionnaire = () => {
           </TouchableOpacity>
 
           {/* next button */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() =>
               currentQuestionIndex < questions.length - 1
                 ? setCurrentQuestionIndex(currentQuestionIndex + 1)
@@ -168,7 +215,21 @@ const Questionnaire = () => {
             <Text className=" text-white font-interMedium text-lg">
               {currentQuestionIndex < questions.length - 1 ? "Next" : "Finish"}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+
+          {/* gradient next button */}
+          <View className=" mb-5 w-48">
+            <GradientButton
+              title={
+                currentQuestionIndex < questions.length - 1 ? "Next" : "Finish"
+              }
+              onPress={() =>
+                currentQuestionIndex < questions.length - 1
+                  ? setCurrentQuestionIndex(currentQuestionIndex + 1)
+                  : finishPressed()
+              }
+            />
+          </View>
 
           {/* dummy button */}
 

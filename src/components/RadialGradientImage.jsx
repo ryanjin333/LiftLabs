@@ -3,8 +3,8 @@ import React from "react";
 import { RadialGradient } from "react-native-gradients";
 
 const RadialGradientImage = ({
-  startColor = "#000000",
-  endColor = "#535353",
+  startColor = "#171717",
+  endColor = "#262626",
   gradientSize,
   imageSize,
   image,
@@ -16,7 +16,7 @@ const RadialGradientImage = ({
   ];
   return (
     <View
-      className={`w-${gradientSize} h-${gradientSize} justify-center items-center rounded-full overflow-hidden`}
+      className={`w-${gradientSize} h-${gradientSize} justify-center items-center rounded-full overflow-hidden `}
     >
       <RadialGradient x="50%" y="50%" rx="50%" ry="50%" colorList={colorList} />
       <Image

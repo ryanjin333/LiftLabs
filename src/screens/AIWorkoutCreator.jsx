@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import OpenAI from "openai";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
+import { LinearGradient } from "expo-linear-gradient";
 
 // Firebase imports
 import { auth, db } from "../config/firebase";
@@ -28,16 +29,66 @@ import { IntroScene } from "../scenes";
 
 // DUMMY VARIABLES
 const muscleGroups = [
-  { id: "0", name: "General" },
-  { id: "1", name: "Chest" },
-  { id: "2", name: "Back" },
-  { id: "3", name: "Shoulders" },
-  { id: "4", name: "Arms" }, // should include upper and lower arms
-  { id: "5", name: "Legs" }, // should include upper and lower legs
-  { id: "6", name: "Abs" }, // called waist in database
-  { id: "7", name: "Cardio" },
-  { id: "8", name: "Push" },
-  { id: "9", name: "Pull" },
+  {
+    id: "0",
+    name: "General",
+    image: require("../assets/target_areas/body.png"),
+    imageSize: 5,
+  },
+  {
+    id: "1",
+    name: "Chest",
+    image: require("../assets/target_areas/chest.png"),
+    imageSize: 5,
+  },
+  {
+    id: "2",
+    name: "Back",
+    image: require("../assets/target_areas/back.png"),
+    imageSize: 5,
+  },
+  {
+    id: "3",
+    name: "Shoulders",
+    image: require("../assets/target_areas/shoulders.png"),
+    imageSize: 5,
+  },
+  {
+    id: "4",
+    name: "Arms",
+    image: require("../assets/target_areas/arms.png"),
+    imageSize: 5,
+  }, // should include upper and lower arms
+  {
+    id: "5",
+    name: "Legs",
+    image: require("../assets/target_areas/legs.png"),
+    imageSize: 5,
+  }, // should include upper and lower legs
+  {
+    id: "6",
+    name: "Abs",
+    image: require("../assets/target_areas/abs.png"),
+    imageSize: 4,
+  }, // called waist in database
+  {
+    id: "7",
+    name: "Cardio",
+    image: require("../assets/target_areas/cardio.png"),
+    imageSize: 6,
+  },
+  {
+    id: "8",
+    name: "Push",
+    image: require("../assets/target_areas/push.png"),
+    imageSize: 5,
+  },
+  {
+    id: "9",
+    name: "Pull",
+    image: require("../assets/target_areas/pull.png"),
+    imageSize: 5,
+  },
 ];
 
 const initialState = {
@@ -170,16 +221,11 @@ const AIWorkoutCreator = ({ navigation }) => {
 
   return (
     <>
-      {/* animated background */}
+      {/*  background */}
 
       {/* the actual black background */}
-      <View className="flex-1 absolute z-0 top-0 bottom-0 left-0 right-0 bg-black">
-        {/* background contents: views, animations, etc */}
-        <View className="h-96 w-96 bg-[#ffffff]  rounded-full ml-36 -mt-12" />
-        <View className="h-96 w-96 bg-[#ffffff]  rounded-full -ml-36 mt-64" />
-      </View>
 
-      {/* the blur view that blurs the content */}
+      {/* the blur view that blurs the content
       <BlurView
         intensity={70}
         tint="dark"
@@ -190,7 +236,14 @@ const AIWorkoutCreator = ({ navigation }) => {
           className="absolute top-0 bottom-0 left-0 right-0 w-full h-full"
           resizeMode="repeat"
         />
-      </BlurView>
+      </BlurView> */}
+      <View className="bg-black flex-1 absolute z-10 top-0 bottom-0 left-0 right-0">
+        <LinearGradient
+          // Background Linear Gradient
+          colors={["transparent", "#3f3f3f"]}
+          className="absolute z-10 top-0 bottom-0 left-0 right-0"
+        />
+      </View>
 
       {/* rest of the content */}
       <SafeAreaView className="flex-1 items-center z-20">
@@ -215,7 +268,7 @@ const AIWorkoutCreator = ({ navigation }) => {
             // individual workout selection views
             <RoundedBlurView
               key={item.id}
-              className={`rounded-[20px] m-0.5 border border-[#1C1B1B]`}
+              className={`rounded-[20px] m-0.5 border border-[#313131]`}
               style={{ width: itemWidth, height: itemWidth }}
               containerClassName="p-3 justify-between"
             >
@@ -225,7 +278,7 @@ const AIWorkoutCreator = ({ navigation }) => {
                 <View
                   style={{
                     borderRadius: 9999,
-                    shadowColor: "#858585",
+                    shadowColor: "#3d3d3d",
                     shadowOffset: { width: 0, height: 5 },
                     shadowOpacity: 0.6,
                     shadowRadius: 15,
@@ -233,16 +286,16 @@ const AIWorkoutCreator = ({ navigation }) => {
                   }}
                 >
                   <RadialGradientImage
-                    image={require("../assets/body.png")}
-                    gradientSize="9"
-                    imageSize="6"
+                    image={item.image}
+                    gradientSize={9}
+                    imageSize={item.imageSize}
                   />
                 </View>
 
-                <Image
+                {/* <Image
                   className="w-5 h-5"
                   source={require("../assets/checkmark.png")}
-                />
+                /> */}
               </View>
 
               {/* bottom half of the selection view */}
@@ -254,13 +307,16 @@ const AIWorkoutCreator = ({ navigation }) => {
         </View>
         {/* bottom bar */}
         <View className="mt-12 flex-row">
-          <RadialGradientImage
-            imageSize={6}
-            gradientSize={16}
-            image={require("../assets/back.png")}
-          />
-          <View className="mx-2">
-            <GradientButton />
+          <Pressable onPress={() => navigation.goBack()}>
+            <RadialGradientImage
+              imageSize={6}
+              gradientSize={16}
+              image={require("../assets/back.png")}
+            />
+          </Pressable>
+
+          <View className="mx-4">
+            <GradientButton title="Generate" width="48" />
           </View>
 
           <View className="w-16" />

@@ -25,6 +25,7 @@ import GradientBlur from "./GradientBlur";
 import RadialGradientImage from "./RadialGradientImage";
 import RoundedBlurView from "./RoundedBlurView";
 import GradientButton from "./GradientButton";
+import GradientText from "./GradientText";
 
 export {
   FormRow,
@@ -54,4 +55,5 @@ export {
   RadialGradientImage,
   RoundedBlurView,
   GradientButton,
+  GradientText,
 };

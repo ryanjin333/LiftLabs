@@ -18,7 +18,7 @@ import { showMessage } from "react-native-flash-message";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const GradientButton = ({ size = "base" }) => {
+const GradientButton = ({ title, width = "full", onPress = () => {} }) => {
   // navigation
   const navigation = useNavigation();
 
@@ -35,23 +35,22 @@ const GradientButton = ({ size = "base" }) => {
   });
 
   const handlePressIn = () => {
-    scale.value = withSpring(0.85, { damping: 20, stiffness: 200 });
+    scale.value = withSpring(0.85, { damping: 20, stiffness: 100 });
   };
   const handlePressOut = () => {
-    scale.value = withSpring(1, { damping: 20, stiffness: 200 });
+    scale.value = withSpring(1, { damping: 20, stiffness: 100 });
   };
 
   // functions
 
-  // TODO: NAVIGATE TO COUNTDOWN SCREEN BEFORE TRANSITION
   const buttonPressed = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
-    console.log("hi");
+    onPress();
   };
   return (
     <AnimatedPressable
       style={animatedStyle}
-      className={`rounded-full h-16 w-60 justify-center items-center`}
+      className={`rounded-full h-16 w-${width} justify-center items-center`}
       onPress={buttonPressed}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
@@ -61,7 +60,7 @@ const GradientButton = ({ size = "base" }) => {
         className="w-full h-full justify-center items-center rounded-full"
         style={{
           borderRadius: 9999,
-          shadowColor: "#ffffff",
+          shadowColor: "#9e9e9e",
           shadowOffset: { width: 0, height: 5 },
           shadowOpacity: 0.6,
           shadowRadius: 25,
@@ -75,7 +74,7 @@ const GradientButton = ({ size = "base" }) => {
           end={{ x: 0, y: 1 }}
           className="w-full h-full justify-center items-center rounded-full"
         >
-          <Text className=" font-interSemiBold text-lg">Generate</Text>
+          <Text className=" font-interSemiBold text-lg">{title}</Text>
         </LinearGradient>
       </View>
     </AnimatedPressable>

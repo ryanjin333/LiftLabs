@@ -1,6 +1,10 @@
 import { View, Text } from "react-native";
 import { IntroScene } from "../scenes";
-import { LoginSignupSwitcher } from "../components";
+import {
+  GradientButton,
+  GradientText,
+  LoginSignupSwitcher,
+} from "../components";
 import Animated, {
   FadeIn,
   FadeOut,
@@ -19,83 +23,95 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { introToLoginScreenTransition } from "../context/animationSlice";
 
+import { useVideoPlayer, VideoView } from "expo-video";
+
+const videoSource = require("../assets/trophy_animation.mp4");
+
 const initialState = {
   text1Visible: true,
-  text2Visible: false,
 };
 
 const Intro = ({ navigation }) => {
   const [values, setValues] = useState(initialState);
+
+  // video setup
+  const player = useVideoPlayer(videoSource, (player) => {
+    player.loop = false;
+    player.muted = true;
+    player.play();
+  });
+
+  const dispatch = useDispatch();
+
   // useEffect(() => {
-  //   const transitionTime = 2000;
+  //   dispatch(introToLoginScreenTransition());
   //   const timer1 = setTimeout(() => {
   //     setValues({
   //       text1Visible: false,
   //       text2Visible: true,
   //     });
-  //   }, transitionTime); // 2 seconds delay for first transition
-
-  //   // Cleanup timers when the component unmounts
+  //   }, 2000);
+  //   const timer = setTimeout(() => {
+  //     navigation.navigate("Login");
+  //   }, 3000);
   //   return () => {
+  //     //clearTimeout(timer);
   //     clearTimeout(timer1);
+  //     clearTimeout(timer);
   //   };
   // }, []);
 
-  const dispatch = useDispatch();
+  // functions
 
-  useEffect(() => {
-    dispatch(introToLoginScreenTransition());
-    const timer1 = setTimeout(() => {
-      setValues({
-        text1Visible: false,
-        text2Visible: true,
-      });
-    }, 2000);
-    const timer = setTimeout(() => {
-      navigation.navigate("Login");
-    }, 3000);
-    return () => {
-      //clearTimeout(timer);
-      clearTimeout(timer1);
-      clearTimeout(timer);
-    };
-  }, []);
+  const getStartedTapped = () => {
+    navigation.navigate("Questionnaire");
+  };
   return (
     <View className="bg-black flex-1">
-      <View
-        className="bg-black h-full w-full absolute bottom-0 left-0 justify-center items-center"
-        position={[0, 0, 0]}
-      >
+      <View className="bg-black h-full w-full absolute bottom-0 left-0 justify-center items-center">
         {values.text1Visible && (
-          <Animated.Text
-            className="text-4xl font-interBold text-white text-center"
-            entering={FadeIn.delay(500).duration(1500).springify()}
-            exiting={FadeOut.duration(1500).springify()}
-          >
-            Welcome to{" "}
-            <Text className="text-4xl font-interExtraBold text-white text-center">
-              LiftLabs
-            </Text>
-          </Animated.Text>
-        )}
+          // info container
+          <View className=" pt-16">
+            {/* trophy animation video */}
+            <VideoView
+              className=" w-full aspect-square"
+              player={player}
+              allowsFullscreen
+              allowsPictureInPicture
+              nativeControls={false}
+            />
 
-        {/* {values.text2Visible && (
-          <View className="gap-y-96 items-center">
-            <Animated.Text
-              className="text-4xl font-interBold text-white text-center"
-              entering={FadeIn.delay(3000).duration(1500).springify()}
-              exiting={FadeOut.duration(1500).springify()}
-            >
-              Touch the dumbbell to get started
-            </Animated.Text>
-            <Animated.View
-              entering={FadeIn.delay(1500).duration(1500).springify()}
-              exiting={FadeOut.duration(1500).springify()}
-            ></Animated.View>
+            <View className=" px-8 items-center">
+              {/* inspiring title */}
+              <View className="w-full mb-8">
+                <GradientText
+                  text="Achieve"
+                  className="text-5xl font-interBold"
+                  colors={["#DBD9D9", "#454545"]}
+                />
+                <GradientText
+                  text="Greatness"
+                  className="text-5xl font-interBold"
+                  colors={["#DBD9D9", "#454545"]}
+                />
+              </View>
+
+              {/* gradient button */}
+              <View className=" mb-5 w-full">
+                <GradientButton
+                  title="Get started"
+                  onPress={getStartedTapped}
+                />
+              </View>
+
+              <LoginSignupSwitcher
+                isLogin={true}
+                onPress={() => console.log("test")}
+              />
+            </View>
           </View>
-        )} */}
+        )}
       </View>
-      {/* {values.text2Visible && <IntroScene />} */}
     </View>
   );
 };

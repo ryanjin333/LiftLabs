@@ -11,7 +11,7 @@ const RoundedBlurView = ({
   return (
     <View className={`overflow-hidden ${className}`}>
       <BlurView
-        intensity={60}
+        intensity={99}
         tint="dark"
         className={` ${containerClassName}`}
         style={style}
