@@ -7,6 +7,7 @@ import {
   FlatList,
   StyleSheet,
   Image,
+  Pressable,
 } from "react-native";
 import {
   SafeAreaView,
@@ -55,29 +56,45 @@ const Questionnaire = () => {
       id: 1,
       text: "First, what is your fitness level",
       type: "multipleChoice",
-      options: ["Beginner", "Intermediate", "Advanced"],
+      options: [
+        { title: "Beginner", subtitle: "0 to 1 year" },
+        { title: "Intermediate", subtitle: "1 to 3 years" },
+        { title: "Advanced", subtitle: "3+ years" },
+      ],
     },
     {
       id: 2,
-      text: "Next, what are your fitness goals",
+      text: "Next, what is your fitness goal",
       type: "multipleChoice",
-      options: ["Weight loss", "Muscle gain", "General fitness"],
+      options: [
+        { title: "Weight loss", subtitle: "burn calories" },
+        { title: "Muscle gain", subtitle: "build strength" },
+        { title: "General", subtitle: "improve overall health" },
+      ],
     },
     {
       id: 3,
       text: "How long do you plan to work out",
       type: "multipleChoice",
-      options: ["Under 30 min", "30 min to 1 hour", "1+ hours"],
+      options: [
+        { title: "Under 30 min", subtitle: "beginner friendly" },
+        { title: "30 min to 1 hour", subtitle: "respectable amount" },
+        { title: "1+ hours", subtitle: "built different" },
+      ],
     },
-    { id: 4, text: "What is your age?", type: "number" },
+    { id: 4, text: "What is your age", type: "number" },
     {
       id: 5,
-      text: "What type of workout do you prefer?",
+      text: "Select a workout type",
       type: "multipleChoice",
-      options: ["Male oriented", "Female oriented"],
+      options: [
+        { title: "Male oriented", subtitle: "" },
+        { title: "Female oriented", subtitle: "" },
+        { title: "Mix of both", subtitle: "" },
+      ],
     },
-    { id: 6, text: "How heavy are you", type: "number" },
-    { id: 7, text: "How tall are you", type: "number" },
+    { id: 6, text: "How heavy are you in kg", type: "number" },
+    { id: 7, text: "How tall are you in cm", type: "number" },
   ];
 
   const handleAnswer = (answer) => {
@@ -125,41 +142,42 @@ const Questionnaire = () => {
         //   )}
         //   keyExtractor={(item, index) => index.toString()}
         // />
-        <View className="flex-row flex-wrap px-6 -mt-24">
+        <View className="flex-row flex-wrap -mt-24  justify-center ">
           {currentQuestion.options.map((item, index) => (
             // individual workout selection views
-            <LinearGradient
-              colors={["#3d3d3d", "#1b1b1b"]} // Customize gradient colors
-              locations={[0, 0.2]}
-              start={[0, 0]}
-              end={[0, 1]} // Top to bottom gradient
-              className="rounded-[20px] m-0.5 p-[1px]"
-              key={index}
-            >
-              <View
-                key={item}
-                className="rounded-[20px] bg-[#181818] " // Transparent border to retain gradient
-                style={{ width: 160, height: 160 }}
+            <Pressable onPress={() => handleAnswer(item.title)} key={index}>
+              <LinearGradient
+                colors={["#3d3d3d", "#1b1b1b"]} // Customize gradient colors
+                locations={[0, 0.2]}
+                start={[0, 0]}
+                end={[0, 1]} // Top to bottom gradient
+                className="rounded-[20px] m-0.5 p-[1px]"
               >
-                {/* Top half of the selection view */}
-                <View className="flex-row justify-between">
-                  {/* Apply shadowing to the radial gradient */}
-                  <View
-                    style={{
-                      borderRadius: 9999,
-                      shadowColor: "#3d3d3d",
-                      shadowOffset: { width: 0, height: 5 },
-                      shadowOpacity: 0.6,
-                      shadowRadius: 15,
-                      elevation: 15, // For Android
-                    }}
-                  >
-                    <Text>hi</Text>
-                  </View>
+                <View
+                  key={item}
+                  className="rounded-[20px] bg-[#181818] justify-between p-4 " // Transparent border to retain gradient
+                  style={{ width: 180, height: 180 }}
+                >
+                  {/* Title */}
+                  <Text className="text-[#ffffff] font-interSemiBold text-lg">
+                    {item.title}
+                  </Text>
+
+                  {/* Subtitle */}
+                  <Text className=" text-subtitle font-interMedium">
+                    {item.subtitle}
+                  </Text>
                 </View>
-              </View>
-            </LinearGradient>
+              </LinearGradient>
+            </Pressable>
           ))}
+          {/* Dummy View if number of items is odd */}
+          {currentQuestion.options.length % 2 !== 0 && (
+            <View
+              style={{ width: 180, height: 180 }}
+              className="m-0.5 opacity-0"
+            />
+          )}
         </View>
       );
     } else {
@@ -169,14 +187,16 @@ const Questionnaire = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-black px-6 justify-between ">
-      <View className="z-10">
+      <View className=" z-10" pointerEvents="none">
         <View className="w-full items-center bg-black">
           <Text className="text-white font-interBold mt-10  text-4xl ">
             {questions[currentQuestionIndex].text}
           </Text>
         </View>
         {questions[currentQuestionIndex].type == "number" && (
-          <GradientBlur className="w-full h-48" direction="fromBottom" />
+          <View pointerEvents="none">
+            <GradientBlur className="w-full h-48 " direction="fromBottom" />
+          </View>
         )}
       </View>
 
@@ -185,24 +205,33 @@ const Questionnaire = () => {
       {/* navigation buttons */}
       <View>
         {questions[currentQuestionIndex].type == "number" && (
-          <GradientBlur className="w-full h-48" direction="fromTop" />
+          <View pointerEvents="none">
+            <GradientBlur className="w-full h-48" direction="fromTop" />
+          </View>
         )}
         <View className=" flex-row justify-between bg-black">
           {/* go back button */}
-          <TouchableOpacity
-            onPress={() =>
-              currentQuestionIndex > 0 &&
-              setCurrentQuestionIndex(currentQuestionIndex - 1)
-            }
-            disabled={currentQuestionIndex === 0}
-            className="bg-[#272727] h-16 w-16 rounded-full justify-center items-center mb-10"
+          <LinearGradient
+            colors={["#4e4e4e", "#000000"]} // Customize gradient colors
+            locations={[0, 0.4]}
+            start={[0, 0]}
+            end={[0, 1]} // Top to bottom gradient
+            className="rounded-full p-[1px] mb-10"
           >
-            <Image
-              source={require("../assets/reverse.png")}
-              className="h-7 w-7"
-            />
-          </TouchableOpacity>
-
+            <TouchableOpacity
+              onPress={() =>
+                currentQuestionIndex > 0 &&
+                setCurrentQuestionIndex(currentQuestionIndex - 1)
+              }
+              disabled={currentQuestionIndex === 0}
+              className="bg-black h-16 w-16 rounded-full justify-center items-center"
+            >
+              <Image
+                source={require("../assets/reverse.png")}
+                className="h-7 w-7"
+              />
+            </TouchableOpacity>
+          </LinearGradient>
           {/* next button */}
           {/* <TouchableOpacity
             onPress={() =>

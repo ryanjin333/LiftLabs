@@ -15,6 +15,7 @@ const GradientBlur = ({
       start={direction == "fromBottom" ? { x: 0, y: 1 } : { x: 0, y: 0 }}
       end={direction == "fromBottom" ? { x: 0, y: 0 } : { x: 0, y: 1 }}
       className={`${className} pointer-events-none`}
+      pointerEvents="none"
     >
       {children}
     </LinearGradient>
