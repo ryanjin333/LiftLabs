@@ -37,8 +37,8 @@ const QuickStartModal = ({ selectedDate }) => {
 
   return (
     <Animated.View
-      className={`absolute z-50 h-20 w-full my-8 px-6 ${
-        insets.bottom > 0 ? "bottom-20" : "bottom-10"
+      className={`absolute z-50 h-20 w-96 my-8 px-6 ${
+        insets.bottom > 0 ? "bottom-10" : "bottom-10"
       }`}
       style={{
         shadowColor: "#3c3c3c",

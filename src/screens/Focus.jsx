@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState, useRef } from "react";
-import { AnimatedStopwatchTimer } from "../components";
+import { AnimatedStopwatchTimer, GradientText } from "../components";
 
 import * as Haptics from "expo-haptics";
 
@@ -93,23 +93,18 @@ const Focus = ({ navigation }) => {
         <>
           {/* timer and exit button */}
           <View
-            className={`flex-row w-full justify-between items-center px-10 mt-${
+            className={`flex-row w-full   px-4 mt-${
               hasNotch ? "20" : "10"
             } absolute z-50`}
           >
             <Animated.View
               entering={FadeInUp.duration(500).springify()}
               exiting={FadeOutUp.delay(350).duration(500).springify()}
-              className="flex-row w-full justify-between items-center"
+              className=" w-full  items-end"
             >
-              {/* timer */}
-              <AnimatedStopwatchTimer ref={stopwatchTimerRef} />
-
               {/* exit button */}
               <Pressable
-                className={`w-${hasNotch ? "10" : "9"} h-${
-                  hasNotch ? "10" : "9"
-                } flex justify-center items-center rounded-full bg-[#292929]`}
+                className={`w-24 h-10 flex-row justify-between px-4 items-center rounded-full bg-[#292929]`}
                 onPress={() => {
                   dispatch(focusToWorkoutScreenTransition());
                   // update stopwatch
@@ -119,15 +114,17 @@ const Focus = ({ navigation }) => {
                   }, 850);
                 }}
               >
+                {/* timer */}
+                <AnimatedStopwatchTimer ref={stopwatchTimerRef} />
                 <Image
-                  className={`w-${hasNotch ? "5" : "4"} h-${
-                    hasNotch ? "5" : "4"
+                  className={`w-4 h-4
                   }`}
                   source={require("../assets/exit.png")}
                 />
               </Pressable>
             </Animated.View>
           </View>
+
           <Animated.FlatList
             className="bg-black z-10"
             data={fullPlan}
@@ -135,164 +132,160 @@ const Focus = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               // actual screen
-              <SafeAreaView className="h-screen w-screen px-6 py-3 bg-black justify-between items-center">
-                {/* add animations here */}
+              <>
+                <SafeAreaView className="h-screen w-screen  py-3 bg-black items-center">
+                  {/* add animations here */}
 
-                <>
-                  <View className="w-full items-end">
-                    {/* header spacing */}
-                    <View className={`h-${hasNotch ? "20" : "12"}`} />
+                  <>
+                    <View className="w-full items-end">
+                      {/* header spacing */}
+                      <View className="h-16 w-full bg-white" />
+                      {/* gif */}
+                      <Animated.View
+                        entering={FadeInLeft.delay(200)
+                          .duration(500)
+                          .springify()}
+                        exiting={FadeOutLeft.delay(150)
+                          .duration(500)
+                          .springify()}
+                        className={` overflow-hidden `}
+                      >
+                        <RNEImage
+                          style={{
+                            width: "100%",
+                            aspectRatio: 1,
 
-                    <View className="flex-row justify-between w-full mt-3 px-3">
-                      {/* title  */}
-                      <Animated.Text
-                        entering={FadeInUp.delay(50).duration(500).springify()}
-                        exiting={FadeOutUp.delay(300).duration(500).springify()}
-                        className={`w-56 text-primary font-interBold text-${
-                          hasNotch ? "3xl" : "2xl"
-                        }`}
-                        ellipsizeMode="tail"
-                        numberOfLines={3}
-                      >
-                        {item.title}
-                      </Animated.Text>
-                      {/* exercise weight */}
-                      <Animated.Text
-                        className={`text-primary font-interBold text-${
-                          hasNotch ? "3xl" : "2xl"
-                        }`}
-                        entering={FadeInUp.delay(100).duration(500).springify()}
-                        exiting={FadeOutUp.delay(250).duration(500).springify()}
-                      >
-                        {item.weight}
+                            overflow: "hidden",
+                            backgroundColor: "transparent",
+                          }}
+                          source={{ uri: item.gif }}
+                          PlaceholderContent={
+                            <Animated.View
+                              style={{
+                                width: "100%",
+                                aspectRatio: 1,
+                                borderRadius: 12,
+                                overflow: "hidden",
+                                backgroundColor: "#3d3d3d",
+                                opacity: loadingOpacity,
+                              }}
+                            />
+                          }
+                        />
+                      </Animated.View>
+
+                      {/* separator */}
+                      <View className="h-10 w-full bg-white" />
+
+                      {/* other information */}
+
+                      <View className="flex-row justify-between w-full mt-3 px-3">
+                        {/* title  */}
                         <Animated.Text
-                          className={`text-white font-interMedium text-${
-                            hasNotch ? "2xl" : "xl"
-                          }`}
-                          entering={FadeInUp.delay(150)
+                          entering={FadeInUp.delay(50)
                             .duration(500)
                             .springify()}
-                          exiting={FadeOutUp.delay(200)
+                          exiting={FadeOutUp.delay(300)
                             .duration(500)
                             .springify()}
+                          className={`w-56 text-white font-interBold text-xl
+                        }`}
+                          ellipsizeMode="tail"
+                          numberOfLines={3}
                         >
-                          {` ${user.weight}`}
+                          {item.title}
                         </Animated.Text>
-                      </Animated.Text>
-                    </View>
 
-                    {/* gif */}
-                    <Animated.View
-                      entering={FadeInLeft.delay(200).duration(500).springify()}
-                      exiting={FadeOutLeft.delay(150).duration(500).springify()}
-                      className={`rounded-[30px] overflow-hidden mt-${
-                        hasNotch ? "10" : "6"
-                      }`}
-                    >
-                      <RNEImage
-                        style={{
-                          width: "100%",
-                          aspectRatio: 1,
-                          borderRadius: 40,
-                          overflow: "hidden",
-                          backgroundColor: "transparent",
-                        }}
-                        source={{ uri: item.gif }}
-                        PlaceholderContent={
-                          <Animated.View
-                            style={{
-                              width: "100%",
-                              aspectRatio: 1,
-                              borderRadius: 12,
-                              overflow: "hidden",
-                              backgroundColor: "#3d3d3d",
-                              opacity: loadingOpacity,
-                            }}
-                          />
-                        }
-                      />
-                    </Animated.View>
-
-                    {/* other information */}
-                    {/* exercise set */}
-                    <View
-                      className={`px-6 w-full flex-row mt-${
-                        hasNotch ? "10" : "6"
-                      } justify-between`}
-                    >
-                      <Animated.Text
-                        className={`text-primary font-interBold text-${
-                          hasNotch ? "3xl" : "2xl"
-                        }`}
-                        entering={FadeInDown.delay(250)
-                          .duration(500)
-                          .springify()}
-                        exiting={FadeOutDown.delay(100)
-                          .duration(500)
-                          .springify()}
-                      >
-                        {item.set + " "}
-                        of
-                        {" " + item.sets}
-                        <Text
-                          className={`text-white font-interMedium text-${
-                            hasNotch ? "2xl" : "xl"
-                          }`}
+                        {/* exercise set */}
+                        <Animated.Text
+                          className={`text-white font-interSemiBold text-lg`}
+                          entering={FadeInDown.delay(250)
+                            .duration(500)
+                            .springify()}
+                          exiting={FadeOutDown.delay(100)
+                            .duration(500)
+                            .springify()}
                         >
-                          {" "}
-                          sets
-                        </Text>
-                      </Animated.Text>
+                          {item.set + "/" + item.sets}
 
-                      {/* exercise reps */}
-                      <Animated.Text
-                        className={`text-primary font-interBold text-${
-                          hasNotch ? "3xl" : "2xl"
-                        }`}
-                        entering={FadeInDown.delay(300)
-                          .duration(500)
-                          .springify()}
-                        exiting={FadeOutDown.delay(50)
-                          .duration(500)
-                          .springify()}
-                      >
-                        {item.reps}
-                        <Text
-                          className={`text-white font-interMedium text-${
-                            hasNotch ? "2xl" : "xl"
-                          }`}
-                        >
-                          {" "}
-                          reps
-                        </Text>
-                      </Animated.Text>
+                          <Text
+                            className={` text-subtitle text-xl font-interMedium`}
+                          >
+                            {" "}
+                            sets
+                          </Text>
+                        </Animated.Text>
+                      </View>
                     </View>
-                  </View>
-                  {/* swipe down message (only show on first and last screen)*/}
-                  {(fullPlan[0].uniqueId == item.uniqueId ||
-                    fullPlan[fullPlan.length - 1].uniqueId ==
-                      item.uniqueId) && (
-                    <Animated.View className="items-center ">
-                      <Text
-                        className=" text-white font-interMedium "
-                        entering={FadeInDown.delay(350)
-                          .duration(500)
-                          .springify()}
-                        exiting={FadeOutDown.duration(500).springify()}
-                      >
-                        {fullPlan[0].uniqueId == item.uniqueId
-                          ? "swipe to continue"
-                          : "swipe to finish"}
-                      </Text>
-                      <AnimatedImage
-                        className="h-7 w-7"
-                        style={animatedStyle}
-                        source={require("../assets/chevron_down.png")}
-                      />
-                    </Animated.View>
-                  )}
-                </>
-              </SafeAreaView>
+                    <View className=" flex-1 justify-center">
+                      <View className={`px-10 w-full flex-row justify-between`}>
+                        {/* exercise weight */}
+                        <Animated.Text
+                          className={`text-white font-interSemiBold text-6xl
+                        }`}
+                          entering={FadeInUp.delay(100)
+                            .duration(500)
+                            .springify()}
+                          exiting={FadeOutUp.delay(250)
+                            .duration(500)
+                            .springify()}
+                        >
+                          {item.weight}
+                          <Text
+                            className={`text-subtitle font-interMedium text-3xl
+                          }`}
+                          >
+                            {` ${user.weight}`}
+                          </Text>
+                        </Animated.Text>
+
+                        {/* exercise reps */}
+                        <Animated.Text
+                          className={`text-white font-interSemiBold text-6xl
+                        }`}
+                          entering={FadeInDown.delay(300)
+                            .duration(500)
+                            .springify()}
+                          exiting={FadeOutDown.delay(50)
+                            .duration(500)
+                            .springify()}
+                        >
+                          {item.reps}
+                          <Text
+                            className={`text-subtitle font-interMedium text-3xl`}
+                          >
+                            {" "}
+                            reps
+                          </Text>
+                        </Animated.Text>
+                      </View>
+                    </View>
+                    {/* swipe down message (only show on first and last screen)*/}
+                    {(fullPlan[0].uniqueId == item.uniqueId ||
+                      fullPlan[fullPlan.length - 1].uniqueId ==
+                        item.uniqueId) && (
+                      <Animated.View className="items-center ">
+                        <Text
+                          className=" text-white font-interMedium "
+                          entering={FadeInDown.delay(350)
+                            .duration(500)
+                            .springify()}
+                          exiting={FadeOutDown.duration(500).springify()}
+                        >
+                          {fullPlan[0].uniqueId == item.uniqueId
+                            ? "swipe to continue"
+                            : "swipe to finish"}
+                        </Text>
+                        <AnimatedImage
+                          className="h-7 w-7"
+                          style={animatedStyle}
+                          source={require("../assets/chevron_down.png")}
+                        />
+                      </Animated.View>
+                    )}
+                  </>
+                </SafeAreaView>
+              </>
             )}
             snapToInterval={Dimensions.get("window").height - 0.1}
             decelerationRate="fast"

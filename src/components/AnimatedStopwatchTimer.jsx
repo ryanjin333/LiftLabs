@@ -90,21 +90,9 @@ const AnimatedStopwatchTimer = forwardRef(({ textStyle }, ref) => {
 
   return (
     <Animated.View>
-      <Text
-        className={`text-${hasNotch ? "5xl" : "4xl"} text-white font-interBold`}
-      >
-        {formatTime()}
-      </Text>
+      <Text className={` text-white font-interSemiBold`}>{formatTime()}</Text>
     </Animated.View>
   );
-});
-
-const styles = StyleSheet.create({
-  timeText: {
-    fontSize: 48,
-    fontWeight: "bold",
-    color: "#ffffff",
-  },
 });
 
 export default AnimatedStopwatchTimer;
