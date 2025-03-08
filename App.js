@@ -37,6 +37,7 @@ import {
   Countdown,
   Questionnaire,
   AIWorkoutCreator,
+  Notifications,
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
@@ -159,6 +160,11 @@ function App() {
                 <Stack.Screen
                   name="AIWorkoutCreator"
                   component={AIWorkoutCreator}
+                  options={{ animation: "none" }}
+                />
+                <Stack.Screen
+                  name="Notifications"
+                  component={Notifications}
                   options={{ animation: "none" }}
                 />
                 <Stack.Screen name="SearchUser" component={SearchUser} />

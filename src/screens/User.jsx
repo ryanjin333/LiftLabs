@@ -103,6 +103,17 @@ const User = ({ navigation }) => {
       ],
     },
     {
+      title: "Notifications",
+      data: [
+        {
+          title: "Notifications",
+          action: () => {
+            navigation.navigate("Notifications");
+          },
+        },
+      ],
+    },
+    {
       title: "Units",
       data: [{ title: "Metric", action: () => {}, value: user.weight }],
     },

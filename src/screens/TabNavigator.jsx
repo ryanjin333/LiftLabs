@@ -59,10 +59,10 @@ const TabNavigator = () => {
               iconName = focused
                 ? require("../assets/home_icon_bold.png")
                 : require("../assets/home_icon_thin.png");
-            } else if (route.name === "Notifications") {
-              iconName = focused
-                ? require("../assets/notification_icon_bold.png")
-                : require("../assets/notification_icon_thin.png");
+              // } else if (route.name === "Notifications") {
+              //   iconName = focused
+              //     ? require("../assets/notification_icon_bold.png")
+              //     : require("../assets/notification_icon_thin.png");
             } else if (route.name === "User") {
               iconName = focused
                 ? require("../assets/user_icon_bold.png")
@@ -84,11 +84,11 @@ const TabNavigator = () => {
         })}
       >
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Notifications"
           component={Notifications}
           options={{ title: "Notifications" }}
-        />
+        /> */}
         <Tab.Screen name="User" component={User} />
       </Tab.Navigator>
     </>
