@@ -37,29 +37,27 @@ const QuickStartModal = ({ selectedDate }) => {
 
   return (
     <Animated.View
-      className={`absolute z-50 h-20 w-96 my-8 px-6 ${
-        insets.bottom > 0 ? "bottom-10" : "bottom-10"
-      }`}
-      style={{
-        shadowColor: "#3c3c3c",
-        borderRadius: 9999,
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.6,
-        shadowRadius: 20,
-        elevation: 20, // for Android
-      }}
+      className={` z-50 h-20 w-full items-center `}
+      // style={{
+      //   shadowColor: "#323232",
+      //   borderRadius: 9999,
+      //   shadowOffset: { width: 5, height: 5 },
+      //   shadowOpacity: 0.4,
+      //   shadowRadius: 20,
+      //   elevation: 20, // for Android
+      // }}
       entering={FadeInDown.duration(500).springify()}
       exiting={FadeOutDown.delay(200).duration(500).springify()}
     >
       <View
         className="w-full h-full rounded-full overflow-hidden "
-        style={{
-          borderWidth: 1,
-          borderColor: "#1b1b1b",
-        }}
+        // style={{
+        //   borderWidth: 1,
+        //   borderColor: "#282828",
+        // }}
       >
         <BlurView
-          intensity={80}
+          intensity={0}
           tint="dark"
           className="h-full w-full flex-row items-center px-8 pr-2 justify-between"
         >

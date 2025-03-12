@@ -1,4 +1,4 @@
-import { Image } from "react-native";
+import { Image, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
@@ -17,6 +17,8 @@ import { BlurView } from "expo-blur";
 import Home from "./Home";
 import Notifications from "./Notifications";
 import User from "./User";
+import { QuickStartModal } from "../components";
+import { useEffect, useState } from "react";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,14 +29,34 @@ const TabNavigator = () => {
   const tabScreenVisible = useSelector(
     (state) => state.animation.tabScreenVisible
   );
+  const workout = useSelector((state) => state.workout);
+  const selectedDate = useSelector((state) => state.calendar.selectedDate);
+
+  const [quickStartModalVisible, setQuickStartModalVisible] = useState(true);
+  useEffect(() => {
+    if (selectedDate) {
+      setQuickStartModalVisible(false);
+      const timer = setTimeout(() => {
+        setQuickStartModalVisible(true);
+      }, 600);
+
+      return () => clearTimeout(timer);
+    }
+  }, [selectedDate]);
   return (
     <>
+      {/* quick start view
+      {tabScreenVisible &&
+        (workout.workouts.length > 0 || workout.sharedWorkouts.length > 0) && (
+          <QuickStartModal selectedDate={selectedDate} />
+        )} */}
       <Tab.Navigator
         initialRouteName="Home"
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarStyle: {
             position: "absolute",
+
             borderTopWidth: 0,
             height: insets.bottom + 46,
           },
@@ -45,10 +67,23 @@ const TabNavigator = () => {
                   experimentalBlurMethod="dimezisBlurView"
                   tint="dark"
                   intensity={70}
-                  className="bg-transparent overflow-hidden w-full h-full"
+                  className="bg-transparent absolute bottom-0 w-full"
+                  style={{
+                    height: insets.bottom + 120, // Make it taller
+                    justifyContent: "flex-end", // Pushes children to the bottom
+                  }}
                   entering={FadeInDown.delay(500).duration(500).springify()}
                   exiting={FadeOutUp.duration(500).springify()}
-                />
+                >
+                  {/* Add a View at the top inside the BlurView */}
+                  <View className="absolute top-0 w-full h-16 bg-transparent">
+                    {quickStartModalVisible &&
+                      (workout.workouts.length > 0 ||
+                        workout.sharedWorkouts.length > 0) && (
+                        <QuickStartModal selectedDate={selectedDate} />
+                      )}
+                  </View>
+                </AnimatedBlurView>
               )}
             </>
           ),
