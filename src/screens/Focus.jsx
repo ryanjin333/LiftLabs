@@ -6,9 +6,12 @@ import {
   Pressable,
   Image,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import React, { useEffect, useState, useRef } from "react";
-import { AnimatedStopwatchTimer } from "../components";
+import { AnimatedStopwatchTimer, GradientText } from "../components";
 import * as Haptics from "expo-haptics";
 import Animated, {
   FadeInUp,
@@ -32,6 +35,7 @@ import {
   useLoadingOpacity,
   useHasNotch,
 } from "../hooks";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Focus = ({ navigation }) => {
   // Redux
@@ -44,6 +48,9 @@ const Focus = ({ navigation }) => {
 
   // Timer
   const stopwatchTimerRef = useStopwatchInterval();
+
+  // Positioning
+  const insets = useSafeAreaInsets();
 
   // Create full workout plan
   const fullPlan = useFullPlan(currentWorkout);
@@ -80,21 +87,48 @@ const Focus = ({ navigation }) => {
     if (item.type === "break") {
       return (
         <SafeAreaView className="h-screen w-screen bg-black items-center justify-center">
-          <Text className="text-white text-2xl font-interBold">Rest Break</Text>
-          <AnimatedStopwatchTimer
-            ref={stopwatchTimerRef}
-            initialSeconds={120}
-            autoStart
-          />
-          <Text className="text-white text-lg font-interMedium mt-2">
-            Get ready for the next exercise!
-          </Text>
+          <View className="w-full justify-between items-center h-80">
+            <View className="items-center">
+              <GradientText
+                text="1:28"
+                className="text-8xl font-interBold"
+                orientation="vertical"
+                colors={["#e2e2e2", "#3d3d3d"]}
+              />
+              <View className=" px-4 py-2 border border-[#8d8d8d] rounded-full">
+                <Text className="text-white font-interSemiBold">Break</Text>
+              </View>
+            </View>
+            <Pressable onPress={() => console.log("hi")}>
+              <LinearGradient
+                colors={["#3d3d3d", "#1b1b1b"]} // Customize gradient colors
+                locations={[0, 0.2]}
+                start={[0, 0]}
+                end={[0, 1]} // Top to bottom gradient
+                className="rounded-[20px] m-0.5 p-[1px]"
+              >
+                <View
+                  key={item}
+                  className="rounded-[20px] bg-[#181818] justify-center items-center p-4 w-32 h-20" // Transparent border to retain gradient
+                >
+                  <Image
+                    className="h-10 w-10 "
+                    source={require("../assets/pause_white.png")}
+                  />
+                </View>
+              </LinearGradient>
+            </Pressable>
+          </View>
         </SafeAreaView>
       );
     }
 
     return (
-      <SafeAreaView className="h-screen w-screen py-3 bg-black items-center">
+      <SafeAreaView className="h-screen w-screen bg-black items-center">
+        <View
+          className="absolute top-0 left-0 w-full bg-white"
+          style={{ height: insets.top }}
+        />
         <View className="w-full items-end">
           {/* Header spacing */}
           <View className="h-16 w-full bg-white" />
@@ -192,7 +226,7 @@ const Focus = ({ navigation }) => {
           {/* Timer & Exit Button */}
           <View
             className={`flex-row w-full px-4 mt-${
-              useHasNotch() ? "20" : "10"
+              useHasNotch() ? "16" : "10"
             } absolute z-50`}
           >
             <Animated.View
@@ -200,20 +234,28 @@ const Focus = ({ navigation }) => {
               exiting={FadeOutUp.delay(350).duration(500).springify()}
               className="w-full items-end"
             >
-              <Pressable
-                className="w-24 h-10 flex-row justify-between px-4 items-center rounded-full bg-[#292929]"
-                onPress={() => {
-                  dispatch(focusToWorkoutScreenTransition());
-                  stopwatchTimerRef.current?.resetTimer();
-                  setTimeout(() => navigation.navigate("Home"), 850);
-                }}
+              <LinearGradient
+                colors={["#3d3d3d", "#1b1b1b"]} // Customize gradient colors
+                locations={[0, 0.5]}
+                start={[0, 0]}
+                end={[0, 1]} // Top to bottom gradient
+                className="rounded-full m-0.5 p-[1px]"
               >
-                <AnimatedStopwatchTimer ref={stopwatchTimerRef} />
-                <Image
-                  className="w-4 h-4"
-                  source={require("../assets/exit.png")}
-                />
-              </Pressable>
+                <Pressable
+                  className="w-24 h-10 flex-row justify-between px-4 items-center rounded-full bg-[#292929]"
+                  onPress={() => {
+                    dispatch(focusToWorkoutScreenTransition());
+                    stopwatchTimerRef.current?.resetTimer();
+                    setTimeout(() => navigation.navigate("Home"), 850);
+                  }}
+                >
+                  <AnimatedStopwatchTimer ref={stopwatchTimerRef} />
+                  <Image
+                    className="w-4 h-4"
+                    source={require("../assets/exit.png")}
+                  />
+                </Pressable>
+              </LinearGradient>
             </Animated.View>
           </View>
 

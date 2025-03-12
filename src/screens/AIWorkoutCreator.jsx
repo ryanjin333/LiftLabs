@@ -240,7 +240,7 @@ const AIWorkoutCreator = ({ navigation }) => {
       <View className="bg-black flex-1 absolute z-10 top-0 bottom-0 left-0 right-0">
         <LinearGradient
           // Background Linear Gradient
-          colors={["transparent", "#3f3f3f"]}
+          colors={["transparent", "#212121"]}
           className="absolute z-10 top-0 bottom-0 left-0 right-0"
         />
       </View>
@@ -266,43 +266,50 @@ const AIWorkoutCreator = ({ navigation }) => {
         <View className="flex-row flex-wrap px-6 ">
           {muscleGroups.map((item, index) => (
             // individual workout selection views
-            <RoundedBlurView
-              key={item.id}
-              className={`rounded-[20px] m-0.5 border border-[#313131]`}
-              style={{ width: itemWidth, height: itemWidth }}
-              containerClassName="p-3 justify-between"
+            <LinearGradient
+              colors={["#3d3d3d", "#1b1b1b"]} // Customize gradient colors
+              locations={[0, 0.2]}
+              start={[0, 0]}
+              end={[0, 1]} // Top to bottom gradient
+              className="rounded-[20px] m-0.5 p-[1px]"
             >
-              {/* top half of the selection view */}
-              <View className="flex-row justify-between">
-                {/* apply shadowing to the radial gradient */}
-                <View
-                  style={{
-                    borderRadius: 9999,
-                    shadowColor: "#3d3d3d",
-                    shadowOffset: { width: 0, height: 5 },
-                    shadowOpacity: 0.6,
-                    shadowRadius: 15,
-                    elevation: 15, // For Android
-                  }}
-                >
-                  <RadialGradientImage
-                    image={item.image}
-                    gradientSize={9}
-                    imageSize={item.imageSize}
-                  />
-                </View>
+              <View
+                key={item.id}
+                className={`rounded-[20px] p-3 justify-between bg-[#1a1a1a]`}
+                style={{ width: itemWidth, height: itemWidth }}
+              >
+                {/* top half of the selection view */}
+                <View className="flex-row justify-between">
+                  {/* apply shadowing to the radial gradient */}
+                  <View
+                    style={{
+                      borderRadius: 9999,
+                      shadowColor: "#3d3d3d",
+                      shadowOffset: { width: 0, height: 5 },
+                      shadowOpacity: 0.6,
+                      shadowRadius: 15,
+                      elevation: 15, // For Android
+                    }}
+                  >
+                    <RadialGradientImage
+                      image={item.image}
+                      gradientSize={9}
+                      imageSize={item.imageSize}
+                    />
+                  </View>
 
-                {/* <Image
+                  {/* <Image
                   className="w-5 h-5"
                   source={require("../assets/checkmark.png")}
                 /> */}
-              </View>
+                </View>
 
-              {/* bottom half of the selection view */}
-              <Text className="text-white font-interMedium text-sm">
-                {item.name}
-              </Text>
-            </RoundedBlurView>
+                {/* bottom half of the selection view */}
+                <Text className="text-white font-interMedium text-sm">
+                  {item.name}
+                </Text>
+              </View>
+            </LinearGradient>
           ))}
         </View>
         {/* bottom bar */}
